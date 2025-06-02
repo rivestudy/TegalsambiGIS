@@ -9,3 +9,5 @@ const AttractionDetail = () => {
     </div>
   );
 };
+
+export default AttractionDetail;

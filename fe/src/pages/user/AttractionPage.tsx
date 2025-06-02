@@ -9,3 +9,5 @@ const AttractionPage = () => {
     </div>
   );
 };
+
+export default AttractionPage;

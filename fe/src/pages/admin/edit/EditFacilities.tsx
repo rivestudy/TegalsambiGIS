@@ -9,3 +9,4 @@ const EditFacilities = () => {
     </div>
   );
 };
+export default EditFacilities;

@@ -9,3 +9,4 @@ const EditAttraction = () => {
     </div>
   );
 };
+export default EditAttraction;

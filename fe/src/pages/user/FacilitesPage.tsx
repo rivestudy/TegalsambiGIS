@@ -9,3 +9,5 @@ const FacilitiesPage = () => {
     </div>
   );
 };
+
+export default FacilitiesPage;

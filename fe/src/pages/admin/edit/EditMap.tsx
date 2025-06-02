@@ -9,3 +9,4 @@ const EditMap = () => {
     </div>
   );
 };
+export default EditMap;

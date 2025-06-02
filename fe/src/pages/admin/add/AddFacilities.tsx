@@ -9,3 +9,4 @@ const AddFacilities = () => {
     </div>
   );
 };
+export default AddFacilities;

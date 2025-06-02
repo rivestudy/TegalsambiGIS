@@ -9,3 +9,4 @@ const AddMap = () => {
     </div>
   );
 };
+export default AddMap;

@@ -9,3 +9,4 @@ const AddAttraction = () => {
     </div>
   );
 };
+export default AddAttraction;
