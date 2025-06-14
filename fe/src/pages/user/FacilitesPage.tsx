@@ -1,13 +1,11 @@
-
-import React from 'react';
+import React from "react";
 
 const FacilitiesPage = () => {
-  return (
-    <div>
-      <h1></h1>
-      
-    </div>
-  );
+    return (
+        <div>
+            <h1>HALAMAN KULINER</h1>
+        </div>
+    );
 };
 
 export default FacilitiesPage;
