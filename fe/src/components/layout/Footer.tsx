@@ -1,87 +1,92 @@
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-// import * as FaIcons from "react-icons/fa6";
 
 const Footer = () => {
-    const villageName = "Tegalsambi"; // Ganti sesuai kebutuhan
+    const villageName = "Tegalsambi";
 
     return (
-        <footer className="bg-black text-white pt-10">
-            {/* Bagian utama footer */}
-            <div className="max-w-screen-xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-8 pb-8 border-b border-gray-700">
-                {/* Kolom 1 */}
+        <footer className="bg-gradient-to-br from-black via-gray-900 to-black text-white pt-12">
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-12 pb-10 border-b border-gray-700">
+                {/* Column 1 */}
                 <div>
-                    <h2 className="text-lg font-semibold mb-4">Tegalsambi</h2>
-                    <ul className="space-y-2 text-sm">
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                About Us
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Kolom 2 */}
-                <div>
-                    <h2 className="text-lg font-semibold mb-4">Support</h2>
-                    <ul className="space-y-2 text-sm">
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                Contact Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                FAQs
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="hover:text-gray-400">
-                                Social Media
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Kolom 3: Social Media */}
-                <div>
-                    <h2 className="text-lg font-semibold mb-4 text-center sm:text-left">Find Us!</h2>
-                    <div className="flex justify-center sm:justify-start gap-4 text-xl">
-                        <a href="#" className="hover:text-red-500">
+                    <h2 className="text-2xl font-bold mb-4">Tegalsambi</h2>
+                    <p className="text-sm text-gray-400 mb-6">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan kuliner di Jepara.</p>
+                    <div className="flex space-x-4 text-xl">
+                        <a href="#" className="hover:text-red-500 transition-colors duration-300">
                             <FaYoutube />
                         </a>
-                        <a href="#" className="hover:text-blue-600">
+                        <a href="#" className="hover:text-blue-600 transition-colors duration-300">
                             <FaFacebookF />
                         </a>
-                        <a href="#" className="hover:text-pink-500">
+                        <a href="#" className="hover:text-pink-500 transition-colors duration-300">
                             <FaInstagram />
                         </a>
-                        <a href="#" className="hover:text-white">
+                        <a href="#" className="hover:text-sky-400 transition-colors duration-300">
                             <FaTwitter />
                         </a>
                     </div>
                 </div>
+
+                {/* Column 2 */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Menu</h2>
+                    <ul className="space-y-3 text-sm">
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                About Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                Wisata
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                Kuliner
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                WebGIS
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                {/* Column 3 */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">Support</h2>
+                    <ul className="space-y-3 text-sm">
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                FAQs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                Help Center
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                                Terms & Conditions
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            {/* Bagian copyright */}
-            <div className="mt-6 text-sm text-center text-gray-400 px-4 pb-6">
+            {/* Copyright */}
+            <div className="mt-8 text-sm text-center text-gray-500 px-4 pb-6">
                 <p>
-                    &copy; {new Date().getFullYear()} Pemerintah Desa {villageName}. Hak Cipta Dilindungi.
+                    &copy; {new Date().getFullYear()} Pemerintah Desa {villageName}. All Rights Reserved.
                 </p>
                 <p>Kabupaten Jepara, Jawa Tengah, Indonesia</p>
             </div>

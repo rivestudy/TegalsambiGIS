@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
         <div className="font-sans text-gray-800 overflow-x-hidden">
             {/* Hero Section */}
             <section
-                className="h-[500px] bg-cover bg-center flex items-center justify-center text-white text-center relative"
+                className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center text-white text-center relative"
                 style={{
                     backgroundImage: "url('/gambar_pantai.jpg')",
                 }}
