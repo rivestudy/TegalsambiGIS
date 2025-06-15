@@ -5,24 +5,24 @@ const Footer = () => {
     const villageName = "Tegalsambi";
 
     return (
-        <footer className="bg-gradient-to-br from-black via-gray-900 to-black text-white pt-12">
+        <footer className="pt-12 text-white bg-gradient-to-br from-black via-gray-900 to-black">
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-3 gap-12 pb-10 border-b border-gray-700">
+            <div className="grid grid-cols-1 gap-12 px-6 pb-10 mx-auto border-b border-gray-700 max-w-7xl sm:grid-cols-3">
                 {/* Column 1 */}
                 <div>
-                    <h2 className="text-2xl font-bold mb-4">Tegalsambi</h2>
-                    <p className="text-sm text-gray-400 mb-6">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan kuliner di Jepara.</p>
+                    <h2 className="mb-4 text-2xl font-bold">Tegalsambi</h2>
+                    <p className="mb-6 text-sm text-gray-400">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan kuliner di Jepara.</p>
                     <div className="flex space-x-4 text-xl">
-                        <a href="#" className="hover:text-red-500 transition-colors duration-300">
+                        <a href="#" className="transition-colors duration-300 hover:text-red-500">
                             <FaYoutube />
                         </a>
-                        <a href="#" className="hover:text-blue-600 transition-colors duration-300">
+                        <a href="#" className="transition-colors duration-300 hover:text-blue-600">
                             <FaFacebookF />
                         </a>
-                        <a href="#" className="hover:text-pink-500 transition-colors duration-300">
+                        <a href="#" className="transition-colors duration-300 hover:text-pink-500">
                             <FaInstagram />
                         </a>
-                        <a href="#" className="hover:text-sky-400 transition-colors duration-300">
+                        <a href="#" className="transition-colors duration-300 hover:text-sky-400">
                             <FaTwitter />
                         </a>
                     </div>
@@ -30,25 +30,25 @@ const Footer = () => {
 
                 {/* Column 2 */}
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Menu</h2>
+                    <h2 className="mb-4 text-xl font-semibold">Menu</h2>
                     <ul className="space-y-3 text-sm">
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 About Us
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 Wisata
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 Kuliner
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 WebGIS
                             </a>
                         </li>
@@ -57,25 +57,25 @@ const Footer = () => {
 
                 {/* Column 3 */}
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Support</h2>
+                    <h2 className="mb-4 text-xl font-semibold">Support</h2>
                     <ul className="space-y-3 text-sm">
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 Contact Us
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 FAQs
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 Help Center
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
                                 Terms & Conditions
                             </a>
                         </li>
@@ -84,7 +84,7 @@ const Footer = () => {
             </div>
 
             {/* Copyright */}
-            <div className="mt-8 text-sm text-center text-gray-500 px-4 pb-6">
+            <div className="px-4 pb-6 mt-8 text-sm text-center text-gray-500">
                 <p>
                     &copy; {new Date().getFullYear()} Pemerintah Desa {villageName}. All Rights Reserved.
                 </p>
