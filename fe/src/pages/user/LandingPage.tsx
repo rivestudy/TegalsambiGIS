@@ -71,19 +71,19 @@ const LandingPage: React.FC = () => {
                             {
                                 id: 1,
                                 title: "To Explore nature",
-                                img: "/images/wisata-1.jpg",
+                                img: "/pantaitegalsambi.jpeg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 2,
                                 title: "To Explore nature",
-                                img: "/images/wisata-2.jpg",
+                                img: "/pantaitegalsambi.jpeg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 3,
                                 title: "To Explore nature",
-                                img: "/images/wisata-3.jpg",
+                                img: "/pantaitegalsambi.jpeg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                         ].map(({ id, title, img, desc }, index) => (
@@ -105,8 +105,8 @@ const LandingPage: React.FC = () => {
                 </div>
             </section>
 
-            {/* SECTION: KULINER */}
-            <section id="kuliner" className="bg-white px-6 pb-20">
+            {/* SECTION: Penginapan */}
+            <section id="penginapan" className="bg-white px-6 pb-20">
                 <div className="max-w-6xl mx-auto">
                     {/* Judul + deskripsi singkat */}
                     <div className="mb-8">
@@ -127,19 +127,19 @@ const LandingPage: React.FC = () => {
                             {
                                 id: 1,
                                 title: "Penginapan A",
-                                img: "/images/wisata-1.jpg",
+                                img: "/penginapan.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 2,
                                 title: "Penginapan B",
-                                img: "/images/wisata-2.jpg",
+                                img: "/penginapan.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 3,
                                 title: "Penginapan C",
-                                img: "/images/wisata-3.jpg",
+                                img: "/penginapan.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                         ].map(({ id, title, img, desc }, index) => (

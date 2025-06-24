@@ -109,7 +109,7 @@ const AttractionPage = () => {
 
                     <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
                         <div className="relative">
-                            <input type="text" placeholder="Cari sesuatu" className="w-full py-2 pl-10 pr-4 shadow-lg rounded-full border border-gray-300 text-gray-500" />
+                            <input type="text" placeholder="Cari Wisata" className="w-full py-2 pl-10 pr-4 shadow-lg rounded-full border border-gray-300 text-gray-500" />
                             <span className="absolute left-3 top-2.5 text-gray-400">
                                 <svg className="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-3.5-3.5M17 10a7 7 0 11-14 0 7 7 0 0114 0Z" />

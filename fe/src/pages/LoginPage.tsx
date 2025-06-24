@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-purple-600 pt-20">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-900 to-cyan-600 pt-20">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl flex overflow-hidden">
                 {/* Kiri: Gambar */}
                 <div className="hidden md:block md:w-1/2 relative">
