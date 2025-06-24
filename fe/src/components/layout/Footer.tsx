@@ -11,7 +11,7 @@ const Footer = () => {
                 {/* Column 1 */}
                 <div>
                     <h2 className="mb-4 text-2xl font-bold">Tegalsambi</h2>
-                    <p className="mb-6 text-sm text-gray-400">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan kuliner di Jepara.</p>
+                    <p className="mb-6 text-sm text-gray-400">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan penginapan di Jepara.</p>
                     <div className="flex space-x-4 text-xl">
                         <a href="#" className="transition-colors duration-300 hover:text-red-500">
                             <FaYoutube />
@@ -33,22 +33,22 @@ const Footer = () => {
                     <h2 className="mb-4 text-xl font-semibold">Menu</h2>
                     <ul className="space-y-3 text-sm">
                         <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
+                            <a href="about" className="transition-colors duration-200 hover:text-gray-300">
                                 About Us
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
+                            <a href="attractions" className="transition-colors duration-200 hover:text-gray-300">
                                 Wisata
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
-                                Kuliner
+                            <a href="facilities" className="transition-colors duration-200 hover:text-gray-300">
+                                Penginapan
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
+                            <a href="peta-desa" className="transition-colors duration-200 hover:text-gray-300">
                                 WebGIS
                             </a>
                         </li>

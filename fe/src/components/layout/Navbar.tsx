@@ -33,7 +33,7 @@ const Navbar = () => {
     return (
         <AnimatePresence>
             {showNavbar && (
-                <motion.nav className="fixed top-0 left-0 right-0 z-50 bg-black text-white shadow-md" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
+                <motion.nav className="fixed top-0 left-0 right-0 z-50 bg-white/30 backdrop-blur-md text-black shadow-md" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
                     <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
                         <Link to="/" className="text-2xl font-bold hover:text-gray-300">
                             Logo
@@ -47,14 +47,17 @@ const Navbar = () => {
                                 Wisata
                             </Link>
                             <Link to="/facilities" className="hover:text-gray-300">
-                                Kuliner
+                                Penginapan
                             </Link>
                             <Link to="/peta-desa" className="hover:text-gray-300">
                                 WebGIS
                             </Link>
 
                             {!isAdminLoggedIn && (
-                                <Link to="/login" className="ml-4 px-4 py-1.5 border border-white text-white rounded hover:bg-white hover:text-black transition">
+                                <Link
+                                    to="/login"
+                                    className="ml-4 px-4 py-1.5 border border-black text-black rounded bg-transparent hover:bg-gradient-to-r hover:border-transparent hover:from-blue-500 hover:to-blue-700 hover:text-white transition duration-300"
+                                >
                                     Login Admin
                                 </Link>
                             )}

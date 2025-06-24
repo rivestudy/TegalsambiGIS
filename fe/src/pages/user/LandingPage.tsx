@@ -112,7 +112,7 @@ const LandingPage: React.FC = () => {
                     <div className="mb-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div>
-                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Kuliner Khas Tegalsambi</h2>
+                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Penginapan Desa Tegalsambi</h2>
                                 <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -126,24 +126,24 @@ const LandingPage: React.FC = () => {
                         {[
                             {
                                 id: 1,
-                                title: "Nama Makanan",
+                                title: "Penginapan A",
                                 img: "/images/wisata-1.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 2,
-                                title: "Nama Makanan",
+                                title: "Penginapan B",
                                 img: "/images/wisata-2.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                             {
                                 id: 3,
-                                title: "Nama Makanan",
+                                title: "Penginapan C",
                                 img: "/images/wisata-3.jpg",
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                         ].map(({ id, title, img, desc }, index) => (
-                            <Link to={`/detail-kuliner/${id}`} key={id} className="block">
+                            <Link to={`/detail-penginapan/${id}`} key={id} className="block">
                                 <article className={` border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl`}>
                                     {/* Gambar */}
                                     <img src={img} alt={title} className="w-full h-48 object-cover" />
