@@ -40,7 +40,9 @@ const LandingPage: React.FC = () => {
             {/* SECTION: TENTANG */}
             <section id="tentang" className="bg-white px-6 py-16">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Tentang Tegalsambi</h2>
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+                        Tentang Tegalsambi
+                    </h2>
                     <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                         commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
@@ -56,7 +58,9 @@ const LandingPage: React.FC = () => {
                     <div className="mb-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div>
-                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Wisata lokal Tegalsambi</h2>
+                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+                                    Wisata lokal Tegalsambi
+                                </h2>
                                 <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -93,7 +97,7 @@ const LandingPage: React.FC = () => {
                                     <img src={img} alt={title} className="w-full h-48 object-cover" />
 
                                     {/* Konten */}
-                                    <div className="p-4">
+                                    <div className="p-4 bg-blue-100">
                                         <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">For those who love</p>
                                         <h3 className="font-semibold text-xl text-gray-800 mb-2">{title}</h3>
                                         <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
@@ -101,6 +105,17 @@ const LandingPage: React.FC = () => {
                                 </article>
                             </Link>
                         ))}
+                    </div>
+                    {/* Lihat selengkapnya Button */}
+                    <div className="flex justify-center pt-8">
+                        <Link to="/attractions">
+                            <button className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 flex items-center gap-2 transition duration-300">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                                Lihat Selengkapnya
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -112,7 +127,9 @@ const LandingPage: React.FC = () => {
                     <div className="mb-8">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div>
-                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">Penginapan Desa Tegalsambi</h2>
+                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+                                    Penginapan Desa Tegalsambi
+                                </h2>
                                 <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -149,7 +166,7 @@ const LandingPage: React.FC = () => {
                                     <img src={img} alt={title} className="w-full h-48 object-cover" />
 
                                     {/* Konten */}
-                                    <div className="p-4">
+                                    <div className="p-4 bg-orange-100">
                                         <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">Range Harga</p>
                                         <h3 className="font-semibold text-xl text-gray-800 mb-2">{title}</h3>
                                         <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
@@ -157,6 +174,17 @@ const LandingPage: React.FC = () => {
                                 </article>
                             </Link>
                         ))}
+                    </div>
+                    {/* Lihat selengkapnya Button */}
+                    <div className="flex justify-center pt-8">
+                        <Link to="/facilities">
+                            <button className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 flex items-center gap-2 transition duration-300">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                                Lihat Selengkapnya
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </section>

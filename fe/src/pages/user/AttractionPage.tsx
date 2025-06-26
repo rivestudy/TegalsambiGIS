@@ -1,8 +1,10 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import "swiper/css/navigation";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Navigation } from "swiper/modules";
 
 const wisataReligi = [
     {
@@ -107,7 +109,7 @@ const AttractionPage = () => {
                 <motion.div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                     <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">Wisata Tegalsambi</h1>
 
-                    <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8 }}>
+                    <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }}>
                         <div className="relative">
                             <input type="text" placeholder="Cari Wisata" className="w-full py-2 pl-10 pr-4 shadow-lg rounded-full border border-gray-300 text-gray-500" />
                             <span className="absolute left-3 top-2.5 text-gray-400">
@@ -122,13 +124,16 @@ const AttractionPage = () => {
 
             {/* Main Konten */}
             {/* ------- WISATA RELIGI -------*/}
-            <motion.div className="max-w-screen-xl mx-auto px-4 pt-16 pb-8" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 1 }}>
+            <motion.div className="max-w-screen-xl mx-auto px-4 pt-16 pb-8" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1 }}>
                 <h2 className="text-2xl font-bold text-gray-800 mb-2 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                     Wisata Religi & Sejarah
                 </h2>
                 <p className="text-gray-600 mb-6 max-width">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                     consequat.
+                </p>
+                <p className="text-sm text-gray-500 italic mb-2 flex items-center gap-1">
+                    Geser untuk melihat destinasi lainnya <span className="animate-bounce">👉</span>
                 </p>
                 {/* Swiper Grid Card */}
                 <Swiper
@@ -142,7 +147,7 @@ const AttractionPage = () => {
                 >
                     {wisataReligi.map((religi) => (
                         <SwiperSlide key={religi.id}>
-                            <Link to={`/wisata/${religi.id}`}>
+                            <Link to={`/attractions/${religi.id}`}>
                                 <div className="bg-blue-100 mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[350px] transition transform duration-300 hover:shadow-lg hover:-translate-y-2 cursor-pointer">
                                     <img src={religi.image} className="w-full h-48 object-cover" alt={religi.title} />
                                     <div className="p-5 flex flex-col flex-grow justify-between">
@@ -162,13 +167,16 @@ const AttractionPage = () => {
             </motion.div>
 
             {/* ------- WISATA BUDAYA -------*/}
-            <motion.div className="max-w-screen-xl mx-auto px-4 pt-8 pb-8" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 1 }}>
+            <motion.div className="max-w-screen-xl mx-auto px-4 pt-8 pb-8" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1 }}>
                 <h2 className="text-2xl font-bold text-gray-800 mb-2 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                     Wisata Budaya & Workshop
                 </h2>
                 <p className="text-gray-600 mb-6 max-width">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                     consequat.
+                </p>
+                <p className="text-sm text-gray-500 italic mb-2 flex items-center gap-1">
+                    Geser untuk melihat destinasi lainnya <span className="animate-bounce">👉</span>
                 </p>
                 {/* Swiper Grid Card */}
                 <Swiper
@@ -182,7 +190,7 @@ const AttractionPage = () => {
                 >
                     {wisataBudaya.map((budaya) => (
                         <SwiperSlide key={budaya.id}>
-                            <Link to={`/wisata/${budaya.id}`}>
+                            <Link to={`/attractions/${budaya.id}`}>
                                 <div className="bg-blue-100 mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[350px] transition transform duration-300 hover:shadow-lg hover:-translate-y-2 cursor-pointer">
                                     <img src={budaya.image} className="w-full h-48 object-cover" alt={budaya.title} />
                                     <div className="p-5 flex flex-col flex-grow justify-between">
@@ -211,11 +219,14 @@ const AttractionPage = () => {
             </motion.div>
 
             {/* ------- WISATA PESISIR -------*/}
-            <motion.div className="max-w-screen-xl mx-auto px-4 pt-8 pb-16" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 1 }}>
+            <motion.div className="max-w-screen-xl mx-auto px-4 pt-8 pb-16" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1 }}>
                 <h2 className="text-2xl font-bold text-gray-800 mb-2 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">Wisata Pesisir</h2>
                 <p className="text-gray-600 mb-6 max-width">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                     consequat.
+                </p>
+                <p className="text-sm text-gray-500 italic mb-2 flex items-center gap-1">
+                    Geser untuk melihat destinasi lainnya <span className="animate-bounce">👉</span>
                 </p>
                 {/* Swiper Grid Card */}
                 <Swiper
@@ -229,7 +240,7 @@ const AttractionPage = () => {
                 >
                     {wisataPesisir.map((pesisir) => (
                         <SwiperSlide key={pesisir.id}>
-                            <Link to={`/wisata/${pesisir.id}`}>
+                            <Link to={`/attractions/${pesisir.id}`}>
                                 <div className="bg-blue-100 mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[350px] transition transform duration-300 hover:shadow-lg hover:-translate-y-2 cursor-pointer">
                                     <img src={pesisir.image} className="w-full h-48 object-cover" alt={pesisir.title} />
                                     <div className="p-5 flex flex-col flex-grow justify-between">

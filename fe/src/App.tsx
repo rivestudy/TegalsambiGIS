@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import ScrollToTop from "./components/layout/ScrollToTop";
 
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -24,6 +25,7 @@ import AboutPage from "./pages/user/AboutPage";
 import AttractionDetail from "./pages/user/AttractionDetail";
 import AttractionPage from "./pages/user/AttractionPage";
 import FacilitiesPage from "./pages/user/FacilitesPage";
+import FacilitiesDetail from "./pages/user/FacilitiesDetail";
 import MapPage from "./pages/user/MapPage";
 import NotFoundPage from "./pages/user/NotFound";
 
@@ -99,6 +101,7 @@ const NavigationHandler: React.FC = () => {
 function App() {
     return (
         <Router>
+            <ScrollToTop />
             <NavigationHandler />
             <Navbar></Navbar>
             <Routes>
@@ -109,6 +112,7 @@ function App() {
                 <Route path="/attractions" element={<AttractionPage />} />
                 <Route path="/attractions/:id" element={<AttractionDetail />} />
                 <Route path="/facilities" element={<FacilitiesPage />} />
+                <Route path="/facilities/:id" element={<FacilitiesDetail />} />
                 <Route path="/peta-desa" element={<MapPage />} />
                 <Route path="/not-found" element={<NotFoundPage />} />
 
