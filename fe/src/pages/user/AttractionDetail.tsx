@@ -1,14 +1,41 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const AttractionDetail = () => {
     const imageList = ["/gambar_pantai.jpg", "/pantaitegalsambi.jpeg", "/penginapan.jpg"];
     const [mainImage, setMainImage] = useState(imageList[0]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-sky-200 via-white to-blue-100 px-4 py-16">
+        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 px-4 py-16">
             <motion.div className="text-center" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                <h1 className="text-2xl font-extrabold pt-8 mb-8 inline-block relative">
+                {/* Breadcrumb*/}
+                <div className="flex justify-center pt-4 pb-1">
+                    <div className="bg-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-md border border-white/30">
+                        <nav>
+                            <ol className="flex items-center text-sm font-semibold space-x-2 text-white">
+                                <li>
+                                    <Link to="/" className="flex items-center hover:text-orange-400 transition duration-300">
+                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
+                                        </svg>
+                                        Landing Page
+                                    </Link>
+                                </li>
+                                <li className="text-gray-300">/</li>
+                                <li>
+                                    <Link to="/attractions" className="hover:text-orange-400 transition duration-300">
+                                        Wisata Tegalsambi
+                                    </Link>
+                                </li>
+                                <li className="text-gray-300">/</li>
+                                <li className="text-orange-300 font-bold">Detail Wisata</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+                <h1 className="text-2xl font-extrabold text-white pt-1 mb-6 inline-block relative">
                     Nama Wisata A<span className="block w-20 h-1 bg-orange-400 mx-auto mt-2 rounded-full"></span>
                 </h1>
             </motion.div>
@@ -31,7 +58,7 @@ const AttractionDetail = () => {
                 </div>
 
                 {/* BAGIAN KANAN: Informasi */}
-                <div className="md:w-1/2 space-y-6 text-gray-800 bg-white/70 backdrop-blur-md p-6 rounded-xl shadow-xl border border-gray-200">
+                <div className="md:w-1/2 space-y-6 text-gray-800 bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
                     {/* Deskripsi */}
                     <div>
                         <h2 className="font-semibold mb-2 text-blue-900">Deskripsi Wisata</h2>
@@ -82,6 +109,23 @@ const AttractionDetail = () => {
                     </div>
                 </div>
             </motion.div>
+            {/* Lokasi */}
+            <div className="mt-10 max-w-screen-xl mx-auto">
+                <div className="bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
+                    <h3 className="font-semibold text-blue-900 mb-4">Lokasi Wisata</h3>
+                    <div className="rounded-xl overflow-hidden">
+                        <iframe
+                            title="map"
+                            src="https://www.google.com/maps/embed?pb=!1m18..." // ganti dengan link maps yang sesuai
+                            width="100%"
+                            height="300"
+                            style={{ border: 0 }}
+                            allowFullScreen
+                            loading="lazy"
+                        ></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

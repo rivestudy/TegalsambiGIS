@@ -62,8 +62,22 @@ const FacilitesPage = () => {
                 <div className="absolute inset-0 bg-black bg-opacity-30"></div>
 
                 <motion.div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+                    {/* Breadcrumb */}
+                    <nav className="py-2">
+                        <ol className="flex justify-center items-center font-semibold text-lg space-x-2 text-sm text-white">
+                            <li>
+                                <Link to="/" className="flex items-center hover:text-orange-400 transition duration-300">
+                                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
+                                    </svg>
+                                    Landing Page
+                                </Link>
+                            </li>
+                            <li className="text-gray-400 font-semibold">/</li>
+                            <li className="text-orange-300 font-bold">Penginapan</li>
+                        </ol>
+                    </nav>
                     <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">Penginapan / Homestay</h1>
-
                     <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }}>
                         <div className="relative">
                             <input type="text" placeholder="Cari Penginapan" className="w-full py-2 pl-10 pr-4 shadow-lg rounded-full border border-gray-300 text-gray-500" />
