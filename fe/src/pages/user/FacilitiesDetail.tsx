@@ -81,14 +81,6 @@ const FacilitiesDetail: React.FC = () => {
                             <p className="text-sm text-gray-800">Check-in: 14.00 WIB | Check-out: 12.00 WIB</p>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-orange-600">Kontak & Reservasi</h3>
-                            <ul className="list-disc list-inside text-sm text-gray-800">
-                                <li>Telp: 0821-9876-1234</li>
-                                <li>Email: reservasi@penginapan.com</li>
-                                <li>Instagram: @penginapan.tegalsambi</li>
-                            </ul>
-                        </div>
-                        <div>
                             <h3 className="font-semibold text-orange-600">Fasilitas Penginapan</h3>
 
                             <ul className="text-sm text-gray-800 space-y-1">
@@ -106,16 +98,24 @@ const FacilitiesDetail: React.FC = () => {
                                 </li>
                             </ul>
                         </div>
+                        <div>
+                            <h3 className="font-semibold text-orange-600">Aktivitas di Sekitar Penginapan</h3>
+                            <ul className="list-disc list-inside text-sm text-gray-800">
+                                <li>Jalan-jalan Sore</li>
+                                <li>Kuliner Malam</li>
+                                <li>Pasar Oleh-oleh</li>
+                                <li>Menikmati Sunset</li>
+                            </ul>
+                        </div>
                     </div>
 
                     {/* Aktivitas Tambahan */}
                     <div>
-                        <h3 className="font-semibold text-orange-600 mb-1">Aktivitas di Sekitar Penginapan</h3>
-                        <ul className="list-disc list-inside text-sm text-gray-800 grid grid-cols-1 md:grid-cols-2 gap-x-6">
-                            <li>Jalan-jalan Sore</li>
-                            <li>Kuliner Malam</li>
-                            <li>Pasar Oleh-oleh</li>
-                            <li>Menikmati Sunset</li>
+                        <h3 className="font-semibold text-orange-600 mb-1">Kontak & Reservasi</h3>
+                        <ul className="list-disc list-inside text-sm text-gray-800 gap-x-6">
+                            <li>Telp: 0821-9876-1234</li>
+                            <li>Email: reservasi@penginapan.com</li>
+                            <li>Instagram: @penginapan.tegalsambi</li>
                         </ul>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ const FacilitiesDetail: React.FC = () => {
             {/* Lokasi */}
             <div className="mt-10 max-w-screen-xl mx-auto">
                 <div className="bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
-                    <h3 className="font-semibold text-orange-600 mb-4">Lokasi Penginapan</h3>
+                    <h3 className="font-semibold text-lg text-orange-600 mb-4">Lokasi Penginapan</h3>
                     <div className="rounded-xl overflow-hidden">
                         <iframe
                             title="map"

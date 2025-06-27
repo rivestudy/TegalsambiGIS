@@ -1,20 +1,23 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
 import ScrollToTop from "./components/layout/ScrollToTop";
 
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
+import Sidebar from "./components/layout/Sidebar";
+import AdminHeader from "./components/layout/Header";
 
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/user/LandingPage";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminDashboard from "./pages/admin/add/AdminDashboard";
 
-import AddAttraction from "./pages/admin/add/AddAttraction";
-import AddFacilities from "./pages/admin/add/AddFacilities";
+import AddAttraction from "./pages/admin/add/DaftarWisata";
+import AddFacilities from "./pages/admin/add/DaftarPenginapan";
 import AddMap from "./pages/admin/add/AddMap";
 
 // Admin edit
-import EditAttraction from "./pages/admin/edit/EditAttraction";
+import EditWisata from "./pages/admin/edit/EditWisata";
+// import EditAttraction from "./pages/admin/edit/EditAttraction";
 import EditFacilities from "./pages/admin/edit/EditFacilities";
 import EditMap from "./pages/admin/edit/EditMap";
 import EditPage from "./pages/admin/EditPage";
@@ -98,41 +101,67 @@ const NavigationHandler: React.FC = () => {
     );
 };
 
+const AppContent = () => {
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith("/admin");
+    const role = localStorage.getItem("userRole");
+    const isAdmin = role === "admin";
+
+    return (
+        <>
+            <ScrollToTop />
+            {!isAdminRoute && <Navbar />}
+
+            <div className="flex">
+                {/* Sidebar khusus admin */}
+                {isAdminRoute && isAdmin && <Sidebar />}
+
+                <div className={isAdminRoute && isAdmin ? "ml-64 w-full" : "w-full"}>
+                    {/* Header khusus admin */}
+                    {isAdminRoute && isAdmin && <AdminHeader />}
+
+                    <main className={isAdminRoute && isAdmin ? "pt-20 px-6 pb-10" : ""}>
+                        <Routes>
+                            {/* Public Routes */}
+                            <Route path="/" element={<LandingPage />} />
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/about" element={<AboutPage />} />
+                            <Route path="/attractions" element={<AttractionPage />} />
+                            <Route path="/attractions/:id" element={<AttractionDetail />} />
+                            <Route path="/facilities" element={<FacilitiesPage />} />
+                            <Route path="/facilities/:id" element={<FacilitiesDetail />} />
+                            <Route path="/peta-desa" element={<MapPage />} />
+                            <Route path="/not-found" element={<NotFoundPage />} />
+
+                            {/* Admin Routes (Dilindungi) */}
+                            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                                <Route path="/admin/add/attraction" element={<AddAttraction />} />
+                                <Route path="/admin/add/facilities" element={<AddFacilities />} />
+                                <Route path="/admin/add/map" element={<AddMap />} />
+                                <Route path="/admin/add/page" element={<AddPage />} />
+                                <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />
+                                {/* <Route path="/admin/edit/attraction/:id" element={<EditAttraction />} /> */}
+                                <Route path="/admin/edit/facilities/:id" element={<EditFacilities />} />
+                                <Route path="/admin/edit/map/:id" element={<EditMap />} />
+                                <Route path="/admin/edit/page/:id" element={<EditPage />} />
+                            </Route>
+
+                            <Route path="*" element={<Navigate to="/not-found" replace />} />
+                        </Routes>
+                    </main>
+                </div>
+            </div>
+
+            {!isAdminRoute && <Footer />}
+        </>
+    );
+};
+
 function App() {
     return (
         <Router>
-            <ScrollToTop />
-            <NavigationHandler />
-            <Navbar></Navbar>
-            <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/attractions" element={<AttractionPage />} />
-                <Route path="/attractions/:id" element={<AttractionDetail />} />
-                <Route path="/facilities" element={<FacilitiesPage />} />
-                <Route path="/facilities/:id" element={<FacilitiesDetail />} />
-                <Route path="/peta-desa" element={<MapPage />} />
-                <Route path="/not-found" element={<NotFoundPage />} />
-
-                {/* Protected Admin Routes */}
-                <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/add/attraction" element={<AddAttraction />} />
-                    <Route path="/admin/add/facilities" element={<AddFacilities />} />
-                    <Route path="/admin/add/map" element={<AddMap />} />
-                    <Route path="/admin/add/page" element={<AddPage />} />
-                    <Route path="/admin/edit/attraction/:id" element={<EditAttraction />} />
-                    <Route path="/admin/edit/facilities/:id" element={<EditFacilities />} />
-                    <Route path="/admin/edit/map/:id" element={<EditMap />} />
-                    <Route path="/admin/edit/page/:id" element={<EditPage />} />
-                </Route>
-
-                {/* Fallback */}
-                <Route path="*" element={<Navigate to="/not-found" replace />} />
-            </Routes>
-            <Footer></Footer>
+            <AppContent />
         </Router>
     );
 }

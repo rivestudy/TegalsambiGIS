@@ -28,12 +28,11 @@ const LandingPage: React.FC = () => {
                     <motion.h1 className="text-5xl md:text-6xl font-extrabold drop-shadow-lg mb-6" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                         TEGALSAMBI
                     </motion.h1>
-
-                    <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.8 }}>
+                    {/* <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.8 }}>
                         <Link to="#tentang" className="inline-block bg-white text-black font-semibold text-lg px-6 py-2 rounded-full shadow-md hover:bg-gray-200 transition">
                             Get Started !!
                         </Link>
-                    </motion.div>
+                    </motion.div> */}
                 </div>
             </section>
 
@@ -91,7 +90,7 @@ const LandingPage: React.FC = () => {
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                         ].map(({ id, title, img, desc }, index) => (
-                            <Link to={`/detail-wisata/${id}`} key={id} className="block">
+                            <Link to={`/attractions/${id}`} key={id} className="block">
                                 <article className={` border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl`}>
                                     {/* Gambar */}
                                     <img src={img} alt={title} className="w-full h-48 object-cover" />
@@ -160,7 +159,7 @@ const LandingPage: React.FC = () => {
                                 desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                             },
                         ].map(({ id, title, img, desc }, index) => (
-                            <Link to={`/detail-penginapan/${id}`} key={id} className="block">
+                            <Link to={`/facilities/${id}`} key={id} className="block">
                                 <article className={` border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl`}>
                                     {/* Gambar */}
                                     <img src={img} alt={title} className="w-full h-48 object-cover" />

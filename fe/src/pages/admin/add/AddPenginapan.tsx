@@ -1,10 +1,10 @@
 import React from "react";
 
-const EditAttraction = () => {
+const AddPenginapan = () => {
     return (
         <div>
             <h1></h1>
         </div>
     );
 };
-export default EditAttraction;
+export default AddPenginapan;

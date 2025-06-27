@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { FiCheckCircle } from "react-icons/fi";
+import { FaParking, FaToilet, FaMosque, FaUtensils, FaWifi, FaChild, FaTrash } from "react-icons/fa";
+import { GiCampingTent } from "react-icons/gi";
 
 const AttractionDetail = () => {
     const imageList = ["/gambar_pantai.jpg", "/pantaitegalsambi.jpeg", "/penginapan.jpg"];
@@ -78,33 +81,50 @@ const AttractionDetail = () => {
                             <p className="text-sm text-gray-800">Senin - Minggu, 08.00 - 17.00 WIB</p>
                         </div>
                         <div>
-                            <h3 className="font-semibold text-blue-900">Kontak & Reservasi</h3>
-                            <ul className="list-disc list-inside text-sm text-gray-800">
-                                <li>Telp: 0812-3456-7890</li>
-                                <li>Email: info@tegalsambi.com</li>
-                                <li>Instagram: @wisatategalsambi</li>
+                            <h3 className="font-semibold text-blue-900 mb-2">Fasilitas</h3>
+                            <ul className="space-y-2">
+                                <li className="flex items-center text-sm text-gray-800">
+                                    <FaParking className="text-black-600 mr-2" />
+                                    Parkir Luas
+                                </li>
+                                <li className="flex items-center text-sm text-gray-800">
+                                    <FaToilet className="text-black-600 mr-2" />
+                                    Toilet
+                                </li>
+                                <li className="flex items-center text-sm text-gray-800">
+                                    <FaMosque className="text-black-600 mr-2" />
+                                    Mushola
+                                </li>
+                                <li className="flex items-center text-sm text-gray-800">
+                                    <FaUtensils className="text-black-600 mr-2" />
+                                    Warung Makan
+                                </li>
+                                <li className="flex items-center text-sm text-gray-800">
+                                    <GiCampingTent className="text-black-600 mr-2" />
+                                    Gazebo
+                                </li>
                             </ul>
                         </div>
+
                         <div>
-                            <h3 className="font-semibold text-blue-900">Fasilitas</h3>
+                            <h3 className="font-semibold text-blue-900">Atraksi yang Dapat Dilakukan</h3>
                             <ul className="list-disc list-inside text-sm text-gray-800">
-                                <li>Parkir Luas</li>
-                                <li>Toilet & Mushola</li>
-                                <li>Warung Makan</li>
-                                <li>Gazebo</li>
+                                <li>Susur Pantai</li>
+                                <li>Workshop Budaya</li>
+                                <li>Berfoto Ria</li>
+                                <li>Makan Kuliner Lokal</li>
+                                <li>Pentas Seni Tradisional</li>
                             </ul>
                         </div>
                     </div>
 
                     {/* Atraksi (Full Width) */}
                     <div>
-                        <h3 className="font-semibold text-blue-900 mb-1">Atraksi yang Dapat Dilakukan</h3>
-                        <ul className="list-disc list-inside text-sm text-gray-800 grid grid-cols-1 md:grid-cols-2 gap-x-6">
-                            <li>Susur Pantai</li>
-                            <li>Workshop Budaya</li>
-                            <li>Berfoto Ria</li>
-                            <li>Makan Kuliner Lokal</li>
-                            <li>Pentas Seni Tradisional</li>
+                        <h3 className="font-semibold text-blue-900 mb-1">Kontak & Reservasi</h3>
+                        <ul className="list-disc list-inside text-sm text-gray-800 gap-x-6">
+                            <li>Telp: 0812-3456-7890</li>
+                            <li>Email: info@tegalsambi.com</li>
+                            <li>Instagram: @wisatategalsambi</li>
                         </ul>
                     </div>
                 </div>
@@ -112,7 +132,7 @@ const AttractionDetail = () => {
             {/* Lokasi */}
             <div className="mt-10 max-w-screen-xl mx-auto">
                 <div className="bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
-                    <h3 className="font-semibold text-blue-900 mb-4">Lokasi Wisata</h3>
+                    <h3 className="font-semibold text-lg text-blue-900 mb-4">Lokasi Wisata</h3>
                     <div className="rounded-xl overflow-hidden">
                         <iframe
                             title="map"
