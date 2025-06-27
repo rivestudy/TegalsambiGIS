@@ -13,12 +13,13 @@ import AdminDashboard from "./pages/admin/add/AdminDashboard";
 
 import AddAttraction from "./pages/admin/add/DaftarWisata";
 import AddFacilities from "./pages/admin/add/DaftarPenginapan";
+// import AddFacilities from "./pages/admin/add/AddPenginapan";
 import AddMap from "./pages/admin/add/AddMap";
 
 // Admin edit
 import EditWisata from "./pages/admin/edit/EditWisata";
 // import EditAttraction from "./pages/admin/edit/EditAttraction";
-import EditFacilities from "./pages/admin/edit/EditFacilities";
+import EditPenginapan from "./pages/admin/edit/EditPenginapan";
 import EditMap from "./pages/admin/edit/EditMap";
 import EditPage from "./pages/admin/EditPage";
 import AddPage from "./pages/admin/AddPage";
@@ -142,7 +143,7 @@ const AppContent = () => {
                                 <Route path="/admin/add/page" element={<AddPage />} />
                                 <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />
                                 {/* <Route path="/admin/edit/attraction/:id" element={<EditAttraction />} /> */}
-                                <Route path="/admin/edit/facilities/:id" element={<EditFacilities />} />
+                                <Route path="/admin/edit/facilities/:id" element={<EditPenginapan />} />
                                 <Route path="/admin/edit/map/:id" element={<EditMap />} />
                                 <Route path="/admin/edit/page/:id" element={<EditPage />} />
                             </Route>
