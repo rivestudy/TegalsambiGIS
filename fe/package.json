@@ -11,6 +11,7 @@
     "@types/node": "^16.18.126",
     "@types/react": "^19.1.5",
     "@types/react-dom": "^19.1.5",
+    "axios": "^1.10.0",
     "eslint": "^8.57.1",
     "flowbite": "^3.1.2",
     "framer-motion": "^12.18.1",

@@ -1,20 +1,15 @@
-const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const pool = require('../db');
+const User = require('../models/userModel');
 
-const router = express.Router();
-router.post('/login', async (req, res) => {
+exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
-
-    if (rows.length === 0) {
+    const user = await User.findByEmail(email);
+    if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
-    const user = rows[0];
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -28,14 +23,14 @@ router.post('/login', async (req, res) => {
     );
 
     res.json({ token, user: { id: user.id, email: user.email } });
-    console.log("Logged succesfully :" + user.username );
+    console.log("Logged in successfully:", user.username);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
-});
+};
 
-router.post('/register', async (req, res) => {
+exports.registerUser = async (req, res) => {
   const { username, email, password, name } = req.body;
 
   if (!username || !email || !password) {
@@ -43,23 +38,13 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    const [existingUsers] = await pool.query(
-      'SELECT * FROM users WHERE email = ? OR username = ?',
-      [email, username]
-    );
-
-    if (existingUsers.length > 0) {
+    const existing = await User.findByEmailOrUsername(email, username);
+    if (existing.length > 0) {
       return res.status(409).json({ message: 'Username or email already in use.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const [result] = await pool.query(
-      'INSERT INTO users (username, email, password, name) VALUES (?, ?, ?, ?)',
-      [username, email, hashedPassword, name || null]
-    );
-
-    const userId = result.insertId;
+    const userId = await User.create(username, email, hashedPassword, name);
 
     const token = jwt.sign(
       { id: userId, email, username },
@@ -77,11 +62,9 @@ router.post('/register', async (req, res) => {
         name: name || null
       }
     });
-    console.log("Registered succesfully :" + username );
+    console.log("Registered successfully:", username);
   } catch (err) {
     console.error('Register Error:', err);
     res.status(500).json({ message: 'Server error' });
   }
-});
-
-module.exports = router;
+};
