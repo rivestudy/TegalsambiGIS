@@ -1,21 +1,44 @@
 // src/pages/LandingPage.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import axios from "../../utils/axiosInstance";
 
-const isAuthenticated = (): boolean => {
-    return localStorage.getItem("token") !== null;
-};
+interface Item {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+}
+const villageName = "Tegalsambi";
+
 
 const LandingPage: React.FC = () => {
-    const isAdminLoggedIn = isAuthenticated();
-    const villageName = "Tegalsambi";
+    const [attractions, setAttractions] = useState<Item[]>([]);
+    const [facilities, setFacilities] = useState<Item[]>([]);
+    const [error, setError] = useState("");
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [aRes, fRes] = await Promise.all([
+                    axios.get("/data/attraction"),
+                    axios.get("/data/facilities"),
+                ]);
+                setAttractions(aRes.data);
+                setFacilities(fRes.data);
+            } catch (err: any) {
+                console.error(err);
+                setError("Gagal memuat data. Silakan coba lagi nanti.");
+            }
+        };
+        fetchData();
+    }, []);
     return (
-        <div className="font-sans text-gray-800 overflow-x-hidden">
+        <div className="overflow-x-hidden font-sans text-gray-800">
             {/* Hero Section */}
             <section
-                className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed flex items-center justify-center text-white text-center relative"
+                className="relative flex items-center justify-center min-h-screen text-center text-white bg-fixed bg-center bg-no-repeat bg-cover"
                 style={{
                     backgroundImage: "url('/gambar_pantai.jpg')",
                 }}
@@ -25,11 +48,11 @@ const LandingPage: React.FC = () => {
 
                 {/* Content */}
                 <div className="relative z-10">
-                    <motion.h1 className="text-5xl md:text-6xl font-extrabold drop-shadow-lg mb-6" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+                    <motion.h1 className="mb-6 text-5xl font-extrabold md:text-6xl drop-shadow-lg" initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                         TEGALSAMBI
                     </motion.h1>
                     {/* <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, duration: 0.8 }}>
-                        <Link to="#tentang" className="inline-block bg-white text-black font-semibold text-lg px-6 py-2 rounded-full shadow-md hover:bg-gray-200 transition">
+                        <Link to="#tentang" className="inline-block px-6 py-2 text-lg font-semibold text-black transition bg-white rounded-full shadow-md hover:bg-gray-200">
                             Get Started !!
                         </Link>
                     </motion.div> */}
@@ -37,12 +60,12 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* SECTION: TENTANG */}
-            <section id="tentang" className="bg-white px-6 py-16">
+            <section id="tentang" className="px-6 py-16 bg-white">
                 <div className="max-w-6xl mx-auto">
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                         Tentang Tegalsambi
                     </h2>
-                    <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
                         commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
                         id est laborum.
@@ -51,143 +74,90 @@ const LandingPage: React.FC = () => {
             </section>
 
             {/* SECTION: WISATA LOKAL TEGALSAMBI */}
-            <section id="wisata" className="bg-white px-6 pb-20">
-                <div className="max-w-6xl mx-auto">
-                    {/* Judul + deskripsi singkat */}
-                    <div className="mb-8">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
-                                    Wisata lokal Tegalsambi
-                                </h2>
-                                <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Grid kartu wisata */}
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {[
-                            {
-                                id: 1,
-                                title: "To Explore nature",
-                                img: "/pantaitegalsambi.jpeg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                            {
-                                id: 2,
-                                title: "To Explore nature",
-                                img: "/pantaitegalsambi.jpeg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                            {
-                                id: 3,
-                                title: "To Explore nature",
-                                img: "/pantaitegalsambi.jpeg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                        ].map(({ id, title, img, desc }, index) => (
-                            <Link to={`/attractions/${id}`} key={id} className="block">
-                                <article className={` border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl`}>
-                                    {/* Gambar */}
-                                    <img src={img} alt={title} className="w-full h-48 object-cover" />
-
-                                    {/* Konten */}
-                                    <div className="p-4 bg-blue-100">
-                                        <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">For those who love</p>
-                                        <h3 className="font-semibold text-xl text-gray-800 mb-2">{title}</h3>
-                                        <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
-                                    </div>
-                                </article>
-                            </Link>
-                        ))}
-                    </div>
-                    {/* Lihat selengkapnya Button */}
-                    <div className="flex justify-center pt-8">
-                        <Link to="/attractions">
-                            <button className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 flex items-center gap-2 transition duration-300">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                                </svg>
-                                Lihat Selengkapnya
-                            </button>
+            {/* Attractions Section */}
+            <section id="wisata" className="px-6 pb-20 bg-white">
+                <div className="max-w-6xl mx-auto mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+                        Wisata lokal Tegalsambi
+                    </h2>
+                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">
+                        Temukan tempat menarik dan destinasi terbaik di sekitar Desa
+                        Tegalsambi.
+                    </p>
+                </div>
+                <div className="grid max-w-6xl gap-6 mx-auto md:grid-cols-2 lg:grid-cols-3">
+                    {attractions.slice(0, 3).map(({ id, name, description, image }) => (
+                        <Link to={`/attractions/${id}`} key={id} className="block">
+                            <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
+                                <img src={image} alt={name} className="object-cover w-full h-48" />
+                                <div className="p-4 bg-blue-100">
+                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">
+                                        Wisata
+                                    </p>
+                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">
+                                        {name}
+                                    </h3>
+                                    <p className="text-sm leading-relaxed text-gray-600">
+                                        {description.slice(0, 100)}…
+                                    </p>
+                                </div>
+                            </article>
                         </Link>
-                    </div>
+                    ))}
+                </div>
+                <div className="flex justify-center pt-8">
+                    <Link to="/attractions">
+                        <button className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                            Lihat Selengkapnya
+                        </button>
+                    </Link>
                 </div>
             </section>
 
-            {/* SECTION: Penginapan */}
-            <section id="penginapan" className="bg-white px-6 pb-20">
-                <div className="max-w-6xl mx-auto">
-                    {/* Judul + deskripsi singkat */}
-                    <div className="mb-8">
-                        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                            <div>
-                                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
-                                    Penginapan Desa Tegalsambi
-                                </h2>
-                                <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Grid kartu wisata */}
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {[
-                            {
-                                id: 1,
-                                title: "Penginapan A",
-                                img: "/penginapan.jpg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                            {
-                                id: 2,
-                                title: "Penginapan B",
-                                img: "/penginapan.jpg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                            {
-                                id: 3,
-                                title: "Penginapan C",
-                                img: "/penginapan.jpg",
-                                desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                            },
-                        ].map(({ id, title, img, desc }, index) => (
-                            <Link to={`/facilities/${id}`} key={id} className="block">
-                                <article className={` border border-gray-200 rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl`}>
-                                    {/* Gambar */}
-                                    <img src={img} alt={title} className="w-full h-48 object-cover" />
-
-                                    {/* Konten */}
-                                    <div className="p-4 bg-orange-100">
-                                        <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">Range Harga</p>
-                                        <h3 className="font-semibold text-xl text-gray-800 mb-2">{title}</h3>
-                                        <p className="text-gray-600 text-sm leading-relaxed">{desc}</p>
-                                    </div>
-                                </article>
-                            </Link>
-                        ))}
-                    </div>
-                    {/* Lihat selengkapnya Button */}
-                    <div className="flex justify-center pt-8">
-                        <Link to="/facilities">
-                            <button className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-700 flex items-center gap-2 transition duration-300">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                                </svg>
-                                Lihat Selengkapnya
-                            </button>
+            {/* Facilities Section */}
+            <section id="penginapan" className="px-6 pb-20 bg-white">
+                <div className="max-w-6xl mx-auto mb-8">
+                    <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+                        Penginapan Desa Tegalsambi
+                    </h2>
+                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">
+                        Pilihan fasilitas penginapan terbaik untuk kenyamanan Anda.
+                    </p>
+                </div>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {facilities.slice(0, 3).map(({ id, name, description, image }) => (
+                        <Link to={`/facilities/${id}`} key={id} className="block">
+                            <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
+                                <img src={image} alt={name} className="object-cover w-full h-48" />
+                                <div className="p-4 bg-orange-100">
+                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">
+                                        Penginapan
+                                    </p>
+                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">
+                                        {name}
+                                    </h3>
+                                    <p className="text-sm leading-relaxed text-gray-600">
+                                        {description.slice(0, 100)}…
+                                    </p>
+                                </div>
+                            </article>
                         </Link>
-                    </div>
+                    ))}
+                </div>
+                <div className="flex justify-center pt-8">
+                    <Link to="/facilities">
+                        <button className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                            Lihat Selengkapnya
+                        </button>
+                    </Link>
                 </div>
             </section>
-
             {/* <header className="mb-8">
                 <h1 className="mb-3 text-4xl font-semibold text-gray-800 md:text-5xl">{isAdminLoggedIn ? "Selamat Datang Kembali, Admin!" : `WebGIS Desa ${villageName}`}</h1>
                 <p className="text-lg leading-relaxed text-gray-600 md:text-xl">
