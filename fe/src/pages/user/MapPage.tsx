@@ -1,14 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+const mapLinks: { [key: string]: { url: string; places: string[] } } = {
+    semua: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Semua Lokasi"],
+    },
+    wisata: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Masjid Al-Hikmah", "Makam Sunan Mantingan"],
+    },
+    persawahan: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Sawah Blok A", "Sawah Blok B"],
+    },
+    kantor: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Balai Desa Tegalsambi", "Kantor RW 01"],
+    },
+    fasilitas: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Puskesmas Tegalsambi", "Lapangan Umum"],
+    },
+    penginapan: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Penginapan Tegalsambi A", "Penginapan Tegalsambi B"],
+    },
+};
+
 const MapPage = () => {
+    const [selectedFilter, setSelectedFilter] = useState("semua");
+
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 py-10 px-4 pt-14">
+        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 py-10 px-4 pt-14 pb-14">
             {/* Breadcrumb dan Judul */}
             <motion.div className="text-center py-8" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-                {/* Breadcrumb */}
-                <nav className="mb-4">
+                <nav className="mb-1">
                     <ol className="flex justify-center items-center space-x-2 text-sm font-semibold text-white">
                         <li>
                             <Link to="/" className="flex items-center hover:text-orange-400 transition duration-300">
@@ -23,37 +51,43 @@ const MapPage = () => {
                     </ol>
                 </nav>
 
-                {/* Judul */}
                 <h1 className="text-4xl font-extrabold text-white mb-3">WebGIS Desa Tegalsambi</h1>
                 <span className="block w-24 h-1 bg-blue-500 mx-auto mt-2 rounded-full"></span>
             </motion.div>
 
             {/* Grid Map + Sidebar */}
             <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-                {/* Area Peta */}
-                <motion.div className="md:col-span-3" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                    <div className="bg-white border border-gray-300 rounded-2xl shadow-lg h-[500px] flex items-center justify-center text-gray-500 text-lg italic">PETA AKAN DITAMPILKAN DI SINI</div>
+                {/* Map */}
+                <motion.div className="md:col-span-3 space-y-4" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+                    <div className="bg-white border border-gray-300 rounded-2xl shadow-lg p-4">
+                        <label className="block font-semibold text-gray-700 mb-2">Tampilkan Titik:</label>
+                        <select value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)} className="w-full p-2 border rounded-md text-sm">
+                            <option value="semua">Semua Titik</option>
+                            <option value="wisata">Wisata</option>
+                            <option value="persawahan">Persawahan</option>
+                            <option value="kantor">Kantor</option>
+                            <option value="fasilitas">Fasilitas</option>
+                            <option value="penginapan">Penginapan</option>
+                        </select>
+                    </div>
+
+                    <div className="bg-white border border-gray-300 rounded-2xl shadow-lg h-[400px] p-4 flex items-center justify-center">
+                        <div className="w-full h-full rounded-xl overflow-hidden max-w-5xl mx-auto">
+                            <iframe title="map" src={mapLinks[selectedFilter].url} className="w-full h-full" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                        </div>
+                    </div>
                 </motion.div>
 
-                {/* Sidebar Legenda */}
+                {/* Sidebar Tempat Sesuai Filter */}
                 <motion.div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8 }} viewport={{ once: true }}>
-                    <h2 className="text-2xl font-bold text-gray-700 mb-4">Legenda</h2>
-                    <ul className="space-y-4 text-gray-600 text-sm">
-                        <li className="flex items-center">
-                            <span className="inline-block w-4 h-4 bg-green-500 mr-3 rounded-full shadow"></span> Area Persawahan
-                        </li>
-                        <li className="flex items-center">
-                            <span className="inline-block w-4 h-4 bg-blue-500 mr-3 rounded-full shadow"></span> Sungai
-                        </li>
-                        <li className="flex items-center">
-                            <span className="inline-block w-4 h-4 bg-yellow-400 mr-3 rounded-full shadow"></span> Pemukiman
-                        </li>
-                        <li className="flex items-center">
-                            <span className="inline-block w-4 h-4 bg-red-500 mr-3 rounded-full shadow"></span> Tempat Wisata
-                        </li>
-                        <li className="flex items-center">
-                            <span className="inline-block w-4 h-4 bg-purple-500 mr-3 rounded-full shadow"></span> Kantor Pemerintahan
-                        </li>
+                    <h2 className="text-2xl font-bold text-gray-700 mb-4">Lokasi</h2>
+                    <ul className="space-y-3 text-gray-600 text-sm">
+                        {mapLinks[selectedFilter].places.map((place, index) => (
+                            <li key={index} className="flex items-center">
+                                <span className="w-3 h-3 bg-blue-600 mr-3 rounded-full shadow"></span>
+                                {place}
+                            </li>
+                        ))}
                     </ul>
                 </motion.div>
             </div>

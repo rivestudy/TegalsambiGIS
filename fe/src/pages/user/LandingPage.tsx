@@ -12,7 +12,6 @@ interface Item {
 }
 const villageName = "Tegalsambi";
 
-
 const LandingPage: React.FC = () => {
     const [attractions, setAttractions] = useState<Item[]>([]);
     const [facilities, setFacilities] = useState<Item[]>([]);
@@ -21,10 +20,7 @@ const LandingPage: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [aRes, fRes] = await Promise.all([
-                    axios.get("/data/attraction"),
-                    axios.get("/data/facilities"),
-                ]);
+                const [aRes, fRes] = await Promise.all([axios.get("/data/attraction"), axios.get("/data/facilities")]);
                 setAttractions(aRes.data);
                 setFacilities(fRes.data);
             } catch (err: any) {
@@ -80,10 +76,7 @@ const LandingPage: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                         Wisata lokal Tegalsambi
                     </h2>
-                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">
-                        Temukan tempat menarik dan destinasi terbaik di sekitar Desa
-                        Tegalsambi.
-                    </p>
+                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">Temukan tempat menarik dan destinasi terbaik di sekitar Desa Tegalsambi.</p>
                 </div>
                 <div className="grid max-w-6xl gap-6 mx-auto md:grid-cols-2 lg:grid-cols-3">
                     {attractions.slice(0, 3).map(({ id, name, description, image }) => (
@@ -91,15 +84,9 @@ const LandingPage: React.FC = () => {
                             <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
                                 <img src={image} alt={name} className="object-cover w-full h-48" />
                                 <div className="p-4 bg-blue-100">
-                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">
-                                        Wisata
-                                    </p>
-                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">
-                                        {name}
-                                    </h3>
-                                    <p className="text-sm leading-relaxed text-gray-600">
-                                        {description.slice(0, 100)}…
-                                    </p>
+                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">Wisata</p>
+                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
+                                    <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p>
                                 </div>
                             </article>
                         </Link>
@@ -123,9 +110,7 @@ const LandingPage: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                         Penginapan Desa Tegalsambi
                     </h2>
-                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">
-                        Pilihan fasilitas penginapan terbaik untuk kenyamanan Anda.
-                    </p>
+                    <p className="text-base leading-relaxed text-gray-700 md:text-lg">Pilihan fasilitas penginapan terbaik untuk kenyamanan Anda.</p>
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {facilities.slice(0, 3).map(({ id, name, description, image }) => (
@@ -133,15 +118,9 @@ const LandingPage: React.FC = () => {
                             <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
                                 <img src={image} alt={name} className="object-cover w-full h-48" />
                                 <div className="p-4 bg-orange-100">
-                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">
-                                        Penginapan
-                                    </p>
-                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">
-                                        {name}
-                                    </h3>
-                                    <p className="text-sm leading-relaxed text-gray-600">
-                                        {description.slice(0, 100)}…
-                                    </p>
+                                    <p className="text-[10px] uppercase tracking-widest text-purple-500 font-medium">Penginapan</p>
+                                    <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
+                                    <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p>
                                 </div>
                             </article>
                         </Link>
