@@ -7,14 +7,22 @@ const mapLinks: { [key: string]: { url: string; places: string[] } } = {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
         places: ["Semua Lokasi"],
     },
-    wisata: {
+    wisataReligi: {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
         places: ["Masjid Al-Hikmah", "Makam Sunan Mantingan"],
     },
-    persawahan: {
+    wisataBudaya: {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
-        places: ["Sawah Blok A", "Sawah Blok B"],
+        places: ["Museum Batik Jepara", "Situs Kandang Rusa Mantingan"],
     },
+    wisataPesisir: {
+        url: "https://www.google.com/maps/embed?pb=!1m18...",
+        places: ["Pantai Tegalsambi"],
+    },
+    // persawahan: {
+    //     url: "https://www.google.com/maps/embed?pb=!1m18...",
+    //     places: ["Sawah Blok A", "Sawah Blok B"],
+    // },
     kantor: {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
         places: ["Balai Desa Tegalsambi", "Kantor RW 01"],
@@ -63,8 +71,10 @@ const MapPage = () => {
                         <label className="block font-semibold text-gray-700 mb-2">Tampilkan Titik:</label>
                         <select value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)} className="w-full p-2 border rounded-md text-sm">
                             <option value="semua">Semua Titik</option>
-                            <option value="wisata">Wisata</option>
-                            <option value="persawahan">Persawahan</option>
+                            <option value="wisataReligi">Wisata Religi</option>
+                            <option value="wisataBudaya">Wisata Budaya</option>
+                            <option value="wisataPesisir">Wisata Pesisir</option>
+                            {/* <option value="persawahan">Persawahan</option> */}
                             <option value="kantor">Kantor</option>
                             <option value="fasilitas">Fasilitas</option>
                             <option value="penginapan">Penginapan</option>

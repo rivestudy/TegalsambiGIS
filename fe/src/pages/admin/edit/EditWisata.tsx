@@ -75,7 +75,7 @@ const EditWisata: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         console.log("Data diperbarui:", form);
-        navigate("/admin/wisata");
+        navigate("/admin/add/attraction");
     };
 
     return (

@@ -1,14 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-    Navigate,
-    Outlet,
-    useNavigate,
-    useLocation
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
 
 import ScrollToTop from "./components/layout/ScrollToTop";
 import Navbar from "./components/layout/Navbar";
@@ -22,8 +13,9 @@ import AdminDashboard from "./pages/admin/add/AdminDashboard";
 
 import AddAttraction from "./pages/admin/add/DaftarWisata";
 import AddFacilities from "./pages/admin/add/DaftarPenginapan";
+import AddMap from "./pages/admin/add/DaftarMap";
 // import AddFacilities from "./pages/admin/add/AddPenginapan";
-import AddMap from "./pages/admin/add/AddMap";
+// import AddMap from "./pages/admin/add/AddMap";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
 // import EditAttraction from "./pages/admin/edit/EditAttraction";
@@ -89,12 +81,16 @@ const NavigationHandler: React.FC = () => {
     return (
         <nav className="flex items-center justify-between px-6 py-3 bg-gray-100 border-b border-gray-300">
             <div className="flex items-center gap-4 font-medium text-gray-700">
-                <Link to="/" className="font-bold hover:underline">Home</Link>
+                <Link to="/" className="font-bold hover:underline">
+                    Home
+                </Link>
                 <span>
                     Role: <span className="font-bold text-blue-600">{role || "N/A"}</span>
                 </span>
                 {role === "admin" && (
-                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">Admin Panel</Link>
+                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">
+                        Admin Panel
+                    </Link>
                 )}
             </div>
             <button onClick={handleLogout} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
