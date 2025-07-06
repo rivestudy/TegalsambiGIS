@@ -27,9 +27,17 @@ const Navbar = () => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [lastScrollY]);
 
-    const navItemClass = (path: string) => `relative font-semibold group ${currentPath.startsWith(path) ? "text-blue-200" : "text-white"}`;
+    const navItemClass = (path: string) => {
+        const isActive = currentPath.startsWith(path) || (path === "/facilities" && currentPath.startsWith("/facility/"));
 
-    const underlineClass = (path: string) => `absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-300 ${currentPath.startsWith(path) ? "w-full" : "w-0 group-hover:w-full"}`;
+        return `relative font-semibold group ${isActive ? "text-blue-200" : "text-white"}`;
+    };
+
+    const underlineClass = (path: string) => {
+        const isActive = currentPath.startsWith(path) || (path === "/facilities" && currentPath.startsWith("/facility/"));
+
+        return `absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`;
+    };
 
     return (
         <AnimatePresence>
@@ -45,13 +53,13 @@ const Navbar = () => {
                                 <span>About Us</span>
                                 <span className={underlineClass("/about")}></span>
                             </Link>
-                            <Link to="/attractions" className={navItemClass("/attractions")}>
+                            <Link to="/attractions" className={navItemClass("/attraction")}>
                                 <span>Wisata</span>
-                                <span className={underlineClass("/attractions")}></span>
+                                <span className={underlineClass("/attraction")}></span>
                             </Link>
-                            <Link to="/accommodation" className={navItemClass("/accomodation")}>
+                            <Link to="/accommodation" className={navItemClass("/accommodation")}>
                                 <span>Penginapan</span>
-                                <span className={underlineClass("/accomodation")}></span>
+                                <span className={underlineClass("/accommodation")}></span>
                             </Link>
                             <Link to="/facilities" className={navItemClass("/facilities")}>
                                 <span>Fasilitas</span>

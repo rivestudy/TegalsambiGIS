@@ -15,35 +15,16 @@ interface Attraction {
     category: string;
 }
 
-const formatPrice = (price: number): string => price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /pax`;
+const formatPrice = (price: number): string => (price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /pax`);
 const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
 
 // Component Section
-const SectionContainer = ({
-    title,
-    description,
-    data,
-    color,
-    priceColor
-}: {
-    title: string;
-    description: string;
-    data: Attraction[];
-    color: string;
-    priceColor: string;
-}) => {
+const SectionContainer = ({ title, description, data, color, priceColor }: { title: string; description: string; data: Attraction[]; color: string; priceColor: string }) => {
     if (!data.length) return null;
 
     return (
-        <motion.div
-            className="max-w-screen-xl px-4 pt-12 pb-10 mx-auto"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
-        >
-            <h2 className="text-2xl font-bold text-gray-800 mb-2 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
-                {title}
-            </h2>
+        <motion.div className="max-w-screen-xl px-4 pt-12 pb-10 mx-auto" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 1 }}>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-orange-300 to-orange-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">{title}</h2>
             <p className="mb-4 text-gray-600">{description}</p>
             <p className="flex items-center gap-1 mb-2 text-sm italic text-gray-500">
                 Geser untuk melihat destinasi lainnya <span className="animate-bounce">👉</span>
@@ -55,7 +36,7 @@ const SectionContainer = ({
                 breakpoints={{
                     640: { slidesPerView: 1 },
                     768: { slidesPerView: 2 },
-                    1024: { slidesPerView: 3 }
+                    1024: { slidesPerView: 3 },
                 }}
             >
                 {data.map((item) => (
@@ -109,9 +90,7 @@ const AttractionPage = () => {
             {/* Hero */}
             <div className="relative h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('/gambar_pantai.jpg')" }}>
                 <div className="absolute inset-0 bg-black bg-opacity-30" />
-                <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white"
-                    initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-                >
+                <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                     <nav className="py-2">
                         <ol className="flex items-center space-x-2 text-sm font-semibold text-white">
                             <li>
@@ -167,4 +146,4 @@ const AttractionPage = () => {
     );
 };
 
-export default AttractionPage
+export default AttractionPage;

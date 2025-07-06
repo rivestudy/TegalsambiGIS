@@ -125,14 +125,14 @@ const LandingPage: React.FC = () => {
                     ))}
                 </div>
                 {accommodations.length > 3 && (
-                     <div className="flex justify-center pt-8">
+                    <div className="flex justify-center pt-8">
                         <Link to="/accommodations" className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
-                           Lihat Selengkapnya
+                            Lihat Selengkapnya
                         </Link>
                     </div>
                 )}
             </section>
-            
+
             {/* SECTION: FASILITAS UMUM */}
             <section id="fasilitas" className="px-6 pb-20 bg-gray-50">
                 <div className="max-w-6xl mx-auto mb-8">
@@ -156,16 +156,16 @@ const LandingPage: React.FC = () => {
                     ))}
                 </div>
                 {facilities.length > 3 && (
-                     <div className="flex justify-center pt-8">
+                    <div className="flex justify-center pt-8">
                         <Link to="/facilities" className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
-                           Lihat Selengkapnya
+                            Lihat Selengkapnya
                         </Link>
                     </div>
                 )}
             </section>
 
-             {/* Display error message if data fetching fails */}
-             {error && (
+            {/* Display error message if data fetching fails */}
+            {error && (
                 <div className="py-10 text-center text-red-500 bg-red-100">
                     <p>{error}</p>
                 </div>
