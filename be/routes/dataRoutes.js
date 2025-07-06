@@ -10,7 +10,7 @@ const {
 
 const authenticateToken = require('../middlewares/authMiddleware.js');
 
-// Public routes
+// Public routes - Maps :type to attraction, accommodation, facility
 router.get('/:type', getAllItems);
 router.get('/:type/:id', getItemById);
 
