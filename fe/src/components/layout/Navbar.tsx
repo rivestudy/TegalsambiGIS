@@ -34,13 +34,13 @@ const Navbar = () => {
     return (
         <AnimatePresence>
             {showNavbar && (
-                <motion.nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md text-white shadow-lg" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
-                    <div className="max-w-screen-xl mx-auto px-4 py-3 flex justify-between items-center">
+                <motion.nav className="fixed top-0 left-0 right-0 z-50 text-white shadow-lg bg-black/30 backdrop-blur-md" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
+                    <div className="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
                         <Link to="/" className="text-2xl font-bold hover:text-blue-300">
                             Logo
                         </Link>
 
-                        <div className="space-x-6 text-sm sm:text-base font-medium flex items-center">
+                        <div className="flex items-center space-x-6 text-sm font-medium sm:text-base">
                             <Link to="/about" className={navItemClass("/about")}>
                                 <span>About Us</span>
                                 <span className={underlineClass("/about")}></span>
@@ -49,8 +49,12 @@ const Navbar = () => {
                                 <span>Wisata</span>
                                 <span className={underlineClass("/attractions")}></span>
                             </Link>
-                            <Link to="/facilities" className={navItemClass("/facilities")}>
+                            <Link to="/accommodation" className={navItemClass("/accomodation")}>
                                 <span>Penginapan</span>
+                                <span className={underlineClass("/accomodation")}></span>
+                            </Link>
+                            <Link to="/facilities" className={navItemClass("/facilities")}>
+                                <span>Fasilitas</span>
                                 <span className={underlineClass("/facilities")}></span>
                             </Link>
                             <Link to="/peta-desa" className={navItemClass("/peta-desa")}>

@@ -14,23 +14,24 @@ import AdminDashboard from "./pages/admin/add/AdminDashboard";
 import AddAttraction from "./pages/admin/add/DaftarWisata";
 import AddFacilities from "./pages/admin/add/DaftarPenginapan";
 import AddMap from "./pages/admin/add/DaftarMap";
-// import AddFacilities from "./pages/admin/add/AddPenginapan";
-// import AddMap from "./pages/admin/add/AddMap";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
-// import EditAttraction from "./pages/admin/edit/EditAttraction";
 import EditPenginapan from "./pages/admin/edit/EditPenginapan";
 import EditMap from "./pages/admin/edit/EditMap";
 import EditPage from "./pages/admin/EditPage";
 import AddPage from "./pages/admin/AddPage";
 
 import AboutPage from "./pages/user/AboutPage";
-import AttractionDetail from "./pages/user/AttractionDetail";
 import AttractionPage from "./pages/user/AttractionPage";
-import FacilitiesPage from "./pages/user/FacilitesPage";
-import FacilitiesDetail from "./pages/user/FacilitiesDetail";
+import AccommodationPage from "./pages/user/AccommodationPage"; // Corrected import name
+import FacilitiesPage from "./pages/user/FacilitesPage"; // Corrected import name
 import MapPage from "./pages/user/MapPage";
 import NotFoundPage from "./pages/user/NotFound";
+
+// Detail Pages
+import AttractionDetail from "./pages/user/AttractionDetail";
+import AccommodationDetail from "./pages/user/AccommodationDetail"; // Import the new detail page
+import FacilitiesDetail from "./pages/user/FacilitiesDetail";
 
 // Secure auth helpers
 const isAuthenticated = (): boolean => sessionStorage.getItem("token") !== null;
@@ -81,16 +82,10 @@ const NavigationHandler: React.FC = () => {
     return (
         <nav className="flex items-center justify-between px-6 py-3 bg-gray-100 border-b border-gray-300">
             <div className="flex items-center gap-4 font-medium text-gray-700">
-                <Link to="/" className="font-bold hover:underline">
-                    Home
-                </Link>
-                <span>
-                    Role: <span className="font-bold text-blue-600">{role || "N/A"}</span>
-                </span>
+                <Link to="/" className="font-bold hover:underline">Home</Link>
+                <span>Role: <span className="font-bold text-blue-600">{role || "N/A"}</span></span>
                 {role === "admin" && (
-                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">
-                        Admin Panel
-                    </Link>
+                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">Admin Panel</Link>
                 )}
             </div>
             <button onClick={handleLogout} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
@@ -120,10 +115,16 @@ const AppContent = () => {
                             <Route path="/" element={<LandingPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/about" element={<AboutPage />} />
+
                             <Route path="/attractions" element={<AttractionPage />} />
-                            <Route path="/attractions/:id" element={<AttractionDetail />} />
+                            <Route path="/attraction/:id" element={<AttractionDetail />} /> {/* Corrected singular form */}
+
+                            <Route path="/accommodation" element={<AccommodationPage />} /> {/* Corrected spelling */}
+                            <Route path="/accommodation/:id" element={<AccommodationDetail />} /> {/* ADDED THIS ROUTE */}
+
                             <Route path="/facilities" element={<FacilitiesPage />} />
-                            <Route path="/facilities/:id" element={<FacilitiesDetail />} />
+                            <Route path="/facility/:id" element={<FacilitiesDetail />} /> {/* Corrected singular form */}
+                            
                             <Route path="/peta-desa" element={<MapPage />} />
                             <Route path="/not-found" element={<NotFoundPage />} />
 

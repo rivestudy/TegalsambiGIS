@@ -1,142 +1,110 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { FaWifi, FaCar, FaTv, FaBath } from "react-icons/fa";
+import axios from "../../utils/axiosInstance";
+import { FaParking, FaToilet, FaMosque, FaTicketAlt } from "react-icons/fa";
 
-const FacilitiesDetail: React.FC = () => {
-    const imageList = ["/penginapan.jpg", "/penginapan2.jpg", "/penginapan3.jpg"];
-    const [mainImage, setMainImage] = useState(imageList[0]);
+interface Facility {
+    id: number;
+    name: string;
+    description: string;
+    location: string;
+    images: string[];
+    facilities: string[];
+}
 
+const facilityIcons: { [key: string]: React.ReactNode } = {
+    "Area Wudhu": <FaToilet className="mr-2 text-black-600" />,
+    "Perpustakaan": <FaMosque className="mr-2 text-black-600" />,
+    "Area Parkir": <FaParking className="mr-2 text-black-600" />,
+};
+
+const FacilitiesDetail = () => {
+    const [item, setItem] = useState<Facility | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [mainImage, setMainImage] = useState("");
+    const { id } = useParams<{ id: string }>();
+
+    useEffect(() => {
+        if (!id) return;
+        const fetchFacility = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`/data/facility/${id}`);
+                setItem(response.data);
+                if (response.data.images && response.data.images.length > 0) {
+                    setMainImage(response.data.images[0]);
+                }
+                setError(null);
+            } catch (err) {
+                setError("Gagal memuat data fasilitas.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchFacility();
+    }, [id]);
+
+    if (loading) return <div className="flex items-center justify-center h-screen">Memuat Detail Fasilitas...</div>;
+    if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+    if (!item) return <div className="flex items-center justify-center h-screen">Fasilitas tidak ditemukan.</div>;
+
+    const imageList = item.images && item.images.length > 0 ? item.images : ["https://placehold.co/800x600?text=No+Image"];
+    if(mainImage === "") setMainImage(imageList[0]);
+    
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 px-4 py-16">
-            {/* Judul */}
+        <div className="min-h-screen px-4 py-16 bg-gradient-to-r from-gray-800 to-gray-600">
             <motion.div className="text-center" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                {/* Breadcrumb*/}
-                <div className="flex justify-center pt-4 pb-1">
-                    <div className="bg-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-md border border-white/30">
+                 <div className="flex justify-center pt-4 pb-1">
+                    <div className="px-6 py-3 border rounded-full shadow-md bg-white/20 backdrop-blur-md border-white/30">
                         <nav>
-                            <ol className="flex items-center font-semibold text-sm space-x-2 text-white">
-                                <li>
-                                    <Link to="/" className="flex items-center hover:text-orange-400 transition duration-300">
-                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
-                                        </svg>
-                                        Landing Page
-                                    </Link>
-                                </li>
+                            <ol className="flex items-center space-x-2 text-sm font-semibold text-white">
+                                <li><Link to="/" className="flex items-center transition duration-300 hover:text-orange-400"> <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" /></svg> Landing Page</Link></li>
                                 <li className="text-gray-300">/</li>
-                                <li>
-                                    <Link to="/facilities" className="flex items-center hover:text-orange-400 transition duration-300">
-                                        Penginapan
-                                    </Link>
-                                </li>
+                                <li><Link to="/facilities" className="transition duration-300 hover:text-orange-400">Fasilitas</Link></li>
                                 <li className="text-gray-300">/</li>
-                                <li className="text-orange-300 font-bold">Detail Penginapan</li>
+                                <li className="font-bold text-orange-300">{item.name}</li>
                             </ol>
                         </nav>
                     </div>
                 </div>
-                <h1 className="text-2xl font-extrabold pt-1 mb-6 inline-block relative text-white">
-                    Penginapan A<span className="block w-20 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></span>
+                <h1 className="relative inline-block pt-1 mb-6 text-4xl font-extrabold text-white">
+                    {item.name}<span className="block w-20 h-1 mx-auto mt-2 bg-orange-400 rounded-full"></span>
                 </h1>
             </motion.div>
-
-            {/* Konten Utama */}
-            <motion.div className="max-w-screen-xl mx-auto flex flex-col md:flex-row gap-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-                {/* Gambar */}
+            
+            <motion.div className="flex flex-col max-w-screen-xl gap-10 mx-auto md:flex-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
                 <div className="md:w-1/2">
-                    <img src={mainImage} alt="Gambar Penginapan" className="rounded-lg shadow-md w-full object-cover h-[300px] md:h-[420px]" />
-                    <div className="flex gap-4 mt-4 overflow-x-auto">
+                    <img src={mainImage} alt={item.name} className="rounded-xl shadow-xl w-full object-cover h-[300px] md:h-[420px]" />
+                     <div className="flex gap-4 p-2 mt-4 overflow-x-auto">
                         {imageList.map((img, index) => (
-                            <img
-                                key={index}
-                                src={img}
-                                alt={`Thumbnail ${index + 1}`}
-                                onClick={() => setMainImage(img)}
-                                className={`w-20 h-20 rounded-md border-2 object-cover cursor-pointer transition duration-300 scale-95 hover:scale-100 ${mainImage === img ? "border-emerald-600" : "border-gray-300"}`}
-                            />
+                            <img key={index} src={img} alt={`Thumbnail ${index + 1}`} onClick={() => setMainImage(img)} className={`w-20 h-20 rounded-md border-2 object-cover cursor-pointer transition duration-300 scale-95 hover:scale-100 ${mainImage === img ? "border-gray-400" : "border-transparent"}`} />
                         ))}
                     </div>
                 </div>
-
-                {/* Informasi Penginapan */}
-                <div className="md:w-1/2 space-y-6 text-gray-600 bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
-                    {/* Deskripsi */}
+                 <div className="p-6 space-y-6 text-gray-800 border border-gray-300 shadow-xl md:w-1/2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl">
                     <div>
-                        <h2 className="font-semibold mb-2 text-orange-600">Deskripsi Penginapan</h2>
-                        <p className="text-gray-800 text-sm leading-relaxed">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.
-                        </p>
+                        <h2 className="mb-2 font-semibold text-gray-900">Deskripsi Fasilitas</h2>
+                        <p className="text-sm leading-relaxed text-gray-800">{item.description}</p>
                     </div>
-
-                    {/* Informasi dalam 2 kolom */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
-                        <div>
-                            <h3 className="font-semibold text-orange-600">Harga Per Malam</h3>
-                            <p className="text-sm text-gray-800">Rp 250.000,00 - Rp 500.000,00</p>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-orange-600">Jam Check-in / Check-out</h3>
-                            <p className="text-sm text-gray-800">Check-in: 14.00 WIB | Check-out: 12.00 WIB</p>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-orange-600">Fasilitas Penginapan</h3>
-
-                            <ul className="text-sm text-gray-800 space-y-1">
-                                <li className="flex items-center gap-2">
-                                    <FaWifi className="text-black" /> WiFi Gratis
+                     <div>
+                        <h3 className="mb-2 font-semibold text-gray-900">Sub-Fasilitas</h3>
+                        <ul className="space-y-2">
+                             {item.facilities.map((facility, index) => (
+                                <li key={index} className="flex items-center text-sm text-gray-800">
+                                    {facilityIcons[facility] || <FaTicketAlt className="mr-2 text-black-600" />}
+                                    {facility}
                                 </li>
-                                <li className="flex items-center gap-2">
-                                    <FaTv className="text-black" /> TV & AC
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <FaBath className="text-black" /> Kamar Mandi Dalam
-                                </li>
-                                <li className="flex items-center gap-2">
-                                    <FaCar className="text-black" /> Parkir Luas
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-orange-600">Aktivitas di Sekitar Penginapan</h3>
-                            <ul className="list-disc list-inside text-sm text-gray-800">
-                                <li>Jalan-jalan Sore</li>
-                                <li>Kuliner Malam</li>
-                                <li>Pasar Oleh-oleh</li>
-                                <li>Menikmati Sunset</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Aktivitas Tambahan */}
-                    <div>
-                        <h3 className="font-semibold text-orange-600 mb-1">Kontak & Reservasi</h3>
-                        <ul className="list-disc list-inside text-sm text-gray-800 gap-x-6">
-                            <li>Telp: 0821-9876-1234</li>
-                            <li>Email: reservasi@penginapan.com</li>
-                            <li>Instagram: @penginapan.tegalsambi</li>
+                            ))}
                         </ul>
+                    </div>
+                     <div>
+                        <h3 className="font-semibold text-gray-900">Lokasi</h3>
+                        <p className="text-sm text-gray-800">{item.location}</p>
                     </div>
                 </div>
             </motion.div>
-            {/* Lokasi */}
-            <div className="mt-10 max-w-screen-xl mx-auto">
-                <div className="bg-gradient-to-r from-sky-100 to-cyan-100 p-6 rounded-xl shadow-xl border border-gray-200">
-                    <h3 className="font-semibold text-lg text-orange-600 mb-4">Lokasi Penginapan</h3>
-                    <div className="rounded-xl overflow-hidden">
-                        <iframe
-                            title="map"
-                            src="https://www.google.com/maps/embed?pb=!1m18..." // ganti dengan link maps yang sesuai
-                            width="100%"
-                            height="300"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                        ></iframe>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };

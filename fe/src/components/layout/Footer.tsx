@@ -43,8 +43,13 @@ const Footer = () => {
                             </a>
                         </li>
                         <li>
-                            <a href="facilities" className="transition-colors duration-200 hover:text-gray-300">
+                            <a href="acomodation" className="transition-colors duration-200 hover:text-gray-300">
                                 Penginapan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="facilities" className="transition-colors duration-200 hover:text-gray-300">
+                                Fasilitas
                             </a>
                         </li>
                         <li>
