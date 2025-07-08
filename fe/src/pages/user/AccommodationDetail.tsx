@@ -85,8 +85,8 @@ const AccommodationDetail = () => {
                                 </li>
                                 <li className="text-gray-300">/</li>
                                 <li>
-                                    <Link to="/accommodation" className="transition duration-300 hover:text-orange-400">
-                                        Penginapan
+                                    <Link to="/facilities" className="transition duration-300 hover:text-orange-400">
+                                        Fasilitas
                                     </Link>
                                 </li>
                                 <li className="text-gray-300">/</li>
@@ -161,6 +161,16 @@ const AccommodationDetail = () => {
                     </div>
                 </div>
             </motion.div>
+            {/* Lokasi */}
+            <div className="max-w-screen-xl mx-auto mt-10">
+                <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
+                    <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Wisata</h3>
+                    <p className="mb-4 text-sm text-gray-700">{item.location}</p>
+                    <div className="overflow-hidden rounded-xl">
+                        <iframe title="map" src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} width="100%" height="300" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };

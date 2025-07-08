@@ -28,13 +28,17 @@ const Navbar = () => {
     }, [lastScrollY]);
 
     const navItemClass = (path: string) => {
-        const isActive = currentPath.startsWith(path) || (path === "/facilities" && currentPath.startsWith("/facility/"));
+        const isFacilityGroup = path === "/facilities" && (currentPath.startsWith("/facilities") || currentPath.startsWith("/facility/") || currentPath.startsWith("/accommodation/"));
+
+        const isActive = path === "/facilities" ? isFacilityGroup : currentPath.startsWith(path);
 
         return `relative font-semibold group ${isActive ? "text-blue-200" : "text-white"}`;
     };
 
     const underlineClass = (path: string) => {
-        const isActive = currentPath.startsWith(path) || (path === "/facilities" && currentPath.startsWith("/facility/"));
+        const isFacilityGroup = path === "/facilities" && (currentPath.startsWith("/facilities") || currentPath.startsWith("/facility/") || currentPath.startsWith("/accommodation/"));
+
+        const isActive = path === "/facilities" ? isFacilityGroup : currentPath.startsWith(path);
 
         return `absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 transition-all duration-300 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`;
     };
@@ -57,10 +61,10 @@ const Navbar = () => {
                                 <span>Wisata</span>
                                 <span className={underlineClass("/attraction")}></span>
                             </Link>
-                            <Link to="/accommodation" className={navItemClass("/accommodation")}>
+                            {/* <Link to="/accommodation" className={navItemClass("/accommodation")}>
                                 <span>Penginapan</span>
                                 <span className={underlineClass("/accommodation")}></span>
-                            </Link>
+                            </Link> */}
                             <Link to="/facilities" className={navItemClass("/facilities")}>
                                 <span>Fasilitas</span>
                                 <span className={underlineClass("/facilities")}></span>
