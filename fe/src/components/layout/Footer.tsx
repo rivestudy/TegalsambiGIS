@@ -42,11 +42,11 @@ const Footer = () => {
                                 Wisata
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a href="acomodation" className="transition-colors duration-200 hover:text-gray-300">
                                 Penginapan
                             </a>
-                        </li>
+                        </li> */}
                         <li>
                             <a href="facilities" className="transition-colors duration-200 hover:text-gray-300">
                                 Fasilitas

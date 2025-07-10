@@ -154,12 +154,12 @@ const AttractionDetail = () => {
                                 ))}
                             </ul>
                         </div>
-                        {/* <div>
+                        <div>
                             <h3 className="font-semibold text-blue-900">Daya Tarik Utama</h3>
                             <ul className="text-sm text-gray-800 list-disc list-inside">
                                 {item.points_of_attraction.map((point, index) => <li key={index}>{point}</li>)}
                             </ul>
-                        </div> */}
+                        </div>
                         <div>
                             <h3 className="mb-1 font-semibold text-blue-900">Kontak & Reservasi</h3>
                             <ul className="text-sm text-gray-800 list-disc list-inside gap-x-6">

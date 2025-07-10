@@ -42,6 +42,7 @@ const AddAttraction: React.FC = () => {
                     <label className="font-semibold block mb-1">Kategori Wisata</label>
                     <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required>
                         <option value="">-- Pilih Kategori --</option>
+                        <option value="">Paket Wisata</option>
                         <option value="Religi">Wisata Religi</option>
                         <option value="Budaya">Wisata Budaya</option>
                         <option value="Pesisir">Wisata Pesisir</option>
@@ -102,7 +103,7 @@ const AddAttraction: React.FC = () => {
 
                 {/* Aktivitas */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Atraksi / Aktivitas</label>
+                    <label className="font-semibold block mb-1">Daya Tarik Utama</label>
                     <textarea
                         name="activities"
                         placeholder="Contoh: Susur Pantai, Pentas Seni, Workshop Budaya"

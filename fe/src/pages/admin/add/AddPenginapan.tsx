@@ -45,7 +45,7 @@ const AddFacilities: React.FC = () => {
 
                 {/* Deskripsi */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Deskripsi Penginapan</label>
+                    <label className="font-semibold block mb-1">Tentang Penginapan</label>
                     <textarea name="description" value={form.description} onChange={handleChange} rows={4} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
 
@@ -63,7 +63,7 @@ const AddFacilities: React.FC = () => {
 
                 {/* Fasilitas */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Fasilitas Penginapan</label>
+                    <label className="font-semibold block mb-1">Fasilitas Unggulan</label>
                     <textarea
                         name="facilities"
                         placeholder="Contoh: WiFi Gratis, TV & AC, Kamar Mandi Dalam, Parkir Luas"
@@ -76,7 +76,7 @@ const AddFacilities: React.FC = () => {
 
                 {/* Aktivitas Sekitar */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Aktivitas di Sekitar Penginapan</label>
+                    <label className="font-semibold block mb-1">Daya Tarik Utama</label>
                     <textarea
                         name="activities"
                         placeholder="Contoh: Jalan-jalan Sore, Kuliner Malam, Pasar Oleh-oleh, Menikmati Sunset"

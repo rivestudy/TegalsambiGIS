@@ -7,7 +7,7 @@ const AboutPage = () => {
         <div
             className="min-h-screen bg-cover bg-center flex items-center justify-center px-4 py-16"
             style={{
-                backgroundImage: "url('/gambar_pantai.jpg')", // Pastikan file ada di /public/
+                backgroundImage: "url('/pantaitegalsambi2.webp')",
             }}
         >
             <div className="absolute inset-0 bg-black bg-opacity-30"></div>

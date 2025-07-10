@@ -46,7 +46,7 @@ const LandingPage: React.FC = () => {
             <section
                 className="relative flex items-center justify-center min-h-screen text-center text-white bg-fixed bg-center bg-no-repeat bg-cover"
                 style={{
-                    backgroundImage: "url('/gambar_pantai.jpg')",
+                    backgroundImage: "url('/pantaitegalsambi2.webp')",
                 }}
             >
                 <div className="absolute inset-0 bg-black opacity-30"></div>

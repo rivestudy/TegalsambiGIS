@@ -50,7 +50,7 @@ const PublicServicesPage = () => {
 
     return (
         <div className="bg-white">
-            <HeroSection title="Fasilitas" breadcrumb="Fasilitas" bgImage="/gambar_pantai.jpg" placeholder="Cari layanan publik" />
+            <HeroSection title="Fasilitas" breadcrumb="Fasilitas" bgImage="/pantaitegalsambi2.webp" placeholder="Cari layanan publik" />
 
             <SectionGrid title="Sarana & Prasarana Publik" description="Temukan berbagai fasilitas publik yang tersedia untuk menunjang aktivitas Anda di Tegalsambi." data={facilities} itemUrlPrefix="facility" cardColor="bg-green-100" />
 

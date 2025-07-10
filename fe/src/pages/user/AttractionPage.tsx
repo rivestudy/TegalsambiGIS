@@ -65,6 +65,34 @@ const AttractionPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Data dummy untuk Paket Wisata
+    const dummyTourPackages: Attraction[] = [
+        {
+            id: 9991,
+            name: "Paket A - Jelajah Budaya",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            price: 50000,
+            images: ["/paketA.jpg"],
+            category: "Paket",
+        },
+        {
+            id: 9992,
+            name: "Paket B - Eksplor Tradisi",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            price: 100000,
+            images: ["/paketB.jpg"],
+            category: "Paket",
+        },
+        {
+            id: 9993,
+            name: "Paket C - Experience Lengkap",
+            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            price: 150000,
+            images: ["/paketC.jpg"],
+            category: "Paket",
+        },
+    ];
+
     useEffect(() => {
         const fetchAttractions = async () => {
             try {
@@ -88,7 +116,7 @@ const AttractionPage = () => {
     return (
         <div className="bg-white">
             {/* Hero */}
-            <div className="relative h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('/gambar_pantai.jpg')" }}>
+            <div className="relative h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('/pantaitegalsambi2.webp')" }}>
                 <div className="absolute inset-0 bg-black bg-opacity-30" />
                 <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                     <nav className="py-2">
@@ -118,8 +146,18 @@ const AttractionPage = () => {
                     </motion.div>
                 </motion.div>
             </div>
+
             <body className="mx-auto">
-                {/* Sections */}
+                {/* Paket Wisata */}
+                <SectionContainer
+                    title="Paket Wisata"
+                    description="Nikmati berbagai paket wisata dengan layanan lengkap dan pengalaman terbaik menjelajahi Tegalsambi."
+                    data={dummyTourPackages}
+                    color="bg-yellow-100"
+                    priceColor="text-yellow-600"
+                />
+
+                {/* Wisata Lainnya */}
                 <SectionContainer
                     title="Wisata Religi & Sejarah"
                     description="Jelajahi situs-situs suci dan tempat bersejarah yang kaya akan cerita dan nilai spiritual di Tegalsambi."

@@ -86,6 +86,7 @@ const EditWisata: React.FC = () => {
                     <label className="font-semibold block mb-1">Kategori</label>
                     <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded">
                         <option value="">-- Pilih Kategori --</option>
+                        <option value="">Paket Wisata</option>
                         <option value="Religi">Wisata Religi</option>
                         <option value="Budaya">Wisata Budaya</option>
                         <option value="Pesisir">Wisata Pesisir</option>
@@ -124,7 +125,7 @@ const EditWisata: React.FC = () => {
                     <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} />
                 </div>
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Aktivitas</label>
+                    <label className="font-semibold block mb-1">Daya Tarik Utama</label>
                     <textarea name="activities" value={form.activities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} />
                 </div>
                 <div className="col-span-2 flex justify-end space-x-4">
