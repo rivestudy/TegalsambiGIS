@@ -41,7 +41,7 @@ const SectionContainer = ({ title, description, data, color, priceColor }: { tit
             >
                 {data.map((item) => (
                     <SwiperSlide key={item.id}>
-                        <Link to={`/attraction/${item.id}`}>
+                        <Link to={item.category === "Paket" ? `/paket/${item.id}` : `/attraction/${item.id}`}>
                             <div className={`${color} mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[380px] transition duration-300 hover:shadow-lg hover:-translate-y-2`}>
                                 <img src={item.images?.[0] || fallbackImage} alt={item.name} className="object-cover w-full h-48" />
                                 <div className="flex flex-col justify-between flex-grow p-5">

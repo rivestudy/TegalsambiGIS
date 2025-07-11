@@ -29,6 +29,7 @@ import MapPage from "./pages/user/MapPage";
 import NotFoundPage from "./pages/user/NotFound";
 
 // Detail Pages
+import PaketWisataDetail from "./pages/user/PaketWisataDetail";
 import AttractionDetail from "./pages/user/AttractionDetail";
 import AccommodationDetail from "./pages/user/AccommodationDetail"; // Import the new detail page
 import FacilitiesDetail from "./pages/user/FacilitiesDetail";
@@ -82,10 +83,16 @@ const NavigationHandler: React.FC = () => {
     return (
         <nav className="flex items-center justify-between px-6 py-3 bg-gray-100 border-b border-gray-300">
             <div className="flex items-center gap-4 font-medium text-gray-700">
-                <Link to="/" className="font-bold hover:underline">Home</Link>
-                <span>Role: <span className="font-bold text-blue-600">{role || "N/A"}</span></span>
+                <Link to="/" className="font-bold hover:underline">
+                    Home
+                </Link>
+                <span>
+                    Role: <span className="font-bold text-blue-600">{role || "N/A"}</span>
+                </span>
                 {role === "admin" && (
-                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">Admin Panel</Link>
+                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">
+                        Admin Panel
+                    </Link>
                 )}
             </div>
             <button onClick={handleLogout} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
@@ -115,19 +122,15 @@ const AppContent = () => {
                             <Route path="/" element={<LandingPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/about" element={<AboutPage />} />
-
                             <Route path="/attractions" element={<AttractionPage />} />
                             <Route path="/attraction/:id" element={<AttractionDetail />} /> {/* Corrected singular form */}
-
+                            <Route path="/paket/:id" element={<PaketWisataDetail />} />
                             <Route path="/accommodation" element={<AccommodationPage />} /> {/* Corrected spelling */}
                             <Route path="/accommodation/:id" element={<AccommodationDetail />} /> {/* ADDED THIS ROUTE */}
-
                             <Route path="/facilities" element={<FacilitiesPage />} />
                             <Route path="/facility/:id" element={<FacilitiesDetail />} /> {/* Corrected singular form */}
-                            
                             <Route path="/peta-desa" element={<MapPage />} />
                             <Route path="/not-found" element={<NotFoundPage />} />
-
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -140,7 +143,6 @@ const AppContent = () => {
                                 <Route path="/admin/edit/map/:id" element={<EditMap />} />
                                 <Route path="/admin/edit/page/:id" element={<EditPage />} />
                             </Route>
-
                             <Route path="*" element={<Navigate to="/not-found" replace />} />
                         </Routes>
                     </main>
