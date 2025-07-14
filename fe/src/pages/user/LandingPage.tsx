@@ -87,7 +87,7 @@ const LandingPage: React.FC = () => {
                                 <div className="p-4">
                                     <p className="text-[10px] uppercase tracking-widest text-purple-600 font-medium">Wisata</p>
                                     <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
-                                    <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p>
+                                    {/* <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p> */}
                                 </div>
                             </article>
                         </Link>
@@ -118,7 +118,7 @@ const LandingPage: React.FC = () => {
                                 <div className="p-4">
                                     <p className="text-[10px] uppercase tracking-widest text-teal-600 font-medium">Akomodasi</p>
                                     <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
-                                    <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p>
+                                    {/* <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p> */}
                                 </div>
                             </article>
                         </Link>
@@ -149,7 +149,7 @@ const LandingPage: React.FC = () => {
                                 <div className="p-4">
                                     <p className="text-[10px] uppercase tracking-widest text-blue-600 font-medium">Fasilitas</p>
                                     <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
-                                    <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p>
+                                    {/* <p className="text-sm leading-relaxed text-gray-600">{description.slice(0, 100)}…</p> */}
                                 </div>
                             </article>
                         </Link>

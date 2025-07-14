@@ -34,7 +34,7 @@ const Footer = () => {
                     <ul className="space-y-3 text-sm">
                         <li>
                             <a href="about" className="transition-colors duration-200 hover:text-gray-300">
-                                About Us
+                                Tentang
                             </a>
                         </li>
                         <li>
@@ -55,6 +55,16 @@ const Footer = () => {
                         <li>
                             <a href="peta-desa" className="transition-colors duration-200 hover:text-gray-300">
                                 WebGIS
+                            </a>
+                        </li>
+                        <li>
+                            <a href="peta-desa" className="transition-colors duration-200 hover:text-gray-300">
+                                Masterplan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://tegalsambi.jepara.go.id/" target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 hover:text-gray-300">
+                                Info Desa
                             </a>
                         </li>
                     </ul>

@@ -48,13 +48,13 @@ const Navbar = () => {
             {showNavbar && (
                 <motion.nav className="fixed top-0 left-0 right-0 z-50 text-white shadow-lg bg-black/30 backdrop-blur-md" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
                     <div className="flex items-center justify-between max-w-screen-xl px-4 py-3 mx-auto">
-                        <Link to="/" className="text-2xl font-bold hover:text-blue-300">
-                            Logo
+                        <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
+                            <img src="/logoWeb.png" alt="Logo Tegalsambi" className="h-14 w-auto" />
                         </Link>
 
                         <div className="flex items-center space-x-6 text-sm font-medium sm:text-base">
                             <Link to="/about" className={navItemClass("/about")}>
-                                <span>About Us</span>
+                                <span>Tentang</span>
                                 <span className={underlineClass("/about")}></span>
                             </Link>
                             <Link to="/attractions" className={navItemClass("/attraction")}>
@@ -73,6 +73,14 @@ const Navbar = () => {
                                 <span>WebGIS</span>
                                 <span className={underlineClass("/peta-desa")}></span>
                             </Link>
+                            <Link to="/masterplan" className={navItemClass("/masterplan")}>
+                                <span>Masterplan</span>
+                                <span className={underlineClass("/masterplan")}></span>
+                            </Link>
+                            <a href="https://tegalsambi.jepara.go.id/" target="_blank" rel="noopener noreferrer" className={navItemClass("/infoDesa")}>
+                                <span>Info Desa</span>
+                                <span className={underlineClass("/infoDesa")}></span>
+                            </a>
 
                             {!isAdminLoggedIn && (
                                 <Link
