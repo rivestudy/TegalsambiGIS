@@ -157,7 +157,9 @@ const AttractionDetail = () => {
                         <div>
                             <h3 className="font-semibold text-blue-900">Daya Tarik Utama</h3>
                             <ul className="text-sm text-gray-800 list-disc list-inside">
-                                {item.points_of_attraction.map((point, index) => <li key={index}>{point}</li>)}
+                                {item.points_of_attraction.map((point, index) => (
+                                    <li key={index}>{point}</li>
+                                ))}
                             </ul>
                         </div>
                         <div>

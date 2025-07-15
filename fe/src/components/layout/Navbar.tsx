@@ -73,9 +73,9 @@ const Navbar = () => {
                                 <span>WebGIS</span>
                                 <span className={underlineClass("/peta-desa")}></span>
                             </Link>
-                            <Link to="/masterplan" className={navItemClass("/masterplan")}>
+                            <Link to="/masterplan-tegalsambi" className={navItemClass("/masterplan-tegalsambi")}>
                                 <span>Masterplan</span>
-                                <span className={underlineClass("/masterplan")}></span>
+                                <span className={underlineClass("/masterplan-tegalsambi")}></span>
                             </Link>
                             <a href="https://tegalsambi.jepara.go.id/" target="_blank" rel="noopener noreferrer" className={navItemClass("/infoDesa")}>
                                 <span>Info Desa</span>

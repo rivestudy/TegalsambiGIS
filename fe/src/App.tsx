@@ -27,6 +27,7 @@ import AccommodationPage from "./pages/user/AccommodationPage"; // Corrected imp
 import FacilitiesPage from "./pages/user/FacilitesPage"; // Corrected import name
 import MapPage from "./pages/user/MapPage";
 import NotFoundPage from "./pages/user/NotFound";
+import Masterplan from "./pages/user/masterplan";
 
 // Detail Pages
 import PaketWisataDetail from "./pages/user/PaketWisataDetail";
@@ -130,6 +131,7 @@ const AppContent = () => {
                             <Route path="/facilities" element={<FacilitiesPage />} />
                             <Route path="/facility/:id" element={<FacilitiesDetail />} /> {/* Corrected singular form */}
                             <Route path="/peta-desa" element={<MapPage />} />
+                            <Route path="/masterplan-tegalsambi" element={<Masterplan />} />
                             <Route path="/not-found" element={<NotFoundPage />} />
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
