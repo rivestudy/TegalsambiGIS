@@ -1,6 +1,26 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import type { Transition } from "framer-motion";
 import { Link } from "react-router-dom";
+
+const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
+    switch (direction) {
+        case "top":
+            return { initial: { opacity: 0, y: -60 }, whileInView: { opacity: 1, y: 0 } };
+        case "bottom":
+            return { opacity: 0, y: 60 };
+        case "left":
+            return { initial: { opacity: 0, x: -60 }, whileInView: { opacity: 1, x: 0 } };
+        case "right":
+            return { initial: { opacity: 0, x: 60 }, whileInView: { opacity: 1, x: 0 } };
+    }
+};
+
+const animationConfig: Transition = {
+    type: "spring",
+    bounce: 0.6,
+    duration: 2.0,
+};
 
 const mapLinks: { [key: string]: { url: string; places: string[] } } = {
     semua: {
@@ -19,10 +39,6 @@ const mapLinks: { [key: string]: { url: string; places: string[] } } = {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
         places: ["Pantai Tegalsambi"],
     },
-    // persawahan: {
-    //     url: "https://www.google.com/maps/embed?pb=!1m18...",
-    //     places: ["Sawah Blok A", "Sawah Blok B"],
-    // },
     kantor: {
         url: "https://www.google.com/maps/embed?pb=!1m18...",
         places: ["Balai Desa Tegalsambi", "Kantor RW 01"],
@@ -41,9 +57,9 @@ const MapPage = () => {
     const [selectedFilter, setSelectedFilter] = useState("semua");
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 py-10 px-4 pt-14 pb-14">
+        <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 px-4 py-12 pt-16 pb-14">
             {/* Breadcrumb dan Judul */}
-            <motion.div className="text-center py-8" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+            <motion.div className="text-center py-8" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").whileInView} transition={animationConfig} viewport={{ once: true }}>
                 <nav className="mb-1">
                     <ol className="flex justify-center items-center space-x-2 text-sm font-semibold text-white">
                         <li>
@@ -65,8 +81,8 @@ const MapPage = () => {
 
             {/* Grid Map + Sidebar */}
             <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-                {/* Map */}
-                <motion.div className="md:col-span-3 space-y-4" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
+                {/* Map Area */}
+                <motion.div className="md:col-span-3 space-y-4" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").whileInView} transition={animationConfig}>
                     <div className="bg-white border border-gray-300 rounded-2xl shadow-lg p-4">
                         <label className="block font-semibold text-gray-700 mb-2">Tampilkan Titik:</label>
                         <select value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)} className="w-full p-2 border rounded-md text-sm">
@@ -74,7 +90,6 @@ const MapPage = () => {
                             <option value="wisataReligi">Wisata Religi</option>
                             <option value="wisataBudaya">Wisata Budaya</option>
                             <option value="wisataPesisir">Wisata Pesisir</option>
-                            {/* <option value="persawahan">Persawahan</option> */}
                             <option value="kantor">Kantor</option>
                             <option value="fasilitas">Fasilitas</option>
                             <option value="penginapan">Penginapan</option>
@@ -88,8 +103,8 @@ const MapPage = () => {
                     </div>
                 </motion.div>
 
-                {/* Sidebar Tempat Sesuai Filter */}
-                <motion.div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8 }} viewport={{ once: true }}>
+                {/* Sidebar Lokasi */}
+                <motion.div className="bg-white border border-gray-200 rounded-2xl shadow-xl p-6" initial={bounceVariant("right").initial} whileInView={bounceVariant("right").whileInView} transition={{ ...animationConfig, delay: 0.3 }}>
                     <h2 className="text-2xl font-bold text-gray-700 mb-4">Lokasi</h2>
                     <ul className="space-y-3 text-gray-600 text-sm">
                         {mapLinks[selectedFilter].places.map((place, index) => (

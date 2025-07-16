@@ -12,7 +12,7 @@ const AboutPage = () => {
         >
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
             <motion.div
-                className="relative z-10 max-w-4xl bg-white/10 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl p-10 text-white text-center"
+                className="relative z-10 max-w-4xl mt-10 bg-white/10 backdrop-blur-md border border-white/30 rounded-3xl shadow-2xl p-10 text-white text-center"
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}

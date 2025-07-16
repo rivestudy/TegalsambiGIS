@@ -1,12 +1,32 @@
 import React from "react";
 import { motion } from "framer-motion";
+import type { Transition } from "framer-motion";
 import { Link } from "react-router-dom";
+
+const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
+    switch (direction) {
+        case "top":
+            return { initial: { opacity: 0, y: -60 }, animate: { opacity: 1, y: 0 } };
+        case "bottom":
+            return { initial: { opacity: 0, y: 60 }, animate: { opacity: 1, y: 0 } };
+        case "left":
+            return { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 } };
+        case "right":
+            return { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 } };
+    }
+};
+
+const animationConfig: Transition = {
+    type: "spring",
+    bounce: 0.6,
+    duration: 2.5,
+};
 
 const masterplan: React.FC = () => {
     return (
-        <div className="min-h-screen px-4 py-16 bg-gradient-to-r from-emerald-700 to-cyan-500">
+        <div className="min-h-screen px-4 py-12 pt-20 bg-gradient-to-r from-emerald-700 to-cyan-500">
             {/* Breadcrumb dan Judul */}
-            <motion.div className="text-center py-6" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
+            <motion.div className="text-center py-6" initial={bounceVariant("top").initial} animate={bounceVariant("top").animate} transition={animationConfig}>
                 <nav className="mb-2">
                     <ol className="flex justify-center items-center space-x-2 text-sm font-semibold text-white">
                         <li>
@@ -25,15 +45,17 @@ const masterplan: React.FC = () => {
                 <h1 className="text-4xl font-extrabold text-white mb-3">Masterplan Desa Wisata Tegalsambi</h1>
                 <span className="block w-24 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></span>
 
-                <p className="max-w-7xl mx-auto text-white text-base font-medium leading-relaxed mt-4 px-2">
+                <motion.p className="max-w-7xl mx-auto text-white text-base font-medium leading-relaxed mt-4 px-2" initial={bounceVariant("left").initial} animate={bounceVariant("left").animate} transition={animationConfig}>
                     Desa Tegalsambi dikembangkan sebagai desa wisata yang mencakup tiga kategori utama: wisata budaya, wisata religi, dan wisata pesisir. Masterplan ini menjadi panduan pembangunan kawasan wisata yang berkelanjutan dengan
                     mempertimbangkan potensi lokal, kenyamanan pengunjung, serta pelestarian lingkungan dan budaya.
-                </p>
+                </motion.p>
             </motion.div>
 
             {/* Gambar / Peta Masterplan */}
-            <motion.div className="max-w-7xl mx-auto" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
-                <h3 className="text-center text-xl font-semibold text-white mb-4">Gambaran Master Plan Desa Wisata Tegalsambi</h3>
+            <motion.div className="max-w-7xl mx-auto" initial={bounceVariant("bottom").initial} animate={bounceVariant("bottom").animate} transition={animationConfig}>
+                <motion.h3 className="text-center text-xl font-semibold text-white mb-4" initial={bounceVariant("right").initial} animate={bounceVariant("right").animate} transition={animationConfig}>
+                    Gambaran Master Plan Desa Wisata Tegalsambi
+                </motion.h3>
 
                 <div className="w-full h-[400px] rounded-xl overflow-hidden border border-gray-300 shadow-lg">
                     <iframe

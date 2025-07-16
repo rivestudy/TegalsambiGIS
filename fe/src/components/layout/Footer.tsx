@@ -58,7 +58,7 @@ const Footer = () => {
                             </a>
                         </li>
                         <li>
-                            <a href="peta-desa" className="transition-colors duration-200 hover:text-gray-300">
+                            <a href="masterplan-tegalsambi" className="transition-colors duration-200 hover:text-gray-300">
                                 Masterplan
                             </a>
                         </li>

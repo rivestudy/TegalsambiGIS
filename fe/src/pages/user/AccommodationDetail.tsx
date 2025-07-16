@@ -70,7 +70,7 @@ const AccommodationDetail = () => {
         <div className="min-h-screen px-4 py-16 bg-gradient-to-r from-purple-900 to-indigo-600">
             <motion.div className="text-center" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 {/* Breadcrumb */}
-                <div className="flex justify-center pt-4 pb-1">
+                <div className="flex justify-center pt-5">
                     <div className="px-6 py-3 border rounded-full shadow-md bg-white/20 backdrop-blur-md border-white/30">
                         <nav>
                             <ol className="flex items-center space-x-2 text-sm font-semibold text-white">
