@@ -1,42 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import AddFacilities from "./AddPenginapan";
 import { useNavigate } from "react-router-dom";
+import AddAccommodation from "./AddPenginapan"; // Renamed for clarity
+import axiosInstance from "../../../utils/axiosInstance";
 
-const DaftarPenginapan: React.FC = () => {
+// Interface for accommodation data from the API
+interface Accommodation {
+    id: number;
+    name: string;
+    price: string;
+    time_open_close: string;
+}
+
+const AccommodationList: React.FC = () => {
+    const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
-
-    const dummyData = [
-        {
-            id: 1,
-            name: "Penginapan A",
-            price: "Rp 250.000 - Rp 500.000",
-            checkInOut: "14.00 WIB / 12.00 WIB",
-        },
-        {
-            id: 2,
-            name: "Penginapan B",
-            price: "Rp 150.000 - Rp 300.000",
-            checkInOut: "13.00 WIB / 11.00 WIB",
-        },
-    ];
-
     const navigate = useNavigate();
 
-    const handleEdit = (id: number) => {
-        navigate(`/admin/edit/facilities/${id}`);
+    const fetchAccommodations = async () => {
+        try {
+            const response = await axiosInstance.get("/data/accommodation");
+            setAccommodations(response.data);
+        } catch (error) {
+            console.error("Failed to fetch accommodations:", error);
+            alert("Gagal memuat data penginapan.");
+        }
     };
 
-    const handleDelete = (id: number) => {
+    // Fetch data when the list tab is active
+    useEffect(() => {
+        if (activeTab === "list") {
+            fetchAccommodations();
+        }
+    }, [activeTab]);
+
+    const handleEdit = (id: number) => {
+        // Correct navigation path for editing an accommodation
+        navigate(`/admin/edit/accommodation/${id}`);
+    };
+
+    const handleDelete = async (id: number) => {
         if (window.confirm("Yakin ingin menghapus penginapan ini?")) {
-            console.log("Delete ID:", id);
+            try {
+                await axiosInstance.delete(`/data/accommodation/${id}`);
+                alert("Data penginapan berhasil dihapus!");
+                // Refresh list by filtering out the deleted item
+                setAccommodations(accommodations.filter((item) => item.id !== id));
+            } catch (error) {
+                console.error("Failed to delete accommodation:", error);
+                alert("Gagal menghapus data.");
+            }
         }
     };
 
     return (
-        <div className="max-w-6xl mx-auto px-6 py-6">
-            {/* Tabs */}
-            <div className="flex space-x-4 border-b pb-2">
+        <div className="max-w-6xl px-6 py-6 mx-auto">
+            <div className="flex pb-2 space-x-4 border-b">
                 <button onClick={() => setActiveTab("list")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "list" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                     Daftar Penginapan
                 </button>
@@ -45,34 +64,27 @@ const DaftarPenginapan: React.FC = () => {
                 </button>
             </div>
 
-            {/* Tabel List */}
             {activeTab === "list" && (
-                <div className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-                    <h1 className="text-2xl text-center pb-2 font-bold mb-2 text-gray-800">Daftar Penginapan</h1>
+                <div className="p-6 mt-4 bg-white border border-gray-200 rounded-md shadow-md">
+                    <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">Daftar Penginapan</h1>
                     <div className="overflow-x-auto">
-                        <table className="min-w-full table-auto border border-gray-200 text-sm">
-                            <thead className="bg-gray-100 text-gray-700 text-left">
+                        <table className="min-w-full text-sm border border-gray-200 table-auto">
+                            <thead className="text-left text-gray-700 bg-gray-100">
                                 <tr>
                                     <th className="px-4 py-2 border">Nama Penginapan</th>
                                     <th className="px-4 py-2 border">Harga per Malam</th>
                                     <th className="px-4 py-2 border">Check-in / Check-out</th>
-                                    <th className="px-4 py-2 border w-32 text-center">Aksi</th>
+                                    <th className="w-32 px-4 py-2 text-center border">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {dummyData.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={4} className="text-center py-4 text-gray-500">
-                                            Tidak ada data penginapan.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    dummyData.map((item) => (
-                                        <tr key={item.id} className="hover:bg-gray-50 transition">
-                                            <td className="px-4 py-2 border font-medium text-gray-800">{item.name}</td>
-                                            <td className="px-4 py-2 border text-gray-700">{item.price}</td>
-                                            <td className="px-4 py-2 border text-gray-700">{item.checkInOut}</td>
-                                            <td className="px-4 py-2 border text-center space-x-2">
+                                {accommodations.length > 0 ? (
+                                    accommodations.map((item) => (
+                                        <tr key={item.id} className="transition hover:bg-gray-50">
+                                            <td className="px-4 py-2 font-medium text-gray-800 border">{item.name}</td>
+                                            <td className="px-4 py-2 text-gray-700 border">{item.price}</td>
+                                            <td className="px-4 py-2 text-gray-700 border">{item.time_open_close}</td>
+                                            <td className="px-4 py-2 space-x-2 text-center border">
                                                 <button onClick={() => handleEdit(item.id)} className="text-blue-600 hover:text-blue-800" title="Edit">
                                                     <FiEdit />
                                                 </button>
@@ -82,17 +94,22 @@ const DaftarPenginapan: React.FC = () => {
                                             </td>
                                         </tr>
                                     ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={4} className="py-4 text-center text-gray-500">
+                                            Tidak ada data penginapan.
+                                        </td>
+                                    </tr>
                                 )}
                             </tbody>
                         </table>
                     </div>
                 </div>
             )}
-
-            {/* Form Tambah */}
-            {activeTab === "form" && <AddFacilities />}
+            
+            {activeTab === "form" && <AddAccommodation onFormSubmit={() => setActiveTab('list')} />}
         </div>
     );
 };
 
-export default DaftarPenginapan;
+export default AccommodationList;

@@ -1,14 +1,18 @@
 import React, { useState } from "react";
+import axiosInstance from "../../../utils/axiosInstance";
 
-const AddFacilities: React.FC = () => {
+interface AddAccommodationProps {
+    onFormSubmit: () => void;
+}
+
+const AddAccommodation: React.FC<AddAccommodationProps> = ({ onFormSubmit }) => {
     const [form, setForm] = useState({
         name: "",
         description: "",
-        priceRange: "",
-        checkIn: "",
-        checkOut: "",
+        price: "",
+        time_open_close: "",
         facilities: "",
-        activities: "",
+        points_of_attraction: "",
         phone: "",
         email: "",
         instagram: "",
@@ -21,98 +25,89 @@ const AddFacilities: React.FC = () => {
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            setForm({ ...form, images: Array.from(files) });
+        if (e.target.files) {
+            setForm({ ...form, images: Array.from(e.target.files) });
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Data penginapan disubmit:", form);
+
+        const formData = new FormData();
+        formData.append("name", form.name);
+        formData.append("description", form.description);
+        formData.append("price", form.price);
+        formData.append("time_open_close", form.time_open_close);
+        formData.append("phone", form.phone);
+        formData.append("email", form.email);
+        formData.append("instagram", form.instagram);
+        
+        // Convert comma-separated strings to a JSON array string for the backend
+        formData.append("facilities", JSON.stringify(form.facilities.split(',').map(f => f.trim())));
+        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(',').map(a => a.trim())));
+
+        form.images.forEach(image => {
+            formData.append("images", image);
+        });
+
+        try {
+            await axiosInstance.post("/data/accommodation", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+            alert("Penginapan berhasil ditambahkan!");
+            onFormSubmit();
+        } catch (error) {
+            console.error("Failed to add accommodation:", error);
+            alert("Gagal menambahkan penginapan.");
+        }
     };
 
     return (
-        <div className="p-6 max-w-6xl mx-auto">
-            <h1 className="text-2xl text-center pb-2 font-bold mb-4 text-gray-800">Tambah Penginapan</h1>
-
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-lg p-8 rounded-xl border border-gray-200">
-                {/* Nama Penginapan */}
+        <div className="max-w-6xl p-6 mx-auto mt-4">
+            <h1 className="pb-2 mb-4 text-2xl font-bold text-center text-gray-800">Tambah Penginapan</h1>
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Nama Penginapan</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <label className="block mb-1 font-semibold">Nama Penginapan</label>
+                    <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 border rounded" required />
                 </div>
-
-                {/* Deskripsi */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Tentang Penginapan</label>
-                    <textarea name="description" value={form.description} onChange={handleChange} rows={4} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required />
-                </div>
-
-                {/* Harga & Jam Check-in/out */}
-                <div>
-                    <label className="font-semibold block mb-1">Harga Per Malam</label>
-                    <input type="text" name="priceRange" value={form.priceRange} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" placeholder="Contoh: Rp 500.000" />
+                    <label className="block mb-1 font-semibold">Deskripsi</label>
+                    <textarea name="description" value={form.description} onChange={handleChange} rows={4} className="w-full p-2 border rounded" required />
                 </div>
                 <div>
-                    <label className="font-semibold block mb-1">Jam Check-in</label>
-                    <input type="text" name="checkIn" value={form.checkIn} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" placeholder="Contoh: 14.00 WIB" />
-                    <label className="font-semibold block mt-4 mb-1">Jam Check-out</label>
-                    <input type="text" name="checkOut" value={form.checkOut} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" placeholder="Contoh: 12.00 WIB" />
-                </div>
-
-                {/* Fasilitas */}
-                <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Fasilitas Unggulan</label>
-                    <textarea
-                        name="facilities"
-                        placeholder="Contoh: WiFi Gratis, TV & AC, Kamar Mandi Dalam, Parkir Luas"
-                        value={form.facilities}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
-                        rows={2}
-                    />
-                </div>
-
-                {/* Aktivitas Sekitar */}
-                <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Daya Tarik Utama</label>
-                    <textarea
-                        name="activities"
-                        placeholder="Contoh: Jalan-jalan Sore, Kuliner Malam, Pasar Oleh-oleh, Menikmati Sunset"
-                        value={form.activities}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
-                        rows={2}
-                    />
-                </div>
-
-                {/* Kontak */}
-                <div>
-                    <label className="font-semibold block mb-1">Telepon</label>
-                    <input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <label className="block mb-1 font-semibold">Harga Per Malam</label>
+                    <input type="text" name="price" value={form.price} onChange={handleChange} className="w-full p-2 border rounded" placeholder="Contoh: Rp 500.000" />
                 </div>
                 <div>
-                    <label className="font-semibold block mb-1">Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <label className="block mb-1 font-semibold">Jam Check-in / Check-out</label>
+                    <input type="text" name="time_open_close" value={form.time_open_close} onChange={handleChange} className="w-full p-2 border rounded" placeholder="Check-in: 14.00 | Check-out: 12.00" />
                 </div>
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Instagram</label>
-                    <input type="text" name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <label className="block mb-1 font-semibold">Fasilitas</label>
+                    <textarea name="facilities" placeholder="Pisahkan dengan koma, contoh: WiFi, AC, Parkir" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} />
                 </div>
-
-                {/* Upload Gambar */}
                 <div className="col-span-2">
-                    <label className="font-semibold block mb-1">Gambar Penginapan</label>
-                    <div className="w-full border border-black rounded px-4 py-0 bg-gray-50 flex flex-col items-start gap-2">
-                        <input type="file" multiple accept="image/*" onChange={handleFileChange} className="text-sm text-gray-700" />
-                    </div>
-                    <p className="text-sm text-gray-500">* Maksimal 5 gambar. Format: JPG, PNG</p>
+                    <label className="block mb-1 font-semibold">Daya Tarik Sekitar</label>
+                    <textarea name="points_of_attraction" placeholder="Pisahkan dengan koma, contoh: Dekat pantai, Kuliner" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} />
                 </div>
-
-                {/* Tombol Simpan */}
-                <div className="col-span-2 flex justify-end">
-                    <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                <div>
+                    <label className="block mb-1 font-semibold">Telepon</label>
+                    <input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+                <div>
+                    <label className="block mb-1 font-semibold">Email</label>
+                    <input type="email" name="email" value={form.email} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Instagram</label>
+                    <input type="text" name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Gambar Penginapan</label>
+                    <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                </div>
+                <div className="flex justify-end col-span-2">
+                    <button type="submit" className="px-6 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
                         Simpan Penginapan
                     </button>
                 </div>
@@ -121,4 +116,4 @@ const AddFacilities: React.FC = () => {
     );
 };
 
-export default AddFacilities;
+export default AddAccommodation;

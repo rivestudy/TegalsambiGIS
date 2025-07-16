@@ -12,7 +12,7 @@ import LandingPage from "./pages/user/LandingPage";
 import AdminDashboard from "./pages/admin/add/AdminDashboard";
 
 import AddAttraction from "./pages/admin/add/DaftarWisata";
-import AddFacilities from "./pages/admin/add/DaftarPenginapan";
+import AccomodationList from "./pages/admin/add/DaftarPenginapan";
 import AddMap from "./pages/admin/add/DaftarMap";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
@@ -137,7 +137,7 @@ const AppContent = () => {
                             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                                 <Route path="/admin/add/attraction" element={<AddAttraction />} />
-                                <Route path="/admin/add/facilities" element={<AddFacilities />} />
+                                <Route path="/admin/add/facilities" element={<AccomodationList />} />
                                 <Route path="/admin/add/map" element={<AddMap />} />
                                 <Route path="/admin/add/page" element={<AddPage />} />
                                 <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />

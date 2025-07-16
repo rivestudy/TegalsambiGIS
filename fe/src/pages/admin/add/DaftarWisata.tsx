@@ -1,37 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import AddAttraction from "./AddWisata"; // Pastikan ini file form-nya
 import { useNavigate } from "react-router-dom";
+import AddAttraction from "./AddWisata"; // Form component
+import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+
+// Define a more specific type for the data received from the API
+interface Attraction {
+    id: number;
+    name: string;
+    category: string;
+}
 
 const AddAttractionPage: React.FC = () => {
+    const [attractions, setAttractions] = useState<Attraction[]>([]);
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
     const [filter, setFilter] = useState("");
-
-    const dummyData = [
-        { id: 1, name: "Pantai Bahagia", category: "Pesisir" },
-        { id: 2, name: "Candi Suci", category: "Religi" },
-        { id: 3, name: "Pentas Seni", category: "Budaya" },
-    ];
-
-    const filteredData = filter ? dummyData.filter((item) => item.category.toLowerCase() === filter.toLowerCase()) : dummyData;
-
     const navigate = useNavigate();
+
+    // Function to fetch data from the server
+    const fetchAttractions = async () => {
+        try {
+            const response = await axiosInstance.get("/data/attraction");
+            setAttractions(response.data);
+        } catch (error) {
+            console.error("Failed to fetch attractions:", error);
+            alert("Gagal memuat data wisata.");
+        }
+    };
+
+    // Fetch data when the component mounts
+    useEffect(() => {
+        if (activeTab === "list") {
+            fetchAttractions();
+        }
+    }, [activeTab]);
 
     const handleEdit = (id: number) => {
         navigate(`/admin/edit/attraction/${id}`);
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm("Yakin ingin menghapus wisata ini?")) {
-            console.log("Delete ID:", id);
-            // Tambahkan fungsi hapus di sini
+    const handleDelete = async (id: number) => {
+        if (window.confirm("Yakin ingin menghapus data wisata ini?")) {
+            try {
+                await axiosInstance.delete(`/data/attraction/${id}`);
+                alert("Data wisata berhasil dihapus!");
+                // Refresh the list after deletion
+                setAttractions(attractions.filter((item) => item.id !== id));
+            } catch (error) {
+                console.error("Failed to delete attraction:", error);
+                alert("Gagal menghapus data wisata.");
+            }
         }
     };
 
+    const filteredData = filter
+        ? attractions.filter((item) => item.category.toLowerCase() === filter.toLowerCase())
+        : attractions;
+
     return (
-        <div className="max-w-6xl mx-auto px-6 py-6">
-            {/* Tabs */}
-            <div className="flex space-x-4 border-b pb-2">
+        <div className="max-w-6xl px-6 py-6 mx-auto">
+            <div className="flex pb-2 space-x-4 border-b">
                 <button onClick={() => setActiveTab("list")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "list" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                     Daftar Wisata
                 </button>
@@ -40,12 +68,11 @@ const AddAttractionPage: React.FC = () => {
                 </button>
             </div>
 
-            {/* Tabel List */}
             {activeTab === "list" && (
-                <div className="bg-white p-6 rounded-md shadow-md border border-gray-200">
-                    <h1 className="text-2xl text-center pb-2 font-bold mb-2 text-gray-800"> Daftar Wisata</h1>
+                <div className="p-6 mt-4 bg-white border border-gray-200 rounded-md shadow-md">
+                    <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">Daftar Wisata</h1>
                     <div className="mb-4">
-                        <label className="block font-semibold mb-1">Filter Kategori</label>
+                        <label className="block mb-1 font-semibold">Filter Kategori</label>
                         <select value={filter} onChange={(e) => setFilter(e.target.value)} className="w-full p-2 border rounded">
                             <option value="">Semua Kategori</option>
                             <option value="Religi">Wisata Religi</option>
@@ -55,31 +82,31 @@ const AddAttractionPage: React.FC = () => {
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="min-w-full table-auto border border-gray-200 text-sm">
-                            <thead className="bg-gray-100 text-gray-700 text-left">
+                        <table className="min-w-full text-sm border border-gray-200 table-auto">
+                            <thead className="text-left text-gray-700 bg-gray-100">
                                 <tr>
                                     <th className="px-4 py-2 border">Nama Wisata</th>
                                     <th className="px-4 py-2 border">Kategori</th>
-                                    <th className="px-4 py-2 border w-32 text-center">Aksi</th>
+                                    <th className="w-32 px-4 py-2 text-center border">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredData.length === 0 ? (
                                     <tr>
-                                        <td colSpan={3} className="text-center py-4 text-gray-500">
+                                        <td colSpan={3} className="py-4 text-center text-gray-500">
                                             Tidak ada data wisata.
                                         </td>
                                     </tr>
                                 ) : (
                                     filteredData.map((item) => (
-                                        <tr key={item.id} className="hover:bg-gray-50 transition">
-                                            <td className="px-4 py-2 border font-medium text-gray-800">{item.name}</td>
-                                            <td className="px-4 py-2 border text-gray-600">{item.category}</td>
-                                            <td className="px-4 py-2 border text-center space-x-2">
-                                                <button onClick={() => handleEdit(item.id)} className="text-blue-600 hover:text-blue-800 transition" title="Edit">
+                                        <tr key={item.id} className="transition hover:bg-gray-50">
+                                            <td className="px-4 py-2 font-medium text-gray-800 border">{item.name}</td>
+                                            <td className="px-4 py-2 text-gray-600 border">{item.category}</td>
+                                            <td className="px-4 py-2 space-x-2 text-center border">
+                                                <button onClick={() => handleEdit(item.id)} className="text-blue-600 transition hover:text-blue-800" title="Edit">
                                                     <FiEdit className="inline-block" />
                                                 </button>
-                                                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800 transition" title="Hapus">
+                                                <button onClick={() => handleDelete(item.id)} className="text-red-600 transition hover:text-red-800" title="Hapus">
                                                     <FiTrash className="inline-block" />
                                                 </button>
                                             </td>
@@ -91,9 +118,8 @@ const AddAttractionPage: React.FC = () => {
                     </div>
                 </div>
             )}
-
-            {/* Form Tambah Wisata */}
-            {activeTab === "form" && <AddAttraction />}
+            
+            {activeTab === "form" && <AddAttraction onFormSubmit={() => setActiveTab('list')} />}
         </div>
     );
 };
