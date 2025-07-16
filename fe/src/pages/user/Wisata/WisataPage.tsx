@@ -5,7 +5,7 @@ import "swiper/css";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
-import axios from "../../utils/axiosInstance";
+import axios from "../../../utils/axiosInstance";
 
 interface Attraction {
     id: number;

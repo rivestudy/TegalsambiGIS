@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
-import axios from "../../utils/axiosInstance";
-import HeroSection from "../../components/HeroSection";
+import axios from "../../../utils/axiosInstance";
+import HeroSection from "../../../components/HeroSection";
 import { Link } from "react-router-dom";
 
 interface Facility {

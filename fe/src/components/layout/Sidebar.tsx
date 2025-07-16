@@ -19,7 +19,9 @@ const AdminSidebar: React.FC = () => {
     return (
         <aside className="h-screen w-64 bg-gray-900 text-white flex flex-col fixed">
             {/* Logo */}
-            <div className="px-6 mt-4 flex items-center justify-center py-4 text-2xl font-bold">LOGO</div>
+            <div className="px-6 mt-4 flex items-center justify-center py-4">
+                <img src="/logoWeb.png" alt="Logo" className="h-12 object-contain" />
+            </div>
 
             {/* Navigation */}
             <nav className="flex-1 px-4 py-6 space-y-2">

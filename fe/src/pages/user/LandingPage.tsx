@@ -21,14 +21,16 @@ const LandingPage: React.FC = () => {
         const fetchData = async () => {
             try {
                 const [attractionRes, accommodationRes, facilityRes] = await Promise.all([axios.get("/data/attraction"), axios.get("/data/accommodation"), axios.get("/data/facility")]);
-                setAttractions(attractionRes.data);
-                setAccommodations(accommodationRes.data);
-                setFacilities(facilityRes.data);
+
+                setAttractions(sanitizeItems(attractionRes.data ?? []));
+                setAccommodations(sanitizeItems(accommodationRes.data ?? []));
+                setFacilities(sanitizeItems(facilityRes.data ?? []));
             } catch (err: any) {
                 console.error(err);
                 setError("Gagal memuat data. Silakan coba lagi nanti.");
             }
         };
+
         fetchData();
     }, []);
 
@@ -39,6 +41,12 @@ const LandingPage: React.FC = () => {
         bounce: 0.6,
         type: "spring",
     };
+
+    const sanitizeItems = (items: any[]): Item[] =>
+        items.map((item) => ({
+            ...item,
+            images: Array.isArray(item.images) ? item.images : [],
+        }));
 
     return (
         <div className="overflow-x-hidden font-sans text-gray-800">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import AddMap from "./AddMap"; // komponen form tambah lokasi
+import AddMap from "../add/AddMap"; // komponen form tambah lokasi
 
 const DaftarLokasi: React.FC = () => {
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import AddAttraction from "./AddWisata"; // Form component
+import AddAttraction from "../add/AddWisata"; // Form component
 import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
 
 // Define a more specific type for the data received from the API
@@ -53,9 +53,7 @@ const AddAttractionPage: React.FC = () => {
         }
     };
 
-    const filteredData = filter
-        ? attractions.filter((item) => item.category.toLowerCase() === filter.toLowerCase())
-        : attractions;
+    const filteredData = filter ? attractions.filter((item) => item.category.toLowerCase() === filter.toLowerCase()) : attractions;
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
@@ -118,8 +116,8 @@ const AddAttractionPage: React.FC = () => {
                     </div>
                 </div>
             )}
-            
-            {activeTab === "form" && <AddAttraction onFormSubmit={() => setActiveTab('list')} />}
+
+            {activeTab === "form" && <AddAttraction onFormSubmit={() => setActiveTab("list")} />}
         </div>
     );
 };

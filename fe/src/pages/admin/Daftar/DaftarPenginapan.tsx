@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import AddAccommodation from "./AddPenginapan"; // Renamed for clarity
+import AddAccommodation from "../add/AddPenginapan"; // Renamed for clarity
 import axiosInstance from "../../../utils/axiosInstance";
 
 // Interface for accommodation data from the API
@@ -106,8 +106,8 @@ const AccommodationList: React.FC = () => {
                     </div>
                 </div>
             )}
-            
-            {activeTab === "form" && <AddAccommodation onFormSubmit={() => setActiveTab('list')} />}
+
+            {activeTab === "form" && <AddAccommodation onFormSubmit={() => setActiveTab("list")} />}
         </div>
     );
 };

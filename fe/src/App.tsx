@@ -1,5 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import ScrollToTop from "./components/layout/ScrollToTop";
 import Navbar from "./components/layout/Navbar";
@@ -9,31 +11,28 @@ import AdminHeader from "./components/layout/Header";
 
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/user/LandingPage";
-import AdminDashboard from "./pages/admin/add/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
-import AddAttraction from "./pages/admin/add/DaftarWisata";
-import AccomodationList from "./pages/admin/add/DaftarPenginapan";
-import AddMap from "./pages/admin/add/DaftarMap";
+import AddAttraction from "./pages/admin/Daftar/DaftarWisata";
+import AccomodationList from "./pages/admin/Daftar/DaftarPenginapan";
+import AddMap from "./pages/admin/Daftar/DaftarMap";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
 import EditPenginapan from "./pages/admin/edit/EditPenginapan";
 import EditMap from "./pages/admin/edit/EditMap";
-import EditPage from "./pages/admin/EditPage";
-import AddPage from "./pages/admin/AddPage";
 
 import AboutPage from "./pages/user/AboutPage";
-import AttractionPage from "./pages/user/AttractionPage";
-import AccommodationPage from "./pages/user/AccommodationPage"; // Corrected import name
-import FacilitiesPage from "./pages/user/FacilitesPage"; // Corrected import name
-import MapPage from "./pages/user/MapPage";
+import AttractionPage from "./pages/user/Wisata/WisataPage";
+import FacilitiesPage from "./pages/user/Fasilitas/FasilitasPage"; // Corrected import name
+import MapPage from "./pages/user/WebgisPage";
 import NotFoundPage from "./pages/user/NotFound";
-import Masterplan from "./pages/user/masterplan";
+import Masterplan from "./pages/user/MasterplanPage";
 
 // Detail Pages
-import PaketWisataDetail from "./pages/user/PaketWisataDetail";
-import AttractionDetail from "./pages/user/AttractionDetail";
-import AccommodationDetail from "./pages/user/AccommodationDetail"; // Import the new detail page
-import FacilitiesDetail from "./pages/user/FacilitiesDetail";
+import PaketWisataDetail from "./pages/user/Wisata/PaketWisataDetail";
+import AttractionDetail from "./pages/user/Wisata/WisataDetail";
+import AccommodationDetail from "./pages/user/Fasilitas/PenginapanDetail"; // Import the new detail page
+import FacilitiesDetail from "./pages/user/Fasilitas/FasilitasDetail";
 
 // Secure auth helpers
 const isAuthenticated = (): boolean => sessionStorage.getItem("token") !== null;
@@ -126,7 +125,6 @@ const AppContent = () => {
                             <Route path="/attractions" element={<AttractionPage />} />
                             <Route path="/attraction/:id" element={<AttractionDetail />} /> {/* Corrected singular form */}
                             <Route path="/paket/:id" element={<PaketWisataDetail />} />
-                            <Route path="/accommodation" element={<AccommodationPage />} /> {/* Corrected spelling */}
                             <Route path="/accommodation/:id" element={<AccommodationDetail />} /> {/* ADDED THIS ROUTE */}
                             <Route path="/facilities" element={<FacilitiesPage />} />
                             <Route path="/facility/:id" element={<FacilitiesDetail />} /> {/* Corrected singular form */}
@@ -139,11 +137,9 @@ const AppContent = () => {
                                 <Route path="/admin/add/attraction" element={<AddAttraction />} />
                                 <Route path="/admin/add/facilities" element={<AccomodationList />} />
                                 <Route path="/admin/add/map" element={<AddMap />} />
-                                <Route path="/admin/add/page" element={<AddPage />} />
                                 <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />
                                 <Route path="/admin/edit/facilities/:id" element={<EditPenginapan />} />
                                 <Route path="/admin/edit/map/:id" element={<EditMap />} />
-                                <Route path="/admin/edit/page/:id" element={<EditPage />} />
                             </Route>
                             <Route path="*" element={<Navigate to="/not-found" replace />} />
                         </Routes>
@@ -159,6 +155,7 @@ function App() {
     return (
         <Router>
             <AppContent />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
         </Router>
     );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface AddAttractionProps {
     onFormSubmit: () => void; // Callback to switch tab after submission
@@ -34,9 +36,9 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         const formData = new FormData();
-        
+
         // Append all text fields
         formData.append("category", form.category);
         formData.append("name", form.name);
@@ -46,13 +48,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         formData.append("phone", form.phone);
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
-        
+
         // Convert comma-separated strings to JSON array strings
-        formData.append("facilities", JSON.stringify(form.facilities.split(',').map(f => f.trim())));
-        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(',').map(a => a.trim())));
-        
+        formData.append("facilities", JSON.stringify(form.facilities.split(",").map((f) => f.trim())));
+        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map((a) => a.trim())));
+
         // Append images
-        form.images.forEach(image => {
+        form.images.forEach((image) => {
             formData.append("images", image);
         });
 
@@ -61,11 +63,11 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             await axiosInstance.post("/data/attraction", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            alert("Wisata berhasil ditambahkan!");
+            toast.success("Wisata berhasil ditambahkan!");
             onFormSubmit(); // Switch back to the list view
         } catch (error) {
             console.error("Failed to add attraction:", error);
-            alert("Gagal menambahkan wisata.");
+            toast.error("Gagal menambahkan wisata.");
         }
     };
 
@@ -112,15 +114,35 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>
-                    <textarea name="facilities" placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" rows={2} />
+                    <textarea
+                        name="facilities"
+                        placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung"
+                        value={form.facilities}
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
+                        rows={2}
+                    />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Daya Tarik Utama</label>
-                    <textarea name="points_of_attraction" placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" rows={2} />
+                    <textarea
+                        name="points_of_attraction"
+                        placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni"
+                        value={form.points_of_attraction}
+                        onChange={handleChange}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
+                        rows={2}
+                    />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Gambar Wisata</label>
-                    <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                    <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
                 </div>
                 <div className="flex justify-end col-span-2">
                     <button type="submit" className="px-6 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
@@ -128,6 +150,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </button>
                 </div>
             </form>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />;
         </div>
     );
 };
