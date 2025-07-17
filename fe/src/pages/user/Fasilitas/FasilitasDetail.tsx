@@ -118,16 +118,16 @@ const FacilitiesDetail = () => {
                             ))}
                         </ul>
                     </div>
-                    <div>
+                    {/* <div>
                         <h3 className="font-semibold text-gray-900">Lokasi</h3>
                         <p className="text-sm text-gray-800">{item.location}</p>
-                    </div>
+                    </div> */}
                 </div>
             </motion.div>
             {/* Lokasi */}
             <div className="max-w-screen-xl mx-auto mt-10">
                 <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
-                    <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Wisata</h3>
+                    <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Fasilitas</h3>
                     <p className="mb-4 text-sm text-gray-700">{item.location}</p>
                     <div className="overflow-hidden rounded-xl">
                         <iframe title="map" src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} width="100%" height="300" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>

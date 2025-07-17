@@ -15,11 +15,15 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import AddAttraction from "./pages/admin/Daftar/DaftarWisata";
 import AccomodationList from "./pages/admin/Daftar/DaftarPenginapan";
+import DaftarPaketWisataPage from "./pages/admin/Daftar/DaftarPaketWisata";
 import AddMap from "./pages/admin/Daftar/DaftarMap";
+import DaftarFasilitas from "./pages/admin/Daftar/DaftarFasilitas";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
 import EditPenginapan from "./pages/admin/edit/EditPenginapan";
 import EditMap from "./pages/admin/edit/EditMap";
+import EditPaketWisata from "./pages/admin/edit/EditPaketWisata";
+import EditFasilitas from "./pages/admin/edit/EditFasilitas";
 
 import AboutPage from "./pages/user/AboutPage";
 import AttractionPage from "./pages/user/Wisata/WisataPage";
@@ -134,11 +138,15 @@ const AppContent = () => {
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                                <Route path="/admin/add/attraction" element={<AddAttraction />} />
-                                <Route path="/admin/add/facilities" element={<AccomodationList />} />
-                                <Route path="/admin/add/map" element={<AddMap />} />
+                                <Route path="/admin/daftar/wisata" element={<AddAttraction />} />
+                                <Route path="/admin/daftar/penginapan" element={<AccomodationList />} />
+                                <Route path="/admin/daftar/map" element={<AddMap />} />
+                                <Route path="/admin/daftar/paketWisata" element={<DaftarPaketWisataPage />} />
+                                <Route path="/admin/daftar/fasilitas" element={<DaftarFasilitas />} />
                                 <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />
                                 <Route path="/admin/edit/facilities/:id" element={<EditPenginapan />} />
+                                <Route path="/admin/edit/fasilitas/:id" element={<EditFasilitas />} />
+                                <Route path="/admin/edit/paket/:id" element={<EditPaketWisata />} />
                                 <Route path="/admin/edit/map/:id" element={<EditMap />} />
                             </Route>
                             <Route path="*" element={<Navigate to="/not-found" replace />} />

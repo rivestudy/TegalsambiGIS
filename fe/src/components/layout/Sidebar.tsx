@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaMapMarkedAlt, FaHotel, FaSignOutAlt, FaTree, FaTachometerAlt } from "react-icons/fa";
+import { FaSuitcaseRolling } from "react-icons/fa";
+import { FaBuilding } from "react-icons/fa";
 
 const AdminSidebar: React.FC = () => {
     const location = useLocation();
@@ -30,17 +32,27 @@ const AdminSidebar: React.FC = () => {
                     <span>Dashboard</span>
                 </Link>
 
-                <Link to="/admin/add/attraction" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/add/attraction")}`}>
+                <Link to="/admin/daftar/wisata" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/wisata")}`}>
                     <FaTree />
                     <span>Wisata</span>
                 </Link>
 
-                <Link to="/admin/add/facilities" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/add/facilities")}`}>
+                <Link to="/admin/daftar/paketWisata" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/paketWisata")}`}>
+                    <FaSuitcaseRolling />
+                    <span>Paket Wisata</span>
+                </Link>
+
+                <Link to="/admin/daftar/fasilitas" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/fasilitas")}`}>
+                    <FaBuilding />
+                    <span>Fasilitas</span>
+                </Link>
+
+                <Link to="/admin/daftar/penginapan" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/penginapan")}`}>
                     <FaHotel />
                     <span>Penginapan</span>
                 </Link>
 
-                <Link to="/admin/add/map" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/add/map")}`}>
+                <Link to="/admin/daftar/map" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/map")}`}>
                     <FaMapMarkedAlt />
                     <span>WebGIS</span>
                 </Link>

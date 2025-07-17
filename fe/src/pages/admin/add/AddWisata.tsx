@@ -12,13 +12,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         category: "",
         name: "",
         description: "",
-        price: "", // Changed from ticketPrice to match backend
-        time_open_close: "", // Changed from openingHours
+        price: "",
+        time_open_close: "",
         phone: "",
         email: "",
         instagram: "",
         facilities: "",
-        points_of_attraction: "", // Changed from activities
+        points_of_attraction: "",
         images: [] as File[],
     });
 
@@ -38,8 +38,6 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         e.preventDefault();
 
         const formData = new FormData();
-
-        // Append all text fields
         formData.append("category", form.category);
         formData.append("name", form.name);
         formData.append("description", form.description);
@@ -48,23 +46,18 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         formData.append("phone", form.phone);
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
-
-        // Convert comma-separated strings to JSON array strings
         formData.append("facilities", JSON.stringify(form.facilities.split(",").map((f) => f.trim())));
         formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map((a) => a.trim())));
-
-        // Append images
         form.images.forEach((image) => {
             formData.append("images", image);
         });
 
         try {
-            // We must override the default content-type for FormData
             await axiosInstance.post("/data/attraction", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Wisata berhasil ditambahkan!");
-            onFormSubmit(); // Switch back to the list view
+            onFormSubmit();
         } catch (error) {
             console.error("Failed to add attraction:", error);
             toast.error("Gagal menambahkan wisata.");
@@ -73,11 +66,11 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
 
     return (
         <div className="max-w-6xl p-6 mx-auto mt-4">
-            <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800"> Tambah Wisata</h1>
+            <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">Tambah Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Kategori Wisata</label>
-                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required>
+                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Religi">Wisata Religi</option>
                         <option value="Budaya">Wisata Budaya</option>
@@ -86,40 +79,77 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Nama Wisata</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <input
+                        type="text"
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="Masukkan nama wisata"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        required
+                    />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Deskripsi</label>
-                    <textarea name="description" value={form.description} onChange={handleChange} rows={4} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <textarea
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                        rows={4}
+                        placeholder="Tuliskan deskripsi wisata"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        required
+                    />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga Tiket (per orang)</label>
-                    <input type="text" name="price" value={form.price} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" placeholder="e.g., Rp 10.000" />
+                    <input type="text" name="price" value={form.price} onChange={handleChange} placeholder="e.g., Rp 10.000" className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Jam Operasional</label>
-                    <input type="text" name="time_open_close" placeholder="e.g., Senin - Minggu, 08.00 - 17.00" value={form.time_open_close} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <input
+                        type="text"
+                        name="time_open_close"
+                        value={form.time_open_close}
+                        onChange={handleChange}
+                        placeholder="e.g., Senin - Minggu, 08.00 - 17.00"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                    />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Telepon</label>
-                    <input type="text" name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <input
+                        type="text"
+                        name="phone"
+                        value={form.phone}
+                        onChange={handleChange}
+                        placeholder="Nomor telepon yang bisa dihubungi"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                    />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Alamat email kontak" className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Instagram</label>
-                    <input type="text" name="instagram" placeholder="e.g., @namawisata" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400" />
+                    <input
+                        type="text"
+                        name="instagram"
+                        value={form.instagram}
+                        onChange={handleChange}
+                        placeholder="e.g., @namawisata"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                    />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>
                     <textarea
                         name="facilities"
-                        placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung"
                         value={form.facilities}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
+                        placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -127,10 +157,10 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     <label className="block mb-1 font-semibold">Daya Tarik Utama</label>
                     <textarea
                         name="points_of_attraction"
-                        placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni"
                         value={form.points_of_attraction}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400"
+                        placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni"
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -150,7 +180,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </button>
                 </div>
             </form>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />;
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
         </div>
     );
 };
