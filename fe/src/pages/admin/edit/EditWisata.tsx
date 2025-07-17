@@ -11,6 +11,7 @@ interface AttractionFormState {
     time_open_close: string;
     phone: string;
     email: string;
+    location: string;
     instagram: string;
     facilities: string; // Comma-separated string for the form
     points_of_attraction: string; // Comma-separated string for the form
@@ -29,6 +30,7 @@ const EditWisata: React.FC = () => {
         phone: "",
         email: "",
         instagram: "",
+        location: "",
         facilities: "",
         points_of_attraction: "",
     });
@@ -50,6 +52,7 @@ const EditWisata: React.FC = () => {
                     phone: data.phone || "",
                     email: data.email || "",
                     instagram: data.instagram || "",
+                    location: data.location || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities.join(', ') : "",
                     points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(', ') : "",
                 });
@@ -82,7 +85,7 @@ const EditWisata: React.FC = () => {
         try {
             await axiosInstance.put(`/data/attraction/${id}`, payload);
             alert("Data berhasil diperbarui!");
-            navigate("/admin/add/attraction");
+            navigate("/admin/daftar/wisata");
         } catch (error) {
             console.error("Failed to update attraction:", error);
             alert("Gagal memperbarui data.");
@@ -129,6 +132,10 @@ const EditWisata: React.FC = () => {
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Instagram</label>
                     <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Lokasi</label>
+                    <input name="location" value={form.location} onChange={handleChange} className="w-full p-2 border rounded" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>

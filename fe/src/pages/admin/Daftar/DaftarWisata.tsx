@@ -36,7 +36,7 @@ const AddAttractionPage: React.FC = () => {
     }, [activeTab]);
 
     const handleEdit = (id: number) => {
-        navigate(`/admin/edit/attraction/${id}`);
+        navigate(`/admin/edit/wisata/${id}`);
     };
 
     const handleDelete = async (id: number) => {

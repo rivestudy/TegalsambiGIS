@@ -13,11 +13,11 @@ import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/user/LandingPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
-import AddAttraction from "./pages/admin/Daftar/DaftarWisata";
-import AccomodationList from "./pages/admin/Daftar/DaftarPenginapan";
-import DaftarPaketWisataPage from "./pages/admin/Daftar/DaftarPaketWisata";
-import AddMap from "./pages/admin/Daftar/DaftarMap";
-import DaftarFasilitas from "./pages/admin/Daftar/DaftarFasilitas";
+import AddAttraction from "./pages/admin/daftar/DaftarWisata";
+import AccomodationList from "./pages/admin/daftar/DaftarPenginapan";
+import DaftarPaketWisataPage from "./pages/admin/daftar/DaftarPaketWisata";
+import AddMap from "./pages/admin/daftar/DaftarMap";
+import DaftarFasilitas from "./pages/admin/daftar/DaftarFasilitas";
 
 import EditWisata from "./pages/admin/edit/EditWisata";
 import EditPenginapan from "./pages/admin/edit/EditPenginapan";
@@ -141,10 +141,10 @@ const AppContent = () => {
                                 <Route path="/admin/daftar/wisata" element={<AddAttraction />} />
                                 <Route path="/admin/daftar/penginapan" element={<AccomodationList />} />
                                 <Route path="/admin/daftar/map" element={<AddMap />} />
-                                <Route path="/admin/daftar/paketWisata" element={<DaftarPaketWisataPage />} />
+                                <Route path="/admin/daftar/paket" element={<DaftarPaketWisataPage />} />
                                 <Route path="/admin/daftar/fasilitas" element={<DaftarFasilitas />} />
-                                <Route path="/admin/edit/attraction/:id" element={<EditWisata />} />
-                                <Route path="/admin/edit/facilities/:id" element={<EditPenginapan />} />
+                                <Route path="/admin/edit/wisata/:id" element={<EditWisata />} />
+                                <Route path="/admin/edit/penginapan/:id" element={<EditPenginapan />} />
                                 <Route path="/admin/edit/fasilitas/:id" element={<EditFasilitas />} />
                                 <Route path="/admin/edit/paket/:id" element={<EditPaketWisata />} />
                                 <Route path="/admin/edit/map/:id" element={<EditMap />} />

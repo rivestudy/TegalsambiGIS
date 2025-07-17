@@ -36,7 +36,7 @@ const AccommodationList: React.FC = () => {
 
     const handleEdit = (id: number) => {
         // Correct navigation path for editing an accommodation
-        navigate(`/admin/edit/accommodation/${id}`);
+        navigate(`/admin/edit/penginapan/${id}`);
     };
 
     const handleDelete = async (id: number) => {

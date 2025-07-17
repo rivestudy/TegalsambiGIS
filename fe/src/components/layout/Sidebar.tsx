@@ -19,10 +19,10 @@ const AdminSidebar: React.FC = () => {
     };
 
     return (
-        <aside className="h-screen w-64 bg-gray-900 text-white flex flex-col fixed">
+        <aside className="fixed flex flex-col w-64 h-screen text-white bg-gray-900">
             {/* Logo */}
-            <div className="px-6 mt-4 flex items-center justify-center py-4">
-                <img src="/logoWeb.png" alt="Logo" className="h-12 object-contain" />
+            <div className="flex items-center justify-center px-6 py-4 mt-4">
+                <img src="/logoWeb.png" alt="Logo" className="object-contain h-12" />
             </div>
 
             {/* Navigation */}
@@ -37,7 +37,7 @@ const AdminSidebar: React.FC = () => {
                     <span>Wisata</span>
                 </Link>
 
-                <Link to="/admin/daftar/paketWisata" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/paketWisata")}`}>
+                <Link to="/admin/daftar/paket" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/paketWisata")}`}>
                     <FaSuitcaseRolling />
                     <span>Paket Wisata</span>
                 </Link>
@@ -60,7 +60,7 @@ const AdminSidebar: React.FC = () => {
 
             {/* Logout */}
             <div className="px-4 py-4 border-t border-gray-700">
-                <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-semibold">
+                <button onClick={handleLogout} className="flex items-center justify-center w-full gap-2 px-4 py-2 font-semibold text-white bg-red-600 rounded hover:bg-red-700">
                     <FaSignOutAlt />
                     Logout
                 </button>

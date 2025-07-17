@@ -18,6 +18,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         email: "",
         instagram: "",
         facilities: "",
+        location: "",
         points_of_attraction: "",
         images: [] as File[],
     });
@@ -46,6 +47,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         formData.append("phone", form.phone);
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
+        formData.append("location", form.location);
         formData.append("facilities", JSON.stringify(form.facilities.split(",").map((f) => f.trim())));
         formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map((a) => a.trim())));
         form.images.forEach((image) => {
@@ -70,7 +72,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Kategori Wisata</label>
-                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" required>
+                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Religi">Wisata Religi</option>
                         <option value="Budaya">Wisata Budaya</option>
@@ -85,7 +87,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="Masukkan nama wisata"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
@@ -97,13 +99,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         rows={4}
                         placeholder="Tuliskan deskripsi wisata"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga Tiket (per orang)</label>
-                    <input type="text" name="price" value={form.price} onChange={handleChange} placeholder="e.g., Rp 10.000" className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" />
+                    <input type="text" name="price" value={form.price} onChange={handleChange} placeholder="e.g., Rp 10.000" className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Jam Operasional</label>
@@ -113,7 +115,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.time_open_close}
                         onChange={handleChange}
                         placeholder="e.g., Senin - Minggu, 08.00 - 17.00"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div>
@@ -124,12 +126,12 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.phone}
                         onChange={handleChange}
                         placeholder="Nomor telepon yang bisa dihubungi"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Alamat email kontak" className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400" />
+                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Alamat email kontak" className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Instagram</label>
@@ -139,7 +141,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.instagram}
                         onChange={handleChange}
                         placeholder="e.g., @namawisata"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div className="col-span-2">
@@ -149,7 +151,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.facilities}
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -160,7 +162,18 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.points_of_attraction}
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        rows={2}
+                    />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Lokasi</label>
+                    <textarea
+                        name="location"
+                        value={form.location}
+                        onChange={handleChange}
+                        placeholder="Koordinat, misal -6.614819, 110.651766"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>

@@ -1,47 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import AddFasilitas from "../add/AddFasilitas";
+import axiosInstance from "../../../utils/axiosInstance"; // Make sure this exists
 
 interface Fasilitas {
     id: number;
-    nama_fasilitas: string;
-    deskripsi_fasilitas: string;
-    sub_fasilitas: string[];
-    lokasi_fasilitas: string;
+    name: string;
+    description: string;
+    facilities: string[];
+    location: string;
 }
 
 const DaftarFasilitas: React.FC = () => {
     const navigate = useNavigate();
-    const [fasilitas, setFasilitas] = useState<Fasilitas[]>([
-        {
-            id: 1,
-            nama_fasilitas: "Aula Serbaguna",
-            deskripsi_fasilitas: "Tempat serbaguna untuk rapat dan acara besar.",
-            sub_fasilitas: ["Proyektor", "Kursi Lipat", "AC"],
-            lokasi_fasilitas: "Tegalsambi",
-        },
-        {
-            id: 2,
-            nama_fasilitas: "Perpustakaan Digital",
-            deskripsi_fasilitas: "Perpustakaan dengan koleksi digital lengkap.",
-            sub_fasilitas: ["Komputer", "Wi-Fi", "Rak Buku"],
-            lokasi_fasilitas: "Jepara",
-        },
-    ]);
-
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
+    const [fasilitas, setFasilitas] = useState<Fasilitas[]>([]);
+
+    useEffect(() => {
+        fetchFasilitas();
+    }, []);
+
+    const fetchFasilitas = async () => {
+        try {
+            const response = await axiosInstance.get("/data/facility");
+            setFasilitas(response.data);
+        } catch (error) {
+            console.error("Gagal mengambil data fasilitas:", error);
+        }
+    };
 
     const handleEdit = (id: number) => {
         navigate(`/admin/edit/fasilitas/${id}`);
     };
 
-    // const handleDelete = (id: number) => {
-    //     if (confirm("Yakin ingin menghapus fasilitas ini?")) {
-    //         setFasilitas(fasilitas.filter((item) => item.id !== id));
-    //         alert("Fasilitas berhasil dihapus!");
-    //     }
-    // };
+    const handleDelete = async (id: number) => {
+        if (window.confirm("Yakin ingin menghapus fasilitas ini?")) {
+            try {
+                await axiosInstance.delete(`/data/facility/${id}`);
+                alert("Data fasilitas berhasil dihapus!");
+                setFasilitas(fasilitas.filter((item) => item.id !== id));
+            } catch (error) {
+                console.error("Gagal menghapus fasilitas:", error);
+                alert("Gagal menghapus data fasilitas.");
+            }
+        }
+    };
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
@@ -78,10 +82,16 @@ const DaftarFasilitas: React.FC = () => {
                                 ) : (
                                     fasilitas.map((item) => (
                                         <tr key={item.id} className="transition hover:bg-gray-50">
-                                            <td className="px-4 py-2 font-medium text-gray-800 border">{item.nama_fasilitas}</td>
-                                            <td className="px-4 py-2 text-gray-600 border">{item.deskripsi_fasilitas}</td>
-                                            <td className="px-4 py-2 text-gray-600 border">{item.sub_fasilitas.join(", ")}</td>
-                                            <td className="px-4 py-2 text-gray-600 border">{item.lokasi_fasilitas}</td>
+                                            <td className="px-4 py-2 font-medium text-gray-800 border">{item.name}</td>
+                                            <td className="px-4 py-2 text-gray-600 border">{item.description}</td>
+                                            <td className="px-4 py-2 text-gray-600 border">
+                                                <ul className="list-disc list-inside">
+                                                    {item.facilities.map((sub, i) => (
+                                                        <li key={i}>{sub}</li>
+                                                    ))}
+                                                </ul>
+                                            </td>
+                                            <td className="px-4 py-2 text-gray-600 border">{item.location}</td>
                                             <td className="px-4 py-2 space-x-2 text-center border">
                                                 <button onClick={() => handleEdit(item.id)} className="text-blue-600 transition hover:text-blue-800" title="Edit">
                                                     <FiEdit className="inline-block" />
@@ -99,7 +109,10 @@ const DaftarFasilitas: React.FC = () => {
                 </div>
             )}
 
-            {activeTab === "form" && <AddFasilitas onFormSubmit={() => setActiveTab("list")} />}
+            {activeTab === "form" && <AddFasilitas onFormSubmit={() => {
+                fetchFasilitas(); // refresh list
+                setActiveTab("list");
+            }} />}
         </div>
     );
 };

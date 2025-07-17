@@ -20,9 +20,9 @@ const parseJsonFields = (row, fields) => {
 
 exports.getAll = async (table) => {
   const [rows] = await pool.query(`SELECT * FROM ??`, [table]);
-  const jsonFields = ['images', 'facilities', 'points_of_attraction', 'attraction_ids'];
+  // The 'attraction_ids' field could be added here if it exists in any table
+  const jsonFields = ['images', 'facilities', 'points_of_attraction'];
 
-  // Parse JSON fields for all returned rows
   rows.forEach(row => parseJsonFields(row, jsonFields));
 
   return rows;
@@ -30,14 +30,14 @@ exports.getAll = async (table) => {
 
 exports.getById = async (table, id) => {
   const [rows] = await pool.query(`SELECT * FROM ?? WHERE id = ?`, [table, id]);
-  
+
   if (rows[0]) {
     const row = rows[0];
-    const jsonFields = ['images', 'facilities', 'points_of_attraction', 'attraction_ids'];
-    
-    // Parse JSON fields for the single row
+    // The 'attraction_ids' field could be added here if it exists in any table
+    const jsonFields = ['images', 'facilities', 'points_of_attraction'];
+
     parseJsonFields(row, jsonFields);
-    
+
     return row;
   }
 
@@ -49,7 +49,7 @@ exports.create = async (table, data) => {
   if (data.facilities) data.facilities = JSON.stringify(data.facilities);
   if (data.points_of_attraction) data.points_of_attraction = JSON.stringify(data.points_of_attraction);
   if (data.images) data.images = JSON.stringify(data.images);
-  if (data.attraction_ids) data.attraction_ids = JSON.stringify(data.attraction_ids); // ✅ Handle pakets field
+  // --- REMOVED: The line handling 'attraction_ids' ---
 
   let query, values;
 
@@ -59,9 +59,9 @@ exports.create = async (table, data) => {
   } else if (table === 'facilities') {
     query = `INSERT INTO ?? (name, description, facilities, location, images) VALUES (?, ?, ?, ?, ?)`;
     values = [table, data.name, data.description, data.facilities, data.location, data.images];
-  } else if (table === 'pakets') { // ✅ Add logic for 'pakets' table
-    query = `INSERT INTO ?? (name, description, price, attraction_ids, accommodation_id, images) VALUES (?, ?, ?, ?, ?, ?)`;
-    values = [table, data.name, data.description, data.price, data.attraction_ids, data.accommodation_id, data.images];
+  } else if (table === 'pakets') {
+    query = `INSERT INTO ?? (name, description, price, facilities, phone, images) VALUES (?, ?, ?, ?, ?, ?)`;
+    values = [table, data.name, data.description, data.price, data.facilities, data.phone, data.images];
   } else {
     throw new Error('Invalid table for creation');
   }
@@ -79,10 +79,10 @@ exports.update = async (table, id, data) => {
   if (data.facilities) data.facilities = JSON.stringify(data.facilities);
   if (data.points_of_attraction) data.points_of_attraction = JSON.stringify(data.points_of_attraction);
   if (data.images && typeof data.images !== 'string') data.images = JSON.stringify(data.images);
-  if (data.attraction_ids) data.attraction_ids = JSON.stringify(data.attraction_ids); // ✅ Handle pakets field
+  // --- REMOVED: The line handling 'attraction_ids' ---
 
   const fields = Object.keys(data);
-  const setClauses = fields.map(field => `\`${field}\` = ?`).join(', '); // Use backticks for safety
+  const setClauses = fields.map(field => `\`${field}\` = ?`).join(', ');
   const values = Object.values(data);
 
   const query = `UPDATE ?? SET ${setClauses} WHERE id = ?`;

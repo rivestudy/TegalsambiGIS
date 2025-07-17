@@ -13,7 +13,8 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
         deskripsi_fasilitas: "",
         sub_fasilitas: "",
         lokasi_fasilitas: "",
-        gambar_fasilitas: [] as File[],
+        // --- CHANGED: Renamed for consistency ---
+        images: [] as File[],
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -24,7 +25,8 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (files) {
-            setForm({ ...form, gambar_fasilitas: Array.from(files) });
+            // --- CHANGED: Updated state property ---
+            setForm({ ...form, images: Array.from(files) });
         }
     };
 
@@ -32,16 +34,18 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append("nama_fasilitas", form.nama_fasilitas);
-        formData.append("deskripsi_fasilitas", form.deskripsi_fasilitas);
-        formData.append("sub_fasilitas", JSON.stringify(form.sub_fasilitas.split(",").map((s) => s.trim())));
-        formData.append("lokasi_fasilitas", form.lokasi_fasilitas);
-        form.gambar_fasilitas.forEach((image) => {
-            formData.append("gambar_fasilitas", image);
+        formData.append("name", form.nama_fasilitas);
+        formData.append("description", form.deskripsi_fasilitas);
+        formData.append("facilities", JSON.stringify(form.sub_fasilitas.split(",").map((s) => s.trim())));
+        formData.append("location", form.lokasi_fasilitas);
+    
+        form.images.forEach((image) => {
+            formData.append("images", image);
         });
 
         try {
-            await axiosInstance.post("/data/fasilitas", formData, {
+            // The endpoint remains the same, but the payload is now correct
+            await axiosInstance.post("/data/facility", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Fasilitas berhasil ditambahkan!");
@@ -64,7 +68,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         value={form.nama_fasilitas}
                         onChange={handleChange}
                         placeholder="Contoh: Aula, Lapangan, Perpustakaan"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
@@ -76,7 +80,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Deskripsi lengkap tentang fasilitas ini"
                         rows={3}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
@@ -88,7 +92,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Proyektor, Kursi Lipat, AC"
                         rows={2}
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div>
@@ -99,7 +103,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         value={form.lokasi_fasilitas}
                         onChange={handleChange}
                         placeholder="Contoh: Tegalsambi, Jepara"
-                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 text-sm placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
