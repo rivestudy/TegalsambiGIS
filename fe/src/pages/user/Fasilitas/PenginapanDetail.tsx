@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild } from "react-icons/fa";
 import { GiCampingTent } from "react-icons/gi";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // Interface untuk data Akomodasi
 interface Accommodation {
@@ -59,7 +60,7 @@ const AccommodationDetail = () => {
         fetchAccommodation();
     }, [id]);
 
-    if (loading) return <div className="flex items-center justify-center h-screen">Memuat Detail Akomodasi...</div>;
+    if (loading) return <LoadingAnimation />;
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
     if (!item) return <div className="flex items-center justify-center h-screen">Akomodasi tidak ditemukan.</div>;
 

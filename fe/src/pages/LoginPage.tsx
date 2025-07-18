@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../utils/axiosInstance";
+import LoadingAnimation from "../components/LoadingAnimation";
 
 const LoginPage: React.FC = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [initialLoading, setInitialLoading] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -19,7 +21,7 @@ const LoginPage: React.FC = () => {
             const data = response.data;
 
             if (data.token) {
-                sessionStorage.setItem("token", data.token);         // ✅ safer than localStorage
+                sessionStorage.setItem("token", data.token); // ✅ safer than localStorage
                 sessionStorage.setItem("userRole", "admin");
                 navigate("/admin/dashboard", { replace: true });
             } else {
@@ -32,6 +34,16 @@ const LoginPage: React.FC = () => {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setInitialLoading(false);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
+    if (initialLoading) {
+        return <LoadingAnimation />;
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen pt-20 bg-gradient-to-r from-blue-900 to-cyan-600">
@@ -56,7 +68,9 @@ const LoginPage: React.FC = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div>
-                            <label htmlFor="email" className="block mb-1 text-sm text-gray-600">Email</label>
+                            <label htmlFor="email" className="block mb-1 text-sm text-gray-600">
+                                Email
+                            </label>
                             <input
                                 type="email"
                                 id="email"
@@ -69,7 +83,9 @@ const LoginPage: React.FC = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block mb-1 text-sm text-gray-600">Password</label>
+                            <label htmlFor="password" className="block mb-1 text-sm text-gray-600">
+                                Password
+                            </label>
                             <input
                                 type="password"
                                 id="password"
@@ -81,11 +97,7 @@ const LoginPage: React.FC = () => {
                             />
                         </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className={`w-full py-3 text-white rounded-lg text-lg font-semibold transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-                        >
+                        <button type="submit" disabled={loading} className={`w-full py-3 text-white rounded-lg text-lg font-semibold transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}>
                             {loading ? "Memproses..." : "Masuk"}
                         </button>
                     </form>

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaMosque, FaTicketAlt } from "react-icons/fa";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface Facility {
     id: number;
@@ -46,7 +47,7 @@ const FacilitiesDetail = () => {
         fetchFacility();
     }, [id]);
 
-    if (loading) return <div className="flex items-center justify-center h-screen">Memuat Detail Fasilitas...</div>;
+    if (loading) return <LoadingAnimation />;
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
     if (!item) return <div className="flex items-center justify-center h-screen">Fasilitas tidak ditemukan.</div>;
 

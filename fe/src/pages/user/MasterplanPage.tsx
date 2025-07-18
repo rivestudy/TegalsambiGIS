@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import { Link } from "react-router-dom";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
     switch (direction) {
@@ -22,7 +23,17 @@ const animationConfig: Transition = {
     duration: 2.5,
 };
 
-const masterplan: React.FC = () => {
+const Masterplan: React.FC = () => {
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
+    if (loading) return <LoadingAnimation />;
+
     return (
         <div className="min-h-screen px-4 py-12 pt-20 bg-gradient-to-r from-emerald-700 to-cyan-500">
             {/* Breadcrumb dan Judul */}
@@ -73,4 +84,4 @@ const masterplan: React.FC = () => {
     );
 };
 
-export default masterplan;
+export default Masterplan;

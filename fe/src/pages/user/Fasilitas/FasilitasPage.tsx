@@ -4,6 +4,7 @@ import type { Transition } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import HeroSection from "../../../components/HeroSection";
 import { Link } from "react-router-dom";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface Facility {
     id: number;
@@ -46,14 +47,15 @@ const PublicServicesPage = () => {
             } catch {
                 setError("Tidak dapat memuat data fasilitas dan penginapan.");
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 800);
             }
         };
         fetchAllData();
     }, []);
 
-    if (loading) return <div className="flex items-center justify-center h-screen">Memuat data fasilitas...</div>;
-
+    if (loading) return <LoadingAnimation />;
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
 
     return (

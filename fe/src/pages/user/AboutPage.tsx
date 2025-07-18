@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 const AboutPage = () => {
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
+    if (loading) {
+        return <LoadingAnimation />;
+    }
     return (
         <div
             className="relative min-h-screen bg-cover bg-center px-4 py-20 flex items-center justify-center"

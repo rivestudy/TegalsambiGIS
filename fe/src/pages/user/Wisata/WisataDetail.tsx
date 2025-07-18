@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild } from "react-icons/fa";
 import { GiCampingTent } from "react-icons/gi";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // 1. Define a detailed interface for the attraction data
 interface Attraction {
@@ -68,7 +69,7 @@ const AttractionDetail = () => {
         fetchAttraction();
     }, [id]); // Refetch if the ID in the URL changes
 
-    if (loading) return <div className="flex items-center justify-center h-screen">Memuat Detail Wisata...</div>;
+    if (loading) return <LoadingAnimation />;
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
     if (!item) return <div className="flex items-center justify-center h-screen">Wisata tidak ditemukan.</div>;
 

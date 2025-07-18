@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import { Link } from "react-router-dom";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
     switch (direction) {
@@ -55,6 +56,15 @@ const mapLinks: { [key: string]: { url: string; places: string[] } } = {
 
 const MapPage = () => {
     const [selectedFilter, setSelectedFilter] = useState("semua");
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
+
+        return () => clearTimeout(timer);
+    }, []);
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-blue-900 to-cyan-600 px-4 py-12 pt-16 pb-14">

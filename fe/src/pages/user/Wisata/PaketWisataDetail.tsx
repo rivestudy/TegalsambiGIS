@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-    FaPhoneAlt,
-    FaEnvelope,
-    FaInstagram,
-    FaUtensils,
-    FaBus,
-    FaHotel,
-    FaMapMarkerAlt,
-} from "react-icons/fa";
+import { FaPhoneAlt, FaEnvelope, FaInstagram, FaUtensils, FaBus, FaHotel, FaMapMarkerAlt } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
 import axios from "../../../utils/axiosInstance"; // adjust if needed
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface PaketWisata {
     id: number;
@@ -22,8 +15,7 @@ interface PaketWisata {
     images: string[];
 }
 
-const formatPrice = (price: number) =>
-    price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /paket`;
+const formatPrice = (price: number) => (price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /paket`);
 
 const facilityIcons: { [key: string]: React.ReactNode } = {
     Transportasi: <FaBus className="mr-2 text-black-600" />,
@@ -59,10 +51,8 @@ const PaketWisataDetail = () => {
         fetchPaket();
     }, [id]);
 
-    if (loading)
-        return <div className="flex items-center justify-center h-screen">Memuat detail paket wisata...</div>;
-    if (error || !paket)
-        return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+    if (loading) return <LoadingAnimation />;
+    if (error || !paket) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
 
     return (
         <div className="min-h-screen px-4 py-16 text-white bg-gradient-to-r from-blue-900 to-cyan-600">
@@ -127,9 +117,9 @@ const PaketWisataDetail = () => {
                     </div>
                     <div>
                         <h2 className="mb-2 font-semibold text-indigo-900">Fasilitas</h2>
-                            {paket.facilities.split(',').map((facility, index) => (
-                                <li key={index}>{facility.trim()}</li>
-                            ))}
+                        {paket.facilities.split(",").map((facility, index) => (
+                            <li key={index}>{facility.trim()}</li>
+                        ))}
                     </div>
                     <div>
                         <h2 className="mb-2 font-semibold text-indigo-900">Kontak & Reservasi</h2>

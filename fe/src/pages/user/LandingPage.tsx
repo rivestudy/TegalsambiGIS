@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import axios from "../../utils/axiosInstance";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 interface Item {
     id: number;
@@ -16,6 +17,7 @@ const LandingPage: React.FC = () => {
     const [accommodations, setAccommodations] = useState<Item[]>([]);
     const [facilities, setFacilities] = useState<Item[]>([]);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,6 +30,8 @@ const LandingPage: React.FC = () => {
             } catch (err: any) {
                 console.error(err);
                 setError("Gagal memuat data. Silakan coba lagi nanti.");
+            } finally {
+                setLoading(false); // ⬅️ Tambahkan ini
             }
         };
 
