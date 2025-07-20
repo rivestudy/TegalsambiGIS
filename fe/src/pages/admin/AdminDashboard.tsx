@@ -1,16 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaMosque, FaLandmark, FaUmbrellaBeach, FaHotel, FaChartBar, FaBoxOpen, FaTools } from "react-icons/fa";
+import LoadingAnimation from "../../components/LoadingAnimation";
 
 const AdminDashboard: React.FC = () => {
-    // Placeholder data (bisa di-fetch dari API nanti)
-    const stats = {
-        wisataReligi: 5,
-        wisataBudaya: 7,
-        wisataPesisir: 4,
-        penginapan: 10,
-        paketWisata: 3,
-        fasilitas: 8,
-    };
+    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState({
+        wisataReligi: 0,
+        wisataBudaya: 0,
+        wisataPesisir: 0,
+        penginapan: 0,
+        paketWisata: 0,
+        fasilitas: 0,
+    });
+
+    useEffect(() => {
+        // Simulasi fetch data dengan delay 800ms
+        const fetchData = async () => {
+            try {
+                // Bisa diganti dengan API call asli di sini
+                await new Promise((resolve) => setTimeout(resolve, 800));
+
+                // Setelah "fetch", set datanya
+                setStats({
+                    wisataReligi: 5,
+                    wisataBudaya: 7,
+                    wisataPesisir: 4,
+                    penginapan: 10,
+                    paketWisata: 3,
+                    fasilitas: 8,
+                });
+            } catch (err) {
+                console.error("Gagal memuat data dashboard:", err);
+            } finally {
+                setLoading(false); // Setelah delay, tampilkan dashboard
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="p-6 pt-12">

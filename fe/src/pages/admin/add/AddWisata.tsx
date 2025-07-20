@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface AddAttractionProps {
     onFormSubmit: () => void; // Callback to switch tab after submission
 }
 
 const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         category: "",
         name: "",
@@ -22,6 +24,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         points_of_attraction: "",
         images: [] as File[],
     });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -65,6 +74,8 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             toast.error("Gagal menambahkan wisata.");
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl p-6 mx-auto mt-4">

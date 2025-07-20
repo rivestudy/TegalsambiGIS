@@ -3,6 +3,7 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import AddAttraction from "../add/AddWisata"; // Form component
 import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // Define a more specific type for the data received from the API
 interface Attraction {
@@ -16,15 +17,21 @@ const AddAttractionPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
     const [filter, setFilter] = useState("");
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     // Function to fetch data from the server
     const fetchAttractions = async () => {
+        setLoading(true);
         try {
             const response = await axiosInstance.get("/data/attraction");
-            setAttractions(response.data);
+            setTimeout(() => {
+                setAttractions(response.data);
+                setLoading(false);
+            }, 800); // ⏳ Tambahan 800ms delay untuk smooth loading
         } catch (error) {
             console.error("Failed to fetch attractions:", error);
             alert("Gagal memuat data wisata.");
+            setLoading(false);
         }
     };
 
@@ -54,6 +61,8 @@ const AddAttractionPage: React.FC = () => {
     };
 
     const filteredData = filter ? attractions.filter((item) => item.category.toLowerCase() === filter.toLowerCase()) : attractions;
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
