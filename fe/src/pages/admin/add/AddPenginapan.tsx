@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface AddAccommodationProps {
     onFormSubmit: () => void;
 }
 
 const AddAccommodation: React.FC<AddAccommodationProps> = ({ onFormSubmit }) => {
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -18,6 +20,13 @@ const AddAccommodation: React.FC<AddAccommodationProps> = ({ onFormSubmit }) => 
         instagram: "",
         images: [] as File[],
     });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -60,6 +69,8 @@ const AddAccommodation: React.FC<AddAccommodationProps> = ({ onFormSubmit }) => 
             alert("Gagal menambahkan penginapan.");
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl p-6 mx-auto mt-4">

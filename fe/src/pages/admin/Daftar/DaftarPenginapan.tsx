@@ -3,6 +3,7 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import AddAccommodation from "../add/AddPenginapan"; // Renamed for clarity
 import axiosInstance from "../../../utils/axiosInstance";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // Interface for accommodation data from the API
 interface Accommodation {
@@ -16,11 +17,15 @@ const AccommodationList: React.FC = () => {
     const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     const fetchAccommodations = async () => {
         try {
             const response = await axiosInstance.get("/data/accommodation");
-            setAccommodations(response.data);
+            setTimeout(() => {
+                setAccommodations(response.data);
+                setLoading(false);
+            }, 800); // ⏳ Tambahan 800ms delay untuk smooth loading
         } catch (error) {
             console.error("Failed to fetch accommodations:", error);
             alert("Gagal memuat data penginapan.");
@@ -52,6 +57,8 @@ const AccommodationList: React.FC = () => {
             }
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">

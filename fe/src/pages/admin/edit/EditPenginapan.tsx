@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../utils/axiosInstance";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // Form state interface
 interface AccommodationFormState {
@@ -18,6 +19,7 @@ interface AccommodationFormState {
 const EditAccommodation: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     const [form, setForm] = useState<AccommodationFormState>({
         name: "",
@@ -36,7 +38,7 @@ const EditAccommodation: React.FC = () => {
             try {
                 const response = await axiosInstance.get(`/data/accommodation/${id}`);
                 const data = response.data;
-                
+
                 // Transform backend data (arrays) to form data (comma-separated strings)
                 setForm({
                     name: data.name || "",
@@ -46,12 +48,14 @@ const EditAccommodation: React.FC = () => {
                     phone: data.phone || "",
                     email: data.email || "",
                     instagram: data.instagram || "",
-                    facilities: Array.isArray(data.facilities) ? data.facilities.join(', ') : "",
-                    points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(', ') : "",
+                    facilities: Array.isArray(data.facilities) ? data.facilities.join(", ") : "",
+                    points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(", ") : "",
                 });
             } catch (error) {
                 console.error("Failed to fetch accommodation data:", error);
                 alert("Gagal memuat data penginapan.");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -71,8 +75,8 @@ const EditAccommodation: React.FC = () => {
         // Transform form data back to the structure the backend expects
         const payload = {
             ...form,
-            facilities: form.facilities.split(',').map(f => f.trim()),
-            points_of_attraction: form.points_of_attraction.split(',').map(a => a.trim()),
+            facilities: form.facilities.split(",").map((f) => f.trim()),
+            points_of_attraction: form.points_of_attraction.split(",").map((a) => a.trim()),
         };
 
         try {
@@ -85,6 +89,8 @@ const EditAccommodation: React.FC = () => {
             alert("Gagal memperbarui data.");
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-4xl px-6 py-6 mx-auto">
@@ -108,11 +114,11 @@ const EditAccommodation: React.FC = () => {
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>
-                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..."/>
+                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Daya Tarik Sekitar</label>
-                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..."/>
+                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Telepon</label>
@@ -127,11 +133,11 @@ const EditAccommodation: React.FC = () => {
                     <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
                 </div>
                 <div className="flex justify-end col-span-2 space-x-4">
-                    <button type="button" onClick={() => navigate("/admin/add/accommodation")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
+                    <button type="button" onClick={() => navigate("/admin/daftar/penginapan")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal
                     </button>
                     <button type="submit" className="px-5 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium shadow-md">
-                        Simpan Perubahan
+                        Perbarui Penginapan
                     </button>
                 </div>
             </form>

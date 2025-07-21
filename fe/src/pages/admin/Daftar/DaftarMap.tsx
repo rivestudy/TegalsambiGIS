@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import AddMap from "../add/AddMap"; // komponen form tambah lokasi
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const DaftarLokasi: React.FC = () => {
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
     const [selectedCategory, setSelectedCategory] = useState("semua");
+    const [loading, setLoading] = useState(true);
 
     const dummyData = [
         {
@@ -69,6 +71,14 @@ const DaftarLokasi: React.FC = () => {
         { label: "Penginapan", value: "penginapan" },
     ];
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000); // simulasi loading 1 detik
+
+        return () => clearTimeout(timer);
+    }, []);
+
     const categoryLabelMap: { [key: string]: string } = {
         wisataReligi: "Wisata Religi",
         wisataBudaya: "Wisata Budaya",
@@ -92,6 +102,8 @@ const DaftarLokasi: React.FC = () => {
     };
 
     const filteredData = selectedCategory === "semua" ? dummyData : dummyData.filter((item) => item.category === selectedCategory);
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl mx-auto px-6 py-6">

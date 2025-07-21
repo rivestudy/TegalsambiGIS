@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface LokasiData {
     id: number;
@@ -13,6 +14,7 @@ interface LokasiData {
 const EditMap: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     const [form, setForm] = useState<LokasiData>({
         id: Number(id),
@@ -43,7 +45,12 @@ const EditMap: React.FC = () => {
             },
         ];
         const selected = dummyData.find((item) => item.id === Number(id));
-        if (selected) setForm(selected);
+        if (selected) {
+            setForm(selected);
+        }
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
     }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -56,6 +63,8 @@ const EditMap: React.FC = () => {
         console.log("Data Lokasi Diperbarui:", form);
         navigate("/admin/add/map");
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-3xl mx-auto px-6 py-6">
@@ -102,7 +111,7 @@ const EditMap: React.FC = () => {
 
                 {/* Tombol Aksi */}
                 <div className="col-span-2 flex justify-end space-x-4">
-                    <button type="button" onClick={() => navigate("/admin/add/map")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
+                    <button type="button" onClick={() => navigate("/admin/daftar/map")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal
                     </button>
                     <button type="submit" className="px-5 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium shadow-md">

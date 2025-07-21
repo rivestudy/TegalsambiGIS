@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 // This interface matches the form state
 interface AttractionFormState {
@@ -20,6 +21,7 @@ interface AttractionFormState {
 const EditWisata: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     const [form, setForm] = useState<AttractionFormState>({
         category: "",
@@ -34,7 +36,7 @@ const EditWisata: React.FC = () => {
         facilities: "",
         points_of_attraction: "",
     });
-    
+
     // Fetch data for the specific attraction
     useEffect(() => {
         const fetchAttraction = async () => {
@@ -53,12 +55,14 @@ const EditWisata: React.FC = () => {
                     email: data.email || "",
                     instagram: data.instagram || "",
                     location: data.location || "",
-                    facilities: Array.isArray(data.facilities) ? data.facilities.join(', ') : "",
-                    points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(', ') : "",
+                    facilities: Array.isArray(data.facilities) ? data.facilities.join(", ") : "",
+                    points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(", ") : "",
                 });
             } catch (error) {
                 console.error("Failed to fetch attraction data:", error);
                 alert("Gagal memuat data wisata.");
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -78,8 +82,8 @@ const EditWisata: React.FC = () => {
         // Prepare payload for the API, transforming data back
         const payload = {
             ...form,
-            facilities: form.facilities.split(',').map(f => f.trim()),
-            points_of_attraction: form.points_of_attraction.split(',').map(a => a.trim()),
+            facilities: form.facilities.split(",").map((f) => f.trim()),
+            points_of_attraction: form.points_of_attraction.split(",").map((a) => a.trim()),
         };
 
         try {
@@ -92,7 +96,9 @@ const EditWisata: React.FC = () => {
         }
     };
 
-    return (
+    return loading ? (
+        <LoadingAnimation />
+    ) : (
         <div className="max-w-4xl px-6 py-6 mx-auto">
             <h1 className="mb-4 text-2xl font-bold text-center">Edit Data Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border rounded-md shadow-md md:grid-cols-2">
@@ -139,18 +145,18 @@ const EditWisata: React.FC = () => {
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>
-                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..."/>
+                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Daya Tarik Utama</label>
-                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..."/>
+                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div className="flex justify-end col-span-2 space-x-4">
-                    <button type="button" onClick={() => navigate("/admin/add/attraction")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
+                    <button type="button" onClick={() => navigate("/admin/daftar/wisata")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal
                     </button>
                     <button type="submit" className="px-5 py-2.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium shadow-md">
-                        Simpan Perubahan
+                        Perbarui Wisata
                     </button>
                 </div>
             </form>

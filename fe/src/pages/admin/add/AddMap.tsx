@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const AddMap: React.FC = () => {
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         name: "",
         // description: "",
@@ -10,6 +12,13 @@ const AddMap: React.FC = () => {
         mapEmbed: "",
         // images: [] as File[],
     });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -28,6 +37,8 @@ const AddMap: React.FC = () => {
         console.log("Data lokasi disubmit:", form);
         // TODO: kirim ke server
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="p-6 max-w-5xl mx-auto">

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface AddFasilitasProps {
     onFormSubmit: () => void;
 }
 
 const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         nama_fasilitas: "",
         deskripsi_fasilitas: "",
@@ -16,6 +18,13 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
         // --- CHANGED: Renamed for consistency ---
         images: [] as File[],
     });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -38,7 +47,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
         formData.append("description", form.deskripsi_fasilitas);
         formData.append("facilities", JSON.stringify(form.sub_fasilitas.split(",").map((s) => s.trim())));
         formData.append("location", form.lokasi_fasilitas);
-    
+
         form.images.forEach((image) => {
             formData.append("images", image);
         });
@@ -55,6 +64,8 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
             toast.error("Gagal menambahkan fasilitas.");
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-4xl p-6 mx-auto mt-4">

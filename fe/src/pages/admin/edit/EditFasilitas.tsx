@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../utils/axiosInstance";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const EditFasilitas: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -28,6 +30,8 @@ const EditFasilitas: React.FC = () => {
             } catch (error) {
                 console.error("Gagal memuat data fasilitas:", error);
                 alert("Gagal memuat data fasilitas.");
+            } finally {
+                setLoading(false);
             }
         };
         fetchFasilitas();
@@ -69,6 +73,8 @@ const EditFasilitas: React.FC = () => {
         }
     };
 
+    if (loading) return <LoadingAnimation />;
+
     return (
         <div className="max-w-4xl p-6 mx-auto mt-4">
             <h1 className="pb-2 mb-4 text-2xl font-bold text-center text-gray-800">Edit Fasilitas</h1>
@@ -93,7 +99,10 @@ const EditFasilitas: React.FC = () => {
                     <label className="block mb-1 font-semibold">Ganti Gambar (opsional)</label>
                     <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full text-sm file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-end space-x-4">
+                    <button type="button" onClick={() => navigate("/admin/daftar/fasilitas")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
+                        Batal
+                    </button>
                     <button type="submit" className="px-6 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
                         Perbarui Fasilitas
                     </button>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import AddFasilitas from "../add/AddFasilitas";
 import axiosInstance from "../../../utils/axiosInstance"; // Make sure this exists
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface Fasilitas {
     id: number;
@@ -16,6 +17,7 @@ const DaftarFasilitas: React.FC = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<"list" | "form">("list");
     const [fasilitas, setFasilitas] = useState<Fasilitas[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchFasilitas();
@@ -24,7 +26,10 @@ const DaftarFasilitas: React.FC = () => {
     const fetchFasilitas = async () => {
         try {
             const response = await axiosInstance.get("/data/facility");
-            setFasilitas(response.data);
+            setTimeout(() => {
+                setFasilitas(response.data);
+                setLoading(false);
+            }, 500); // ⏳ Tambahan 800ms delay untuk smooth loading
         } catch (error) {
             console.error("Gagal mengambil data fasilitas:", error);
         }
@@ -46,6 +51,8 @@ const DaftarFasilitas: React.FC = () => {
             }
         }
     };
+
+    if (loading) return <LoadingAnimation />;
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
@@ -109,10 +116,14 @@ const DaftarFasilitas: React.FC = () => {
                 </div>
             )}
 
-            {activeTab === "form" && <AddFasilitas onFormSubmit={() => {
-                fetchFasilitas(); // refresh list
-                setActiveTab("list");
-            }} />}
+            {activeTab === "form" && (
+                <AddFasilitas
+                    onFormSubmit={() => {
+                        fetchFasilitas(); // refresh list
+                        setActiveTab("list");
+                    }}
+                />
+            )}
         </div>
     );
 };

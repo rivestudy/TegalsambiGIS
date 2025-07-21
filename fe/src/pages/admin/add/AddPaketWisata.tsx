@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axiosInstance from "../../../utils/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface AddPaketProps {
     onFormSubmit: () => void;
 }
 
 const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
+    const [loading, setLoading] = useState(true);
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -16,6 +18,13 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
         facilities: "",
         images: [] as File[],
     });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -54,6 +63,8 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
         }
     };
 
+    if (loading) return <LoadingAnimation />;
+
     return (
         <div className="max-w-4xl p-6 mx-auto mt-4">
             <h1 className="pb-2 mb-4 text-2xl font-bold text-center text-gray-800">Tambah Paket Wisata</h1>
@@ -64,7 +75,9 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                 <input name="phone" value={form.phone} onChange={handleChange} placeholder="Kontak" className="p-2 border border-gray-200 rounded" required />
                 <textarea name="facilities" value={form.facilities} onChange={handleChange} placeholder="Fasilitas, pisahkan koma" className="p-2 border border-gray-200 rounded" rows={2} />
                 <input type="file" multiple accept="image/*" onChange={handleFileChange} />
-                <button type="submit" className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">Simpan Paket</button>
+                <button type="submit" className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700">
+                    Simpan Paket
+                </button>
             </form>
             <ToastContainer />
         </div>

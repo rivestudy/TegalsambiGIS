@@ -37,7 +37,7 @@ const AdminSidebar: React.FC = () => {
                     <span>Wisata</span>
                 </Link>
 
-                <Link to="/admin/daftar/paket" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/paketWisata")}`}>
+                <Link to="/admin/daftar/paket" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/paket")}`}>
                     <FaSuitcaseRolling />
                     <span>Paket Wisata</span>
                 </Link>
