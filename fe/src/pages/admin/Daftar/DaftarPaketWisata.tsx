@@ -11,7 +11,7 @@ interface PaketWisata {
     description: string;
     price: string;
     phone: string;
-    facilities: string[]; // assuming it's already an array
+    facilities: string; // assuming it's already an array
 }
 
 const DaftarPaketWisata: React.FC = () => {

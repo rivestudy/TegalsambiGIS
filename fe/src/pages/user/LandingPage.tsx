@@ -11,6 +11,8 @@ interface Item {
     description: string;
     images: string[];
 }
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
+console.log(IMAGE_BASE_URL);
 
 const LandingPage: React.FC = () => {
     const [attractions, setAttractions] = useState<Item[]>([]);
@@ -46,15 +48,20 @@ const LandingPage: React.FC = () => {
         type: "spring",
     };
 
-    const sanitizeItems = (items: any[]): Item[] =>
-        items.map((item) => ({
-            ...item,
-            images: Array.isArray(item.images) ? item.images : [],
-        }));
+   const sanitizeItems = (items: any[]): Item[] =>
+    items.map((item) => ({
+        ...item,
+        images: Array.isArray(item.images)
+            ? item.images.map((img: any) =>
+                  typeof img?.dir === "string" ? img.dir : ""
+              ).filter(Boolean)
+            : [],
+    }));
 
     return (
         <div className="overflow-x-hidden font-sans text-gray-800">
             {/* Hero */}
+            
             <section className="relative flex items-center justify-center min-h-screen text-center text-white bg-fixed bg-center bg-no-repeat bg-cover" style={{ backgroundImage: "url('/pantaitegalsambi2.webp')" }}>
                 <div className="absolute inset-0 bg-black opacity-30"></div>
                 <div className="relative z-10">
@@ -92,7 +99,7 @@ const LandingPage: React.FC = () => {
                         <motion.div key={id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: idx * 0.3 }} viewport={{ once: true, amount: 0.8 }}>
                             <Link to={`/attraction/${id}`} className="block">
                                 <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl bg-blue-300/20">
-                                    <img src={images.length > 0 ? images[0] : fallbackImage} alt={name} className="object-cover w-full h-48" />
+                                    <img src={images.length > 0 ? `${IMAGE_BASE_URL}/${images[0]}` : fallbackImage} alt={name} className="object-cover w-full h-48" />
                                     <div className="p-4">
                                         <p className="text-[10px] uppercase tracking-widest text-purple-600 font-medium">Wisata</p>
                                         <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
@@ -125,8 +132,8 @@ const LandingPage: React.FC = () => {
                     {accommodations.slice(0, 3).map(({ id, name, images }, idx) => (
                         <motion.div key={id} initial={{ opacity: 0, x: 60 }} whileInView={{ opacity: 1, x: 0 }} transition={{ ...animationConfig, delay: idx * 0.3 }} viewport={{ once: true, amount: 0.8 }}>
                             <Link to={`/accommodation/${id}`} className="block">
-                                <article className="overflow-hidden transition transform bg-orange-300/20 border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
-                                    <img src={images.length > 0 ? images[0] : fallbackImage} alt={name} className="object-cover w-full h-48" />
+                                <article className="overflow-hidden transition transform border border-gray-200 shadow-md bg-orange-300/20 rounded-xl hover:scale-105 hover:shadow-xl">
+                                    <img src={images.length > 0 ? `${IMAGE_BASE_URL}/${images[0]}` : fallbackImage} alt={name} className="object-cover w-full h-48" />
                                     <div className="p-4">
                                         <p className="text-[10px] uppercase tracking-widest text-teal-600 font-medium">Akomodasi</p>
                                         <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
@@ -159,8 +166,8 @@ const LandingPage: React.FC = () => {
                     {facilities.slice(0, 3).map(({ id, name, images }, idx) => (
                         <motion.div key={id} initial={{ opacity: 0, y: -60 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: idx * 0.3 }} viewport={{ once: true, amount: 0.8 }}>
                             <Link to={`/facility/${id}`} className="block">
-                                <article className="overflow-hidden transition transform bg-green-300/20 border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl">
-                                    <img src={images.length > 0 ? images[0] : fallbackImage} alt={name} className="object-cover w-full h-48" />
+                                <article className="overflow-hidden transition transform border border-gray-200 shadow-md bg-green-300/20 rounded-xl hover:scale-105 hover:shadow-xl">
+                                    <img src={images.length > 0 ? `${IMAGE_BASE_URL}/${images[0]}` : fallbackImage} alt={name} className="object-cover w-full h-48" />
                                     <div className="p-4">
                                         <p className="text-[10px] uppercase tracking-widest text-blue-600 font-medium">Fasilitas</p>
                                         <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>

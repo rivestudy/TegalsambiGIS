@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+// EditWisata.tsx
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
-// This interface matches the form state
 interface AttractionFormState {
     category: string;
     name: string;
@@ -14,15 +14,15 @@ interface AttractionFormState {
     email: string;
     location: string;
     instagram: string;
-    facilities: string; // Comma-separated string for the form
-    points_of_attraction: string; // Comma-separated string for the form
+    facilities: string;
+    points_of_attraction: string;
+    images: File[];
 }
 
 const EditWisata: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-
     const [form, setForm] = useState<AttractionFormState>({
         category: "",
         name: "",
@@ -35,16 +35,13 @@ const EditWisata: React.FC = () => {
         location: "",
         facilities: "",
         points_of_attraction: "",
+        images: []
     });
 
-    // Fetch data for the specific attraction
     useEffect(() => {
         const fetchAttraction = async () => {
             try {
-                const response = await axiosInstance.get(`/data/attraction/${id}`);
-                const data = response.data;
-
-                // Transform backend data to match form state
+                const { data } = await axiosInstance.get(`/data/attraction/${id}`);
                 setForm({
                     category: data.category || "",
                     name: data.name || "",
@@ -57,18 +54,16 @@ const EditWisata: React.FC = () => {
                     location: data.location || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities.join(", ") : "",
                     points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(", ") : "",
+                    images: []
                 });
-            } catch (error) {
-                console.error("Failed to fetch attraction data:", error);
+            } catch (err) {
                 alert("Gagal memuat data wisata.");
             } finally {
                 setLoading(false);
             }
         };
 
-        if (id) {
-            fetchAttraction();
-        }
+        fetchAttraction();
     }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -76,29 +71,43 @@ const EditWisata: React.FC = () => {
         setForm({ ...form, [name]: value });
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            setForm({ ...form, images: Array.from(files) });
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Prepare payload for the API, transforming data back
-        const payload = {
-            ...form,
-            facilities: form.facilities.split(",").map((f) => f.trim()),
-            points_of_attraction: form.points_of_attraction.split(",").map((a) => a.trim()),
-        };
+        const formData = new FormData();
+        formData.append("category", form.category);
+        formData.append("name", form.name);
+        formData.append("description", form.description);
+        formData.append("price", form.price);
+        formData.append("time_open_close", form.time_open_close);
+        formData.append("phone", form.phone);
+        formData.append("email", form.email);
+        formData.append("instagram", form.instagram);
+        formData.append("location", form.location);
+        formData.append("facilities", JSON.stringify(form.facilities.split(",").map(f => f.trim())));
+        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map(p => p.trim())));
+        form.images.forEach((file) => formData.append("images", file));
 
         try {
-            await axiosInstance.put(`/data/attraction/${id}`, payload);
+            await axiosInstance.put(`/data/attraction/${id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             alert("Data berhasil diperbarui!");
             navigate("/admin/daftar/wisata");
-        } catch (error) {
-            console.error("Failed to update attraction:", error);
+        } catch (err) {
             alert("Gagal memperbarui data.");
         }
     };
 
-    return loading ? (
-        <LoadingAnimation />
-    ) : (
+    if (loading) return <LoadingAnimation />;
+
+    return (
         <div className="max-w-4xl px-6 py-6 mx-auto">
             <h1 className="mb-4 text-2xl font-bold text-center">Edit Data Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border rounded-md shadow-md md:grid-cols-2">
@@ -150,6 +159,10 @@ const EditWisata: React.FC = () => {
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Daya Tarik Utama</label>
                     <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Upload Gambar</label>
+                    <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full" />
                 </div>
                 <div className="flex justify-end col-span-2 space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/wisata")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">

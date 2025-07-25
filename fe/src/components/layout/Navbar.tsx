@@ -48,8 +48,8 @@ const Navbar = () => {
             {showNavbar && (
                 <motion.nav className="fixed top-0 left-0 right-0 z-50 text-white shadow-lg bg-black/30 backdrop-blur-md" initial={{ y: -100 }} animate={{ y: 0 }} exit={{ y: -100 }} transition={{ duration: 0.3 }}>
                     <div className="flex items-center justify-between max-w-screen-xl px-4 py-2 mx-auto">
-                        <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition">
-                            <img src="/logoWeb.png" alt="Logo Tegalsambi" className="h-14 w-auto" />
+                        <Link to="/" className="flex items-center space-x-2 text-xl font-bold transition hover:opacity-80">
+                            <img src="/logoWeb.png" alt="Logo Tegalsambi" className="w-auto h-14" /> Tegalsambi
                         </Link>
 
                         <div className="flex items-center space-x-6 text-sm font-medium sm:text-base">

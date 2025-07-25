@@ -5,6 +5,9 @@ import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild } from "react-icons/fa";
 import { GiCampingTent } from "react-icons/gi";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import heroBg from "../../../assets/pantaitegalsambi2.webp";
+
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
 // Interface untuk data Akomodasi
 interface Accommodation {
@@ -22,7 +25,7 @@ interface Accommodation {
     images: string[];
 }
 
-// Helper dan icon mapping bisa di-reuse
+// Helper dan icon mapping
 const formatPrice = (price: number) => (price === 0 ? "Harga Bervariasi" : `Mulai Rp ${price.toLocaleString("id-ID")} /malam`);
 const facilityIcons: { [key: string]: React.ReactNode } = {
     "Kolam Renang": <FaChild className="mr-2 text-black-600" />,
@@ -40,16 +43,29 @@ const AccommodationDetail = () => {
     const [mainImage, setMainImage] = useState("");
     const { id } = useParams<{ id: string }>();
 
+    const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
+
     useEffect(() => {
         if (!id) return;
         const fetchAccommodation = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`/data/accommodation/${id}`);
-                setItem(response.data);
-                if (response.data.images && response.data.images.length > 0) {
-                    setMainImage(response.data.images[0]);
-                }
+                const data = response.data;
+                
+                // Sanitize images
+                const sanitizedImages = Array.isArray(data.images) 
+                    ? data.images.map((img: any) => 
+                        typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+                      ).filter(Boolean)
+                    : [];
+
+                setItem({
+                    ...data,
+                    images: sanitizedImages.length > 0 ? sanitizedImages : [fallbackImage]
+                });
+                
+                setMainImage(sanitizedImages.length > 0 ? sanitizedImages[0] : fallbackImage);
                 setError(null);
             } catch (err) {
                 setError("Gagal memuat data akomodasi.");
@@ -64,8 +80,7 @@ const AccommodationDetail = () => {
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
     if (!item) return <div className="flex items-center justify-center h-screen">Akomodasi tidak ditemukan.</div>;
 
-    const imageList = item.images && item.images.length > 0 ? item.images : ["https://placehold.co/800x600?text=No+Image"];
-    if (mainImage === "") setMainImage(imageList[0]);
+    const imageList = item.images.length > 0 ? item.images : [fallbackImage];
 
     return (
         <div className="min-h-screen px-4 py-16 bg-gradient-to-r from-purple-900 to-indigo-600">
@@ -86,8 +101,8 @@ const AccommodationDetail = () => {
                                 </li>
                                 <li className="text-gray-300">/</li>
                                 <li>
-                                    <Link to="/facilities" className="transition duration-300 hover:text-orange-400">
-                                        Fasilitas
+                                    <Link to="/accommodations" className="transition duration-300 hover:text-orange-400">
+                                        Akomodasi
                                     </Link>
                                 </li>
                                 <li className="text-gray-300">/</li>
@@ -102,7 +117,6 @@ const AccommodationDetail = () => {
                 </h1>
             </motion.div>
 
-            {/* The rest of the layout is identical to AttractionDetail, just uses accommodation data */}
             <motion.div className="flex flex-col max-w-screen-xl gap-10 mx-auto md:flex-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
                 <div className="md:w-1/2">
                     <img src={mainImage} alt={item.name} className="rounded-xl shadow-xl w-full object-cover h-[300px] md:h-[420px]" />
@@ -162,13 +176,22 @@ const AccommodationDetail = () => {
                     </div>
                 </div>
             </motion.div>
+            
             {/* Lokasi */}
             <div className="max-w-screen-xl mx-auto mt-10">
                 <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
                     <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Penginapan</h3>
                     <p className="mb-4 text-sm text-gray-700">{item.location}</p>
                     <div className="overflow-hidden rounded-xl">
-                        <iframe title="map" src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} width="100%" height="300" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                        <iframe 
+                            title="map" 
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} 
+                            width="100%" 
+                            height="300" 
+                            style={{ border: 0 }} 
+                            allowFullScreen 
+                            loading="lazy"
+                        ></iframe>
                     </div>
                 </div>
             </div>

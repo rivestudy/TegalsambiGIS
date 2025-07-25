@@ -5,6 +5,9 @@ import axios from "../../../utils/axiosInstance";
 import HeroSection from "../../../components/HeroSection";
 import { Link } from "react-router-dom";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import heroBg from "../../../assets/pantaitegalsambi2.webp";
+
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
 interface Facility {
     id: number;
@@ -32,6 +35,17 @@ const animationConfig: Transition = {
 
 const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
 
+const sanitizeItems = (items: any[]): any[] => {
+    return items.map((item) => ({
+        ...item,
+        images: Array.isArray(item.images)
+            ? item.images.map((img: any) =>
+                typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+              ).filter(Boolean)
+            : [],
+    }));
+};
+
 const PublicServicesPage = () => {
     const [facilities, setFacilities] = useState<Facility[]>([]);
     const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
@@ -41,9 +55,13 @@ const PublicServicesPage = () => {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const [facilitiesRes, accommodationsRes] = await Promise.all([axios.get<Facility[]>("/data/facility"), axios.get<Accommodation[]>("/data/accommodation")]);
-                setFacilities(facilitiesRes.data);
-                setAccommodations(accommodationsRes.data);
+                const [facilitiesRes, accommodationsRes] = await Promise.all([
+                    axios.get<Facility[]>("/data/facility"),
+                    axios.get<Accommodation[]>("/data/accommodation")
+                ]);
+                
+                setFacilities(sanitizeItems(facilitiesRes.data));
+                setAccommodations(sanitizeItems(accommodationsRes.data));
             } catch {
                 setError("Tidak dapat memuat data fasilitas dan penginapan.");
             } finally {
@@ -60,7 +78,12 @@ const PublicServicesPage = () => {
 
     return (
         <div className="bg-white">
-            <HeroSection title="Fasilitas" breadcrumb="Fasilitas" bgImage="/pantaitegalsambi2.webp" placeholder="Cari fasilitas atau penginapan" />
+            <HeroSection 
+                title="Fasilitas" 
+                breadcrumb="Fasilitas" 
+                bgImage={heroBg} 
+                placeholder="Cari fasilitas atau penginapan" 
+            />
 
             {/* Section: Fasilitas */}
             <section id="fasilitas" className="px-6 py-16 bg-gray-50">
@@ -76,7 +99,11 @@ const PublicServicesPage = () => {
                         <motion.div key={id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: idx * 0.3 }} viewport={{ once: true, amount: 0.8 }}>
                             <Link to={`/facility/${id}`} className="block">
                                 <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl bg-green-100/40">
-                                    <img src={images.length > 0 ? images[0] : fallbackImage} alt={name} className="object-cover w-full h-48" />
+                                    <img 
+                                        src={images.length > 0 ? images[0] : fallbackImage} 
+                                        alt={name} 
+                                        className="object-cover w-full h-48" 
+                                    />
                                     <div className="p-4">
                                         <p className="text-[10px] uppercase tracking-widest text-green-600 font-medium">Fasilitas</p>
                                         <h3 className="mb-2 text-xl font-semibold text-gray-800">{name}</h3>
@@ -102,7 +129,11 @@ const PublicServicesPage = () => {
                         <motion.div key={id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: idx * 0.3 }} viewport={{ once: true, amount: 0.8 }}>
                             <Link to={`/accommodation/${id}`} className="block">
                                 <article className="overflow-hidden transition transform border border-gray-200 shadow-md rounded-xl hover:scale-105 hover:shadow-xl bg-orange-100/40">
-                                    <img src={images.length > 0 ? images[0] : fallbackImage} alt={name} className="object-cover w-full h-48" />
+                                    <img 
+                                        src={images.length > 0 ? images[0] : fallbackImage} 
+                                        alt={name} 
+                                        className="object-cover w-full h-48" 
+                                    />
                                     <div className="p-4">
                                         <p className="text-[10px] uppercase tracking-widest text-orange-600 font-medium">Akomodasi</p>
                                         <h3 className="mb-1 text-xl font-semibold text-gray-800">{name}</h3>

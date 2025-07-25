@@ -1,26 +1,26 @@
+// EditAccommodation.tsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
-// Form state interface
 interface AccommodationFormState {
     name: string;
     description: string;
     price: string;
     time_open_close: string;
-    facilities: string; // Comma-separated for the form
-    points_of_attraction: string; // Comma-separated for the form
+    facilities: string;
+    points_of_attraction: string;
     phone: string;
     email: string;
     instagram: string;
+    images: File[];
 }
 
 const EditAccommodation: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-
     const [form, setForm] = useState<AccommodationFormState>({
         name: "",
         description: "",
@@ -31,6 +31,7 @@ const EditAccommodation: React.FC = () => {
         phone: "",
         email: "",
         instagram: "",
+        images: []
     });
 
     useEffect(() => {
@@ -38,8 +39,6 @@ const EditAccommodation: React.FC = () => {
             try {
                 const response = await axiosInstance.get(`/data/accommodation/${id}`);
                 const data = response.data;
-
-                // Transform backend data (arrays) to form data (comma-separated strings)
                 setForm({
                     name: data.name || "",
                     description: data.description || "",
@@ -50,18 +49,16 @@ const EditAccommodation: React.FC = () => {
                     instagram: data.instagram || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities.join(", ") : "",
                     points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(", ") : "",
+                    images: []
                 });
             } catch (error) {
-                console.error("Failed to fetch accommodation data:", error);
                 alert("Gagal memuat data penginapan.");
             } finally {
                 setLoading(false);
             }
         };
 
-        if (id) {
-            fetchAccommodation();
-        }
+        if (id) fetchAccommodation();
     }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -69,23 +66,34 @@ const EditAccommodation: React.FC = () => {
         setForm({ ...form, [name]: value });
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (files) {
+            setForm({ ...form, images: Array.from(files) });
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Transform form data back to the structure the backend expects
-        const payload = {
-            ...form,
-            facilities: form.facilities.split(",").map((f) => f.trim()),
-            points_of_attraction: form.points_of_attraction.split(",").map((a) => a.trim()),
-        };
+        const formData = new FormData();
+        formData.append("name", form.name);
+        formData.append("description", form.description);
+        formData.append("price", form.price);
+        formData.append("time_open_close", form.time_open_close);
+        formData.append("phone", form.phone);
+        formData.append("email", form.email);
+        formData.append("instagram", form.instagram);
+        formData.append("facilities", JSON.stringify(form.facilities.split(",").map(f => f.trim())));
+        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map(p => p.trim())));
+        form.images.forEach((file) => formData.append("images", file));
 
         try {
-            await axiosInstance.put(`/data/accommodation/${id}`, payload);
+            await axiosInstance.put(`/data/accommodation/${id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
             alert("Data penginapan berhasil diperbarui!");
-            // Navigate back to a relevant list page
-            navigate("/admin/add/accommodation"); // Or wherever your list is
+            navigate("/admin/daftar/penginapan");
         } catch (error) {
-            console.error("Failed to update accommodation:", error);
             alert("Gagal memperbarui data.");
         }
     };
@@ -131,6 +139,10 @@ const EditAccommodation: React.FC = () => {
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Instagram</label>
                     <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
+                </div>
+                <div className="col-span-2">
+                    <label className="block mb-1 font-semibold">Upload Gambar</label>
+                    <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full" />
                 </div>
                 <div className="flex justify-end col-span-2 space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/penginapan")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">

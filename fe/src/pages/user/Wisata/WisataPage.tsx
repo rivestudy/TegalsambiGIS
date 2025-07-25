@@ -6,6 +6,9 @@ import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import heroBg from "../../../assets/pantaitegalsambi2.webp";
+
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
 interface Attraction {
     id: number;
@@ -35,6 +38,17 @@ const animationConfig: Transition = {
     duration: 1.9,
 };
 
+const sanitizeItems = (items: any[]): Attraction[] => {
+    return items.map((item) => ({
+        ...item,
+        images: Array.isArray(item.images)
+            ? item.images.map((img: any) =>
+                typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+              ).filter(Boolean)
+            : [],
+    }));
+};
+
 const SectionContainer = ({ title, description, data, color, priceColor, direction }: { title: string; description: string; data: Attraction[]; color: string; priceColor: string; direction: "top" | "right" | "left" | "bottom" }) => {
     if (!data.length) return null;
 
@@ -59,9 +73,13 @@ const SectionContainer = ({ title, description, data, color, priceColor, directi
                 {data.map((item, idx) => (
                     <SwiperSlide key={item.id}>
                         <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: idx * 0.2 }} viewport={{ once: true, amount: 0.4 }}>
-                            <Link to={item.category === "Paket" ? `/paket/${item.id}` : `/paket/${item.id}`}>
+                            <Link to={item.category === "Paket" ? `/paket/${item.id}` : `/attraction/${item.id}`}>
                                 <div className={`${color} mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[350px] transition duration-300 hover:shadow-lg hover:-translate-y-2`}>
-                                    <img src={item.images?.[0] || fallbackImage} alt={item.name} className="object-cover w-full h-48" />
+                                    <img 
+                                        src={item.images.length > 0 ? item.images[0] : fallbackImage} 
+                                        alt={item.name} 
+                                        className="object-cover w-full h-48" 
+                                    />
                                     <div className="flex flex-col justify-between flex-grow p-5">
                                         <div>
                                             <h3 className="mb-1 text-lg font-bold">{item.name}</h3>
@@ -88,9 +106,13 @@ const AttractionPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [attractionRes, paketRes] = await Promise.all([axios.get<Attraction[]>("/data/attraction"), axios.get<Attraction[]>("/data/paket")]);
-                setData(attractionRes.data);
-                setPaketData(paketRes.data);
+                const [attractionRes, paketRes] = await Promise.all([
+                    axios.get<Attraction[]>("/data/attraction"),
+                    axios.get<Attraction[]>("/data/paket")
+                ]);
+                
+                setData(sanitizeItems(attractionRes.data));
+                setPaketData(sanitizeItems(paketRes.data));
             } catch {
                 setError("Tidak dapat memuat data wisata. Silakan coba lagi nanti.");
             } finally {
@@ -109,7 +131,7 @@ const AttractionPage = () => {
 
     return (
         <div className="bg-white">
-            <div className="relative h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('/pantaitegalsambi2.webp')" }}>
+            <div className="relative h-[480px] bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})` }}>
                 <div className="absolute inset-0 bg-black bg-opacity-30" />
                 <motion.div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
                     <nav className="py-2">

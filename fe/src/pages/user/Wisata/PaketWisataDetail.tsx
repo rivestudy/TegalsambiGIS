@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaPhoneAlt, FaEnvelope, FaInstagram, FaUtensils, FaBus, FaHotel, FaMapMarkerAlt } from "react-icons/fa";
 import { useParams, Link } from "react-router-dom";
-import axios from "../../../utils/axiosInstance"; // adjust if needed
+import axios from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
 interface PaketWisata {
     id: number;
@@ -16,6 +18,7 @@ interface PaketWisata {
 }
 
 const formatPrice = (price: number) => (price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /paket`);
+const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
 
 const facilityIcons: { [key: string]: React.ReactNode } = {
     Transportasi: <FaBus className="mr-2 text-black-600" />,
@@ -36,11 +39,22 @@ const PaketWisataDetail = () => {
 
         const fetchPaket = async () => {
             try {
-                const res = await axios.get<PaketWisata>(`/data/paket/${id}`);
-                setPaket(res.data);
-                if (res.data.images?.length) {
-                    setMainImage(res.data.images[0]);
-                }
+                const res = await axios.get(`/data/paket/${id}`);
+                const data = res.data;
+                
+                // Sanitize images
+                const sanitizedImages = Array.isArray(data.images) 
+                    ? data.images.map((img: any) => 
+                        typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+                      ).filter(Boolean)
+                    : [];
+
+                setPaket({
+                    ...data,
+                    images: sanitizedImages.length > 0 ? sanitizedImages : [fallbackImage]
+                });
+                
+                setMainImage(sanitizedImages.length > 0 ? sanitizedImages[0] : fallbackImage);
             } catch (err) {
                 setError("Gagal memuat data paket wisata.");
             } finally {
@@ -89,11 +103,10 @@ const PaketWisataDetail = () => {
             </motion.div>
 
             <motion.div className="flex flex-col max-w-screen-xl gap-10 mx-auto md:flex-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-                {/* LEFT - IMAGES */}
                 <div className="md:w-1/2">
                     <img src={mainImage} alt={paket.name} className="rounded-xl shadow-xl w-full object-cover h-[300px] md:h-[420px]" />
                     <div className="flex gap-4 p-2 mt-4 overflow-x-auto">
-                        {paket.images?.map((img, index) => (
+                        {paket.images.map((img, index) => (
                             <img
                                 key={index}
                                 src={img}
@@ -105,7 +118,6 @@ const PaketWisataDetail = () => {
                     </div>
                 </div>
 
-                {/* RIGHT - DETAIL */}
                 <div className="p-6 space-y-6 text-gray-800 border border-gray-200 shadow-xl md:w-1/2 bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
                     <div>
                         <h2 className="mb-2 font-semibold text-indigo-900">Deskripsi Paket</h2>

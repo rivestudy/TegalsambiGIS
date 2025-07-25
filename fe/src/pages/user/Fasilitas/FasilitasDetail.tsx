@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaMosque, FaTicketAlt } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import heroBg from "../../../assets/pantaitegalsambi2.webp";
+
+const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
 interface Facility {
     id: number;
@@ -27,16 +30,29 @@ const FacilitiesDetail = () => {
     const [mainImage, setMainImage] = useState("");
     const { id } = useParams<{ id: string }>();
 
+    const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
+
     useEffect(() => {
         if (!id) return;
         const fetchFacility = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get(`/data/facility/${id}`);
-                setItem(response.data);
-                if (response.data.images && response.data.images.length > 0) {
-                    setMainImage(response.data.images[0]);
-                }
+                const data = response.data;
+                
+                // Sanitize images
+                const sanitizedImages = Array.isArray(data.images) 
+                    ? data.images.map((img: any) => 
+                        typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+                      ).filter(Boolean)
+                    : [];
+
+                setItem({
+                    ...data,
+                    images: sanitizedImages.length > 0 ? sanitizedImages : [fallbackImage]
+                });
+                
+                setMainImage(sanitizedImages.length > 0 ? sanitizedImages[0] : fallbackImage);
                 setError(null);
             } catch (err) {
                 setError("Gagal memuat data fasilitas.");
@@ -51,8 +67,7 @@ const FacilitiesDetail = () => {
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
     if (!item) return <div className="flex items-center justify-center h-screen">Fasilitas tidak ditemukan.</div>;
 
-    const imageList = item.images && item.images.length > 0 ? item.images : ["https://placehold.co/800x600?text=No+Image"];
-    if (mainImage === "") setMainImage(imageList[0]);
+    const imageList = item.images.length > 0 ? item.images : [fallbackImage];
 
     return (
         <div className="min-h-screen px-4 py-16 bg-gradient-to-r from-gray-800 to-gray-600">
@@ -119,19 +134,24 @@ const FacilitiesDetail = () => {
                             ))}
                         </ul>
                     </div>
-                    {/* <div>
-                        <h3 className="font-semibold text-gray-900">Lokasi</h3>
-                        <p className="text-sm text-gray-800">{item.location}</p>
-                    </div> */}
                 </div>
             </motion.div>
+            
             {/* Lokasi */}
             <div className="max-w-screen-xl mx-auto mt-10">
                 <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
                     <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Fasilitas</h3>
                     <p className="mb-4 text-sm text-gray-700">{item.location}</p>
                     <div className="overflow-hidden rounded-xl">
-                        <iframe title="map" src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} width="100%" height="300" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                        <iframe 
+                            title="map" 
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} 
+                            width="100%" 
+                            height="300" 
+                            style={{ border: 0 }} 
+                            allowFullScreen 
+                            loading="lazy"
+                        ></iframe>
                     </div>
                 </div>
             </div>
