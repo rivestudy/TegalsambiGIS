@@ -143,7 +143,18 @@ const MapPage = () => {
                         </select>
                     </div>
 
-                    <div className="bg-white border border-gray-300 rounded-2xl shadow-lg h-[450px] md:h-[500px] p-2 flex items-center justify-center overflow-hidden">
+                    <div className="relative bg-white border border-gray-300 rounded-2xl shadow-lg h-[450px] md:h-[500px] p-2 overflow-hidden">
+                        <style>{`
+                            .leaflet-container {
+                                position: relative !important;
+                                height: 100% !important;
+                                width: 100% !important;
+                                z-index: 0 !important;
+                            }
+                            .leaflet-top, .leaflet-bottom {
+                                z-index: 1 !important;
+                            }
+                        `}</style>
                         {typeof window !== "undefined" && (
                             <MapContainer 
                                 key={mapKey}

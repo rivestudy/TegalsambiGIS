@@ -1,5 +1,9 @@
 import React from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
+const isAuthenticated = (): boolean => sessionStorage.getItem("token") !== null;
+const isAdminLoggedIn = isAuthenticated();
 
 const Footer = () => {
     const villageName = "Tegalsambi";
@@ -7,23 +11,23 @@ const Footer = () => {
     return (
         <footer className="pt-12 text-white bg-gradient-to-br from-black via-gray-900 to-black">
             {/* Main Content */}
-            <div className="grid grid-cols-1 gap-12 px-6 pb-10 mx-auto border-b border-gray-700 max-w-7xl sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-12 px-6 pb-10 mx-auto border-b border-gray-700 max-w-7xl sm:grid-cols-2">
                 {/* Column 1 */}
                 <div>
                     <h2 className="mb-4 text-2xl font-bold">Tegalsambi</h2>
                     <p className="mb-6 text-sm text-gray-400">Jelajahi keindahan dan budaya Desa Tegalsambi, destinasi wisata dan penginapan di Jepara.</p>
                     <div className="flex space-x-4 text-xl">
-                        <a href="#" className="transition-colors duration-300 hover:text-red-500">
+                        <a href="http://www.youtube.com/@desawisatategalsambi882" className="transition-colors duration-300 hover:text-red-500">
                             <FaYoutube />
                         </a>
-                        <a href="#" className="transition-colors duration-300 hover:text-blue-600">
+                        <a href="https://www.facebook.com/deswita.tegalsambi" className="transition-colors duration-300 hover:text-blue-600">
                             <FaFacebookF />
                         </a>
-                        <a href="#" className="transition-colors duration-300 hover:text-pink-500">
+                        <a href="https://www.instagram.com/desawisatategalsambi/" className="transition-colors duration-300 hover:text-pink-500">
                             <FaInstagram />
                         </a>
-                        <a href="#" className="transition-colors duration-300 hover:text-sky-400">
-                            <FaTwitter />
+                        <a href="https://api.whatsapp.com/send/?phone=6287719959112&text&type=phone_number&app_absent=0" className="transition-colors duration-300 hover:text-sky-400">
+                            <FaWhatsapp />
                         </a>
                     </div>
                 </div>
@@ -31,7 +35,7 @@ const Footer = () => {
                 {/* Column 2 */}
                 <div>
                     <h2 className="mb-4 text-xl font-semibold">Menu</h2>
-                    <ul className="space-y-3 text-sm">
+                    <ul className="grid grid-cols-2 gap-3 text-sm">
                         <li>
                             <a href="about" className="transition-colors duration-200 hover:text-gray-300">
                                 Tentang
@@ -42,11 +46,6 @@ const Footer = () => {
                                 Wisata
                             </a>
                         </li>
-                        {/* <li>
-                            <a href="acomodation" className="transition-colors duration-200 hover:text-gray-300">
-                                Penginapan
-                            </a>
-                        </li> */}
                         <li>
                             <a href="facilities" className="transition-colors duration-200 hover:text-gray-300">
                                 Fasilitas
@@ -67,35 +66,19 @@ const Footer = () => {
                                 Info Desa
                             </a>
                         </li>
+                        <li>
+                            {!isAdminLoggedIn && (
+                                <Link
+                                    to="/login"
+                                    className="transition-colors duration-200 hover:text-gray-300"                                >
+                                    Admin Login
+                                </Link>
+                            )}
+                        </li>
                     </ul>
                 </div>
 
-                {/* Column 3 */}
-                <div>
-                    <h2 className="mb-4 text-xl font-semibold">Support</h2>
-                    <ul className="space-y-3 text-sm">
-                        <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
-                                Contact Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
-                                FAQs
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
-                                Help Center
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" className="transition-colors duration-200 hover:text-gray-300">
-                                Terms & Conditions
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            
             </div>
 
             {/* Copyright */}

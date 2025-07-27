@@ -2,9 +2,7 @@ const DataModel = require('../models/dataModel');
 const fs = require('fs');
 const path = require('path');
 
-// ...
 
-// Map URL parameter 'type' to a database table name.
 const typeMap = {
   attraction: 'attractions',
   accommodation: 'accommodations',
@@ -12,7 +10,6 @@ const typeMap = {
   paket: 'pakets', // ✅ ADD THIS LINE
 };
 
-// ...
 
 function getTableFromType(type) {
   const tableName = typeMap[type];
@@ -24,15 +21,12 @@ function getTableFromType(type) {
   return tableName;
 }
 
-// ✅ Updated helper to handle arrays of objects
 function deleteImageFiles(imagesArray) {
     if (!Array.isArray(imagesArray) || imagesArray.length === 0) return;
-
-    // Extract filenames from the array of objects
     const filenames = imagesArray.map(img => img.dir);
 
     filenames.forEach(file => {
-        if (!file) return; // Skip if a file path is not defined
+        if (!file) return; 
         const filePath = path.join(__dirname, '..', 'uploads', file);
         if (fs.existsSync(filePath)) {
             fs.unlink(filePath, (err) => {
@@ -42,7 +36,6 @@ function deleteImageFiles(imagesArray) {
     });
 }
 
-// No changes needed for getAllItems & getItemById
 exports.getAllItems = async (req, res) => {
   const { type } = req.params;
   try {
@@ -66,17 +59,15 @@ exports.getItemById = async (req, res) => {
   }
 };
 
-// ✅ Updated createItem to build the new JSON structure
 exports.createItem = async (req, res) => {
   const { type } = req.params;
   try {
     const table = getTableFromType(type);
     const data = req.body;
 
-    // If files are uploaded, map them to the new object structure
     if (req.files && req.files.length > 0) {
         data.images = req.files.map((file, index) => ({
-            id: index + 1, // Simple sequential ID
+            id: index + 1, 
             dir: file.filename
         }));
     }
@@ -84,7 +75,6 @@ exports.createItem = async (req, res) => {
     const id = await DataModel.create(table, data);
     res.status(201).json({ message: 'Item created successfully', id });
   } catch (err) {
-    // If error, delete uploaded files
     if (req.files && req.files.length > 0) {
         const filenamesToDelete = req.files.map(file => ({ dir: file.filename }));
         deleteImageFiles(filenamesToDelete);
@@ -93,7 +83,6 @@ exports.createItem = async (req, res) => {
   }
 };
 
-// ✅ Updated updateItem to handle the new structure
 exports.updateItem = async (req, res) => {
   const { type, id } = req.params;
   try {
@@ -110,11 +99,9 @@ exports.updateItem = async (req, res) => {
     }
 
     if (req.files && req.files.length > 0) {
-        // Delete old image files
         if (existingItem.images) {
              deleteImageFiles(existingItem.images);
         }
-        // Add new image files with the new structure
         data.images = req.files.map((file, index) => ({
             id: index + 1,
             dir: file.filename
@@ -131,7 +118,6 @@ exports.updateItem = async (req, res) => {
 };
 
 
-// ✅ Updated deleteItem to use the new helper function
 exports.deleteItem = async (req, res) => {
   const { type, id } = req.params;
   try {
@@ -147,7 +133,6 @@ exports.deleteItem = async (req, res) => {
         return res.status(404).json({ message: 'Item not found during deletion' });
     }
 
-    // If DB deletion is successful, delete associated image files
     if (itemToDelete.images) {
         deleteImageFiles(itemToDelete.images);
     }
