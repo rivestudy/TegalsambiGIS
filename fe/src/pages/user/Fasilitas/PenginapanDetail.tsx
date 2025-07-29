@@ -2,14 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
-import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild } from "react-icons/fa";
-import { GiCampingTent } from "react-icons/gi";
+import { FaParking, FaToilet, FaTicketAlt,  FaUtensils, FaWifi, FaChild } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
-import heroBg from "../../../assets/pantaitegalsambi2.webp";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
-
-// Interface untuk data Akomodasi
 interface Accommodation {
     id: number;
     name: string;
@@ -25,7 +21,6 @@ interface Accommodation {
     images: string[];
 }
 
-// Helper dan icon mapping
 const formatPrice = (price: number) => (price === 0 ? "Harga Bervariasi" : `Mulai Rp ${price.toLocaleString("id-ID")} /malam`);
 const facilityIcons: { [key: string]: React.ReactNode } = {
     "Kolam Renang": <FaChild className="mr-2 text-black-600" />,
@@ -132,7 +127,7 @@ const AccommodationDetail = () => {
                         ))}
                     </div>
                 </div>
-                <div className="p-6 space-y-6 text-gray-800 border border-gray-200 shadow-xl md:w-1/2 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
+                <div className="p-6 space-y-6 text-gray-800 border border-gray-200 shadow-xl md:w-1/2 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
                     <div>
                         <h2 className="mb-2 font-semibold text-purple-900">Tentang Penginapan</h2>
                         <p className="text-sm leading-relaxed text-gray-800">{item.description}</p>

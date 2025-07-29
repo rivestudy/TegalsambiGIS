@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
 import { FaParking, FaToilet, FaMosque, FaTicketAlt } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
-import heroBg from "../../../assets/pantaitegalsambi2.webp";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
@@ -118,7 +117,7 @@ const FacilitiesDetail = () => {
                         ))}
                     </div>
                 </div>
-                <div className="p-6 space-y-6 text-gray-800 border border-gray-300 shadow-xl md:w-1/2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
+                <div className="p-6 space-y-6 text-gray-800 border border-gray-300 shadow-xl md:w-1/2 bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
                     <div>
                         <h2 className="mb-2 font-semibold text-gray-900">Deskripsi Fasilitas</h2>
                         <p className="text-sm leading-relaxed text-gray-800">{item.description}</p>

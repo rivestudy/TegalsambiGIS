@@ -1,5 +1,5 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
+import React, { ReactNode } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -57,54 +57,6 @@ const ProtectedRoute = ({ allowedRoles, children }: ProtectedRouteProps) => {
     return children ? <>{children}</> : <Outlet />;
 };
 
-const NavigationHandler: React.FC = () => {
-    const navigate = useNavigate();
-    const [authStatus, setAuthStatus] = useState(isAuthenticated());
-
-    const handleLogout = () => {
-        sessionStorage.clear();
-        setAuthStatus(false);
-        navigate("/login");
-    };
-
-    useEffect(() => {
-        const updateAuthStatus = () => {
-            const currentAuth = isAuthenticated();
-            if (currentAuth !== authStatus) setAuthStatus(currentAuth);
-        };
-        const intervalId = setInterval(updateAuthStatus, 500);
-        window.addEventListener("storage", updateAuthStatus);
-        return () => {
-            clearInterval(intervalId);
-            window.removeEventListener("storage", updateAuthStatus);
-        };
-    }, [authStatus]);
-
-    if (!authStatus) return null;
-
-    const role = getUserRole();
-
-    return (
-        <nav className="flex items-center justify-between px-6 py-3 bg-gray-100 border-b border-gray-300">
-            <div className="flex items-center gap-4 font-medium text-gray-700">
-                <Link to="/" className="font-bold hover:underline">
-                    Home
-                </Link>
-                <span>
-                    Role: <span className="font-bold text-blue-600">{role || "N/A"}</span>
-                </span>
-                {role === "admin" && (
-                    <Link to="/admin/dashboard" className="text-blue-600 hover:underline">
-                        Admin Panel
-                    </Link>
-                )}
-            </div>
-            <button onClick={handleLogout} className="px-4 py-2 font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
-                Logout
-            </button>
-        </nav>
-    );
-};
 
 const AppContent = () => {
     const location = useLocation();

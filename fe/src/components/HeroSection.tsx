@@ -31,7 +31,7 @@ const HeroSection = ({
       transition={{ duration: 1 }}
     >
       <nav className="py-2">
-        <ol className="flex items-center justify-center space-x-2 text-sm text-lg font-semibold text-white">
+        <ol className="flex items-center justify-center space-x-2 text-lg font-semibold text-white">
           <li>
             <Link to="/" className="flex items-center transition duration-300 hover:text-orange-400">
               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
