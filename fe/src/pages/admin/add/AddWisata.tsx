@@ -34,7 +34,14 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+
+        if (name === "phone" || name === "price") {
+            // Izinkan hanya angka
+            const onlyNumbers = value.replace(/\D/g, "");
+            setForm({ ...form, [name]: onlyNumbers });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +51,50 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         }
     };
 
+    const [operational, setOperational] = useState({
+        dayStart: "",
+        dayEnd: "",
+        timeStart: "",
+        timeEnd: "",
+    });
+
+    const handleOperationalChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+        const { name, value } = e.target;
+        const updated = { ...operational, [name]: value };
+
+        setOperational(updated);
+
+        // Gabungkan ke satu string: "Senin - Minggu, 08.00 - 17.00"
+        if (updated.dayStart && updated.dayEnd && updated.timeStart && updated.timeEnd) {
+            const combined = `${updated.dayStart} - ${updated.dayEnd}, ${updated.timeStart} - ${updated.timeEnd}`;
+            setForm({ ...form, time_open_close: combined });
+        }
+    };
+
+    const days = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Validasi sederhana
+        if (!form.category || !form.name || !form.description || !form.price || !form.time_open_close || !form.phone || !form.email || !form.location) {
+            toast.error("Mohon lengkapi semua kolom wajib.");
+            return;
+        }
+
+        // Validasi nomor telepon hanya angka dan panjang minimum
+        const phoneRegex = /^\d+$/;
+        if (!phoneRegex.test(form.phone) || form.phone.length < 8) {
+            toast.error("Nomor telepon harus berupa angka dan minimal 8 digit.");
+            return;
+        }
+
+        // Validasi email sederhana
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (form.email && !emailRegex.test(form.email)) {
+            toast.error("Format email tidak valid.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append("category", form.category);
@@ -57,21 +106,51 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
         formData.append("location", form.location);
-        formData.append("facilities", JSON.stringify(form.facilities.split(",").map((f) => f.trim())));
-        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map((a) => a.trim())));
+
+        formData.append(
+            "facilities",
+            JSON.stringify(
+                form.facilities
+                    .split(",")
+                    .map((f) => f.trim())
+                    .filter((f) => f !== "")
+            )
+        );
+        formData.append(
+            "points_of_attraction",
+            JSON.stringify(
+                form.points_of_attraction
+                    .split(",")
+                    .map((a) => a.trim())
+                    .filter((a) => a !== "")
+            )
+        );
+
         form.images.forEach((image) => {
             formData.append("images", image);
         });
 
         try {
             await axiosInstance.post("/data/attraction", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
+
             toast.success("Wisata berhasil ditambahkan!");
-            onFormSubmit();
-        } catch (error) {
+            await new Promise((resolve) => setTimeout(resolve, 3600));
+            onFormSubmit(); // baru navigasi/switch tab
+        } catch (error: any) {
             console.error("Failed to add attraction:", error);
-            toast.error("Gagal menambahkan wisata.");
+
+            if (error.response) {
+                const message = error.response.data?.message || "Terjadi kesalahan saat menyimpan data.";
+                toast.error(`Gagal menambahkan wisata: ${message}`);
+            } else if (error.request) {
+                toast.error("Tidak dapat terhubung ke server. Cek koneksi internet.");
+            } else {
+                toast.error("Terjadi kesalahan tak terduga.");
+            }
         }
     };
 
@@ -100,6 +179,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         placeholder="Masukkan nama wisata"
                         className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
+                        maxLength={50}
                     />
                 </div>
                 <div className="col-span-2">
@@ -116,18 +196,40 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga Tiket (per orang)</label>
-                    <input type="text" name="price" value={form.price} onChange={handleChange} placeholder="e.g., Rp 10.000" className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
+                    <input name="price" value={form.price} onChange={handleChange} placeholder="Harga" className="w-full p-2 text-sm border border-gray-600 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required />
                 </div>
-                <div>
-                    <label className="block mb-1 font-semibold">Jam Operasional</label>
-                    <input
-                        type="text"
-                        name="time_open_close"
-                        value={form.time_open_close}
-                        onChange={handleChange}
-                        placeholder="e.g., Senin - Minggu, 08.00 - 17.00"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
-                    />
+
+                <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block mb-1 font-semibold">Hari Buka</label>
+                        <select name="dayStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded">
+                            <option value="">-- Pilih Hari --</option>
+                            {days.map((day) => (
+                                <option key={day} value={day}>
+                                    {day}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-semibold">Hari Tutup</label>
+                        <select name="dayEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded">
+                            <option value="">-- Pilih Hari --</option>
+                            {days.map((day) => (
+                                <option key={day} value={day}>
+                                    {day}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-semibold">Jam Buka</label>
+                        <input type="time" name="timeStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded" />
+                    </div>
+                    <div>
+                        <label className="block mb-1 font-semibold">Jam Tutup</label>
+                        <input type="time" name="timeEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded" />
+                    </div>
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Telepon</label>
@@ -137,6 +239,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.phone}
                         onChange={handleChange}
                         placeholder="Nomor telepon yang bisa dihubungi"
+                        maxLength={15}
                         className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
@@ -151,7 +254,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         name="instagram"
                         value={form.instagram}
                         onChange={handleChange}
-                        placeholder="e.g., @namawisata"
+                        placeholder="contoh @namawisata"
                         className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
@@ -204,7 +307,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </button>
                 </div>
             </form>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
         </div>
     );
 };

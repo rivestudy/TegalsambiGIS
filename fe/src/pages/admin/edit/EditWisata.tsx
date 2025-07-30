@@ -1,8 +1,9 @@
-// EditWisata.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface AttractionFormState {
     category: string;
@@ -35,7 +36,7 @@ const EditWisata: React.FC = () => {
         location: "",
         facilities: "",
         points_of_attraction: "",
-        images: []
+        images: [],
     });
 
     useEffect(() => {
@@ -54,10 +55,10 @@ const EditWisata: React.FC = () => {
                     location: data.location || "",
                     facilities: Array.isArray(data.facilities) ? data.facilities.join(", ") : "",
                     points_of_attraction: Array.isArray(data.points_of_attraction) ? data.points_of_attraction.join(", ") : "",
-                    images: []
+                    images: [],
                 });
             } catch (err) {
-                alert("Gagal memuat data wisata.");
+                toast.error("Gagal memuat data wisata.");
             } finally {
                 setLoading(false);
             }
@@ -68,7 +69,13 @@ const EditWisata: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+
+        if (name === "phone" || name === "price") {
+            const onlyNumbers = value.replace(/\D/g, "");
+            setForm({ ...form, [name]: onlyNumbers });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +87,24 @@ const EditWisata: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!form.category || !form.name || !form.description || !form.price || !form.time_open_close || !form.phone || !form.email || !form.location) {
+            toast.error("Mohon lengkapi semua kolom wajib.");
+            return;
+        }
+
+        const phoneRegex = /^\d+$/;
+        if (!phoneRegex.test(form.phone) || form.phone.length < 8) {
+            toast.error("Nomor telepon harus berupa angka dan minimal 8 digit.");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (form.email && !emailRegex.test(form.email)) {
+            toast.error("Format email tidak valid.");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("category", form.category);
         formData.append("name", form.name);
@@ -90,18 +115,37 @@ const EditWisata: React.FC = () => {
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
         formData.append("location", form.location);
-        formData.append("facilities", JSON.stringify(form.facilities.split(",").map(f => f.trim())));
-        formData.append("points_of_attraction", JSON.stringify(form.points_of_attraction.split(",").map(p => p.trim())));
+
+        formData.append(
+            "facilities",
+            JSON.stringify(
+                form.facilities
+                    .split(",")
+                    .map((f) => f.trim())
+                    .filter((f) => f !== "")
+            )
+        );
+        formData.append(
+            "points_of_attraction",
+            JSON.stringify(
+                form.points_of_attraction
+                    .split(",")
+                    .map((a) => a.trim())
+                    .filter((a) => a !== "")
+            )
+        );
+
         form.images.forEach((file) => formData.append("images", file));
 
         try {
             await axiosInstance.put(`/data/attraction/${id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            alert("Data berhasil diperbarui!");
+            toast.success("Data berhasil diperbarui!");
+            await new Promise((resolve) => setTimeout(resolve, 3600));
             navigate("/admin/daftar/wisata");
         } catch (err) {
-            alert("Gagal memperbarui data.");
+            toast.error("Gagal memperbarui data.");
         }
     };
 
@@ -173,6 +217,7 @@ const EditWisata: React.FC = () => {
                     </button>
                 </div>
             </form>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} theme="colored" />
         </div>
     );
 };
