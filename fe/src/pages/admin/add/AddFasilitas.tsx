@@ -58,7 +58,8 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Fasilitas berhasil ditambahkan!");
-            onFormSubmit();
+            await new Promise((resolve) => setTimeout(resolve, 3600));
+            onFormSubmit(); // baru navigasi/switch tab
         } catch (error) {
             console.error("Gagal menambahkan fasilitas:", error);
             toast.error("Gagal menambahkan fasilitas.");
@@ -80,6 +81,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Contoh: Aula, Lapangan, Perpustakaan"
                         className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        maxLength={50}
                         required
                     />
                 </div>
@@ -113,7 +115,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         name="lokasi_fasilitas"
                         value={form.lokasi_fasilitas}
                         onChange={handleChange}
-                        placeholder="Contoh: Tegalsambi, Jepara"
+                        placeholder="Koordinat, misal -6.614819, 110.651766"
                         className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
