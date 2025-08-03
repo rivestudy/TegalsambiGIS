@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { FaMosque, FaLandmark, FaUmbrellaBeach, FaHotel, FaChartBar, FaBoxOpen, FaTools } from "react-icons/fa";
+import {
+    FaMosque,
+    FaLandmark,
+    FaUmbrellaBeach,
+    FaHotel,
+    FaBoxOpen,
+    FaTools,
+} from "react-icons/fa";
 import LoadingAnimation from "../../components/LoadingAnimation";
+import axiosInstance from "../../utils/axiosInstance";
+
+// Dummy sanitize function – replace with your actual logic if needed
+const sanitizeItems = (items: any[]) => {
+    return Array.isArray(items) ? items : [];
+};
 
 const AdminDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -14,25 +27,34 @@ const AdminDashboard: React.FC = () => {
     });
 
     useEffect(() => {
-        // Simulasi fetch data dengan delay 800ms
         const fetchData = async () => {
             try {
-                // Bisa diganti dengan API call asli di sini
                 await new Promise((resolve) => setTimeout(resolve, 800));
 
-                // Setelah "fetch", set datanya
+                const [attractionRes, accommodationRes, facilityRes, paketsRes] = await Promise.all([
+                    axiosInstance.get("/data/attraction"),
+                    axiosInstance.get("/data/accommodation"),
+                    axiosInstance.get("/data/facility"),
+                    axiosInstance.get("/data/paket"),
+                ]);
+
+                const attractions = sanitizeItems(attractionRes.data ?? []);
+                const accommodations = sanitizeItems(accommodationRes.data ?? []);
+                const facilities = sanitizeItems(facilityRes.data ?? []);
+                const pakets = sanitizeItems(paketsRes.data ?? []);
+
                 setStats({
-                    wisataReligi: 5,
-                    wisataBudaya: 7,
-                    wisataPesisir: 4,
-                    penginapan: 10,
-                    paketWisata: 3,
-                    fasilitas: 8,
+                    wisataReligi: attractions.filter((item) => item.category === "Religi").length,
+                    wisataBudaya: attractions.filter((item) => item.category === "Budaya").length,
+                    wisataPesisir: attractions.filter((item) => item.category === "Pesisir").length,
+                    penginapan: accommodations.length,
+                    fasilitas: facilities.length,
+                    paketWisata: pakets.length, // Replace with real fetch if available
                 });
             } catch (err) {
-                console.error("Gagal memuat data dashboard:", err);
+                console.error("Gagal memuat data. Silakan coba lagi nanti.", err);
             } finally {
-                setLoading(false); // Setelah delay, tampilkan dashboard
+                setLoading(false);
             }
         };
 
@@ -43,62 +65,67 @@ const AdminDashboard: React.FC = () => {
 
     return (
         <div className="p-6 pt-12">
-            <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
+            <h1 className="mb-6 text-2xl font-bold">Admin Dashboard</h1>
 
             {/* Kartu Statistik */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-blue-600">
-                    <FaMosque className="text-3xl text-blue-600" />
-                    <div>
-                        <p className="text-m text-gray-500">Wisata Religi</p>
-                        <h3 className="text-2xl font-semibold">{stats.wisataReligi}</h3>
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-green-600">
-                    <FaLandmark className="text-3xl text-green-600" />
-                    <div>
-                        <p className="text-m text-gray-500">Wisata Budaya</p>
-                        <h3 className="text-2xl font-semibold">{stats.wisataBudaya}</h3>
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-yellow-500">
-                    <FaUmbrellaBeach className="text-3xl text-yellow-500" />
-                    <div>
-                        <p className="text-m text-gray-500">Wisata Pesisir</p>
-                        <h3 className="text-2xl font-semibold">{stats.wisataPesisir}</h3>
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-purple-600">
-                    <FaHotel className="text-3xl text-purple-600" />
-                    <div>
-                        <p className="text-m text-gray-500">Penginapan</p>
-                        <h3 className="text-2xl font-semibold">{stats.penginapan}</h3>
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-pink-600">
-                    <FaBoxOpen className="text-3xl text-pink-600" />
-                    <div>
-                        <p className="text-m text-gray-500">Paket Wisata</p>
-                        <h3 className="text-2xl font-semibold">{stats.paketWisata}</h3>
-                    </div>
-                </div>
-                <div className="bg-white shadow-lg rounded-lg p-5 flex items-center gap-4 border-l-4 border-indigo-600">
-                    <FaTools className="text-3xl text-indigo-600" />
-                    <div>
-                        <p className="text-m text-gray-500">Fasilitas</p>
-                        <h3 className="text-2xl font-semibold">{stats.fasilitas}</h3>
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <DashboardCard
+                    icon={<FaMosque className="text-3xl text-blue-600" />}
+                    label="Wisata Religi"
+                    count={stats.wisataReligi}
+                    borderColor="border-blue-600"
+                />
+                <DashboardCard
+                    icon={<FaLandmark className="text-3xl text-green-600" />}
+                    label="Wisata Budaya"
+                    count={stats.wisataBudaya}
+                    borderColor="border-green-600"
+                />
+                <DashboardCard
+                    icon={<FaUmbrellaBeach className="text-3xl text-yellow-500" />}
+                    label="Wisata Pesisir"
+                    count={stats.wisataPesisir}
+                    borderColor="border-yellow-500"
+                />
+                <DashboardCard
+                    icon={<FaHotel className="text-3xl text-purple-600" />}
+                    label="Penginapan"
+                    count={stats.penginapan}
+                    borderColor="border-purple-600"
+                />
+                <DashboardCard
+                    icon={<FaBoxOpen className="text-3xl text-pink-600" />}
+                    label="Paket Wisata"
+                    count={stats.paketWisata}
+                    borderColor="border-pink-600"
+                />
+                <DashboardCard
+                    icon={<FaTools className="text-3xl text-indigo-600" />}
+                    label="Fasilitas"
+                    count={stats.fasilitas}
+                    borderColor="border-indigo-600"
+                />
             </div>
 
-            {/* Seksi Tambahan */}
-            <div className="mt-10">
-                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                    <FaChartBar className="text-blue-500" /> Statistik Umum
-                </h2>
-                <div className="bg-white shadow-lg rounded-lg p-6 text-sm text-gray-600">
-                    <p>Informasi tambahan tentang statistik pengunjung, kontribusi admin, atau tren kunjungan.</p>
-                </div>
+            
+        </div>
+    );
+};
+
+interface CardProps {
+    icon: React.ReactNode;
+    label: string;
+    count: number;
+    borderColor: string;
+}
+
+const DashboardCard: React.FC<CardProps> = ({ icon, label, count, borderColor }) => {
+    return (
+        <div className={`flex items-center gap-4 p-5 bg-white ${borderColor} border-l-4 rounded-lg shadow-lg`}>
+            {icon}
+            <div>
+                <p className="text-gray-500 text-m">{label}</p>
+                <h3 className="text-2xl font-semibold">{count}</h3>
             </div>
         </div>
     );

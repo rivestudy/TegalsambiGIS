@@ -80,7 +80,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         value={form.nama_fasilitas}
                         onChange={handleChange}
                         placeholder="Contoh: Aula, Lapangan, Perpustakaan"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         maxLength={50}
                         required
                     />
@@ -93,7 +93,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Deskripsi lengkap tentang fasilitas ini"
                         rows={3}
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
@@ -105,7 +105,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Proyektor, Kursi Lipat, AC"
                         rows={2}
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div>
@@ -116,7 +116,7 @@ const AddFasilitas: React.FC<AddFasilitasProps> = ({ onFormSubmit }) => {
                         value={form.lokasi_fasilitas}
                         onChange={handleChange}
                         placeholder="Koordinat, misal -6.614819, 110.651766"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import AddFasilitas from "../add/AddFasilitas";
-import axiosInstance from "../../../utils/axiosInstance"; // Make sure this exists
+import axiosInstance from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Fasilitas {
     id: number;
@@ -29,25 +31,27 @@ const DaftarFasilitas: React.FC = () => {
             setTimeout(() => {
                 setFasilitas(response.data);
                 setLoading(false);
-            }, 500); // ⏳ Tambahan 800ms delay untuk smooth loading
+            }, 500);
         } catch (error) {
             console.error("Gagal mengambil data fasilitas:", error);
+            toast.error("Gagal mengambil data fasilitas.");
         }
     };
 
     const handleEdit = (id: number) => {
         navigate(`/admin/edit/fasilitas/${id}`);
+        toast.info("Mengalihkan ke halaman edit...");
     };
 
     const handleDelete = async (id: number) => {
         if (window.confirm("Yakin ingin menghapus fasilitas ini?")) {
             try {
                 await axiosInstance.delete(`/data/facility/${id}`);
-                alert("Data fasilitas berhasil dihapus!");
+                toast.success("Data fasilitas berhasil dihapus!");
                 setFasilitas(fasilitas.filter((item) => item.id !== id));
             } catch (error) {
                 console.error("Gagal menghapus fasilitas:", error);
-                alert("Gagal menghapus data fasilitas.");
+                toast.error("Gagal menghapus data fasilitas.");
             }
         }
     };
@@ -56,18 +60,36 @@ const DaftarFasilitas: React.FC = () => {
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
+            <ToastContainer />
+
             <div className="flex pb-2 space-x-4 border-b">
-                <button onClick={() => setActiveTab("list")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "list" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                <button
+                    onClick={() => setActiveTab("list")}
+                    className={`px-4 py-2 rounded-t-md font-semibold ${
+                        activeTab === "list"
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
                     Daftar Fasilitas
                 </button>
-                <button onClick={() => setActiveTab("form")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "form" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                <button
+                    onClick={() => setActiveTab("form")}
+                    className={`px-4 py-2 rounded-t-md font-semibold ${
+                        activeTab === "form"
+                            ? "bg-blue-600 text-white"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
                     Tambah Fasilitas
                 </button>
             </div>
 
             {activeTab === "list" && (
                 <div className="p-6 mt-4 bg-white border border-gray-200 rounded-md shadow-md">
-                    <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">Daftar Fasilitas</h1>
+                    <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">
+                        Daftar Fasilitas
+                    </h1>
                     <div className="overflow-x-auto">
                         <table className="min-w-full text-sm border border-gray-200 table-auto">
                             <thead className="text-left text-gray-700 bg-gray-100">
@@ -100,10 +122,18 @@ const DaftarFasilitas: React.FC = () => {
                                             </td>
                                             <td className="px-4 py-2 text-gray-600 border">{item.location}</td>
                                             <td className="px-4 py-2 space-x-2 text-center border">
-                                                <button onClick={() => handleEdit(item.id)} className="text-blue-600 transition hover:text-blue-800" title="Edit">
+                                                <button
+                                                    onClick={() => handleEdit(item.id)}
+                                                    className="text-blue-600 transition hover:text-blue-800"
+                                                    title="Edit"
+                                                >
                                                     <FiEdit className="inline-block" />
                                                 </button>
-                                                <button onClick={() => handleDelete(item.id)} className="text-red-600 transition hover:text-red-800" title="Hapus">
+                                                <button
+                                                    onClick={() => handleDelete(item.id)}
+                                                    className="text-red-600 transition hover:text-red-800"
+                                                    title="Hapus"
+                                                >
                                                     <FiTrash className="inline-block" />
                                                 </button>
                                             </td>
@@ -121,6 +151,7 @@ const DaftarFasilitas: React.FC = () => {
                     onFormSubmit={() => {
                         fetchFasilitas(); // refresh list
                         setActiveTab("list");
+                        toast.success("Data fasilitas berhasil ditambahkan!");
                     }}
                 />
             )}

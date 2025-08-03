@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaMapMarkedAlt, FaHotel, FaSignOutAlt, FaTree, FaTachometerAlt } from "react-icons/fa";
+import { FaHotel, FaSignOutAlt, FaTree, FaTachometerAlt } from "react-icons/fa";
 import { FaSuitcaseRolling } from "react-icons/fa";
 import { FaBuilding } from "react-icons/fa";
 
@@ -52,10 +52,7 @@ const AdminSidebar: React.FC = () => {
                     <span>Penginapan</span>
                 </Link>
 
-                <Link to="/admin/daftar/map" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/map")}`}>
-                    <FaMapMarkedAlt />
-                    <span>WebGIS</span>
-                </Link>
+               
             </nav>
 
             {/* Logout */}

@@ -20,18 +20,24 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
     });
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 800);
+        const timer = setTimeout(() => setLoading(false), 800);
         return () => clearTimeout(timer);
     }, []);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // Format number as Rupiah with comma
+   
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const { name, value } = e.target;
 
-        if (name === "price" || name === "phone") {
+        if (name === "price") {
             const onlyNumbers = value.replace(/\D/g, "");
-            setForm({ ...form, [name]: onlyNumbers });
+            setForm({ ...form, price: onlyNumbers });
+        } else if (name === "phone") {
+            const onlyNumbers = value.replace(/\D/g, "");
+            setForm({ ...form, phone: onlyNumbers });
         } else {
             setForm({ ...form, [name]: value });
         }
@@ -52,8 +58,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
             return;
         }
 
-        const phoneRegex = /^\d+$/;
-        if (!phoneRegex.test(form.phone) || form.phone.length < 8) {
+        if (!/^\d+$/.test(form.phone) || form.phone.length < 8) {
             toast.error("Nomor telepon harus berupa angka dan minimal 8 digit.");
             return;
         }
@@ -61,17 +66,9 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
         const formData = new FormData();
         formData.append("name", form.name);
         formData.append("description", form.description);
-        formData.append("price", form.price);
+        formData.append("price", form.price); 
         formData.append("phone", form.phone);
-        formData.append(
-            "facilities",
-            JSON.stringify(
-                form.facilities
-                    .split(",")
-                    .map((f) => f.trim())
-                    .filter((f) => f !== "")
-            )
-        );
+        formData.append("facilities", (form.facilities));
 
         form.images.forEach((img) => {
             formData.append("images", img);
@@ -116,13 +113,19 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Tuliskan deskripsi paket"
                         rows={3}
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga</label>
-                    <input name="price" value={form.price} onChange={handleChange} placeholder="Harga" className="w-full p-2 text-sm border border-gray-600 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required />
+                    <input
+                        name="price"
+                        value={(form.price)}
+                        onChange={handleChange}
+                        placeholder="Harga (contoh: Rp. 1.500.000,00)"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                    />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Telepon</label>
@@ -132,7 +135,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Kontak yang bisa dihubungi"
                         maxLength={15}
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
@@ -143,7 +146,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                         value={form.facilities}
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Transportasi, Makan, Penginapan"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -154,7 +157,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                         multiple
                         accept="image/*"
                         onChange={handleFileChange}
-                        className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                        className="w-full text-sm text-gray-700 border-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />
                 </div>
                 <div className="flex justify-end">

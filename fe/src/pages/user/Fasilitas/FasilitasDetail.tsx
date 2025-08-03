@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
-import { FaParking, FaToilet, FaMosque, FaTicketAlt } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -16,11 +16,6 @@ interface Facility {
     facilities: string[];
 }
 
-const facilityIcons: { [key: string]: React.ReactNode } = {
-    "Area Wudhu": <FaToilet className="mr-2 text-black-600" />,
-    Perpustakaan: <FaMosque className="mr-2 text-black-600" />,
-    "Area Parkir": <FaParking className="mr-2 text-black-600" />,
-};
 
 const FacilitiesDetail = () => {
     const [item, setItem] = useState<Facility | null>(null);
@@ -127,7 +122,7 @@ const FacilitiesDetail = () => {
                         <ul className="space-y-2">
                             {item.facilities.map((facility, index) => (
                                 <li key={index} className="flex items-center text-sm text-gray-800">
-                                    {facilityIcons[facility] || <FaTicketAlt className="mr-2 text-black-600" />}
+                                    <FaAngleRight className="mr-2 text-black-600" />
                                     {facility}
                                 </li>
                             ))}

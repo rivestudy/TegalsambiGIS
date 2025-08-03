@@ -81,19 +81,19 @@ const EditFasilitas: React.FC = () => {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <div>
                     <label className="block mb-1 font-semibold">Nama Fasilitas</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Deskripsi Fasilitas</label>
-                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Sub-fasilitas</label>
-                    <textarea name="facilities" value={form.facilities} onChange={handleChange} rows={2} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400" />
+                    <textarea name="facilities" value={form.facilities} onChange={handleChange} rows={2} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Lokasi Fasilitas</label>
-                    <input type="text" name="location" value={form.location} onChange={handleChange} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400" required />
+                    <input type="text" name="location" value={form.location} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Ganti Gambar (opsional)</label>

@@ -76,10 +76,10 @@ const EditPaket: React.FC = () => {
     if (loading) return <LoadingAnimation />;
 
     return (
-        <div className="max-w-4xl mx-auto mt-6 px-4">
-            <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">Edit Paket Wisata</h1>
+        <div className="max-w-4xl px-4 mx-auto mt-6">
+            <h1 className="mb-6 text-2xl font-bold text-center text-gray-800">Edit Paket Wisata</h1>
 
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white border border-gray-200 shadow-lg p-8 rounded-xl">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 {/* Nama Paket */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium text-gray-700">Nama Paket</label>
@@ -89,7 +89,7 @@ const EditPaket: React.FC = () => {
                 {/* Deskripsi */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium text-gray-700">Deskripsi</label>
-                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="w-full p-2 border rounded-md" />
+                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} required className="w-full p-2 border border-gray-200 rounded-md" />
                 </div>
 
                 {/* Harga */}
@@ -107,7 +107,7 @@ const EditPaket: React.FC = () => {
                 {/* Fasilitas */}
                 <div className="col-span-2">
                     <label className="block mb-1 font-medium text-gray-700">Fasilitas</label>
-                    <textarea name="facilities" value={form.facilities} onChange={handleChange} rows={2} className="w-full p-2 border rounded-md" />
+                    <textarea name="facilities" value={form.facilities} onChange={handleChange} rows={2} className="w-full p-2 border border-gray-200 rounded-md" />
                 </div>
 
                 {/* Upload Gambar */}
@@ -117,7 +117,7 @@ const EditPaket: React.FC = () => {
                 </div>
 
                 {/* Tombol Aksi */}
-                <div className="col-span-2 flex justify-end space-x-4 pt-2">
+                <div className="flex justify-end col-span-2 pt-2 space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/paket")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal
                     </button>

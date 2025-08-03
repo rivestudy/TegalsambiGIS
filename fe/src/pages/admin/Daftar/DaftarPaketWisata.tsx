@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import AddPaketWisata from "../add/AddPaketWisata";
 import axios from "../../../utils/axiosInstance";
 import LoadingAnimation from "../../../components/LoadingAnimation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface PaketWisata {
     id: number;
@@ -11,8 +13,20 @@ interface PaketWisata {
     description: string;
     price: string;
     phone: string;
-    facilities: string; // assuming it's already an array
+    facilities: string;
 }
+
+// Format price to Rp. X.XXX,XX
+const formatPrice = (value: string | number) => {
+    const number = typeof value === "string" ? parseFloat(value) : value;
+    const formatted = new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 2,
+    }).format(number);
+
+    return formatted.replace(/\./g, "#").replace(/,/g, ".").replace(/#/g, ","); // swap , and .
+};
 
 const DaftarPaketWisata: React.FC = () => {
     const navigate = useNavigate();
@@ -30,7 +44,7 @@ const DaftarPaketWisata: React.FC = () => {
             }, 800);
         } catch (error) {
             console.error("Gagal mengambil data paket wisata:", error);
-            alert("Gagal memuat data wisata.");
+            toast.error("Gagal memuat data wisata.");
             setLoading(false);
         }
     };
@@ -48,10 +62,10 @@ const DaftarPaketWisata: React.FC = () => {
             try {
                 await axios.delete(`/data/paket/${id}`);
                 setPaketList((prev) => prev.filter((item) => item.id !== id));
-                alert("Data paket wisata berhasil dihapus!");
+                toast.success("Paket wisata berhasil dihapus!");
             } catch (error) {
                 console.error("Gagal menghapus paket wisata:", error);
-                alert("Gagal menghapus data.");
+                toast.error("Gagal menghapus data.");
             }
         }
     };
@@ -60,11 +74,18 @@ const DaftarPaketWisata: React.FC = () => {
 
     return (
         <div className="max-w-6xl px-6 py-6 mx-auto">
+            <ToastContainer position="top-right" autoClose={2500} />
             <div className="flex pb-2 space-x-4 border-b">
-                <button onClick={() => setActiveTab("list")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "list" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                <button
+                    onClick={() => setActiveTab("list")}
+                    className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "list" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                >
                     Daftar Paket
                 </button>
-                <button onClick={() => setActiveTab("form")} className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "form" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                <button
+                    onClick={() => setActiveTab("form")}
+                    className={`px-4 py-2 rounded-t-md font-semibold ${activeTab === "form" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+                >
                     Tambah Paket
                 </button>
             </div>
@@ -93,7 +114,9 @@ const DaftarPaketWisata: React.FC = () => {
                                     paketList.map((paket) => (
                                         <tr key={paket.id} className="transition hover:bg-gray-50">
                                             <td className="px-4 py-2 font-medium text-gray-800 border">{paket.name}</td>
-                                            <td className="px-4 py-2 font-semibold text-green-700 border">{paket.price}</td>
+                                            <td className="px-4 py-2 font-semibold text-green-700 border">
+                                                {formatPrice(paket.price)}
+                                            </td>
                                             <td className="px-4 py-2 text-gray-700 border">
                                                 <ul className="list-disc list-inside">
                                                     {paket.facilities.split(",").map((facility, index) => (

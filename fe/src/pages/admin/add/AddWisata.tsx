@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../../utils/axiosInstance"; // Your axios instance
+import axiosInstance from "../../../utils/axiosInstance";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
 interface AddAttractionProps {
-    onFormSubmit: () => void; // Callback to switch tab after submission
+    onFormSubmit: () => void;
 }
 
 const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
@@ -27,7 +27,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setLoading(false); // ⏱️ delay 800ms untuk tampilkan form
+            setLoading(false);
         }, 800);
         return () => clearTimeout(timer);
     }, []);
@@ -36,7 +36,6 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         const { name, value } = e.target;
 
         if (name === "phone" || name === "price") {
-            // Izinkan hanya angka
             const onlyNumbers = value.replace(/\D/g, "");
             setForm({ ...form, [name]: onlyNumbers });
         } else {
@@ -77,14 +76,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         e.preventDefault();
 
         // Validasi sederhana
-        if (!form.category || !form.name || !form.description || !form.price || !form.time_open_close || !form.phone || !form.email || !form.location) {
+        if (!form.category || !form.name || !form.description || !form.price || !form.time_open_close || !form.location) {
             toast.error("Mohon lengkapi semua kolom wajib.");
             return;
         }
-
         // Validasi nomor telepon hanya angka dan panjang minimum
         const phoneRegex = /^\d+$/;
-        if (!phoneRegex.test(form.phone) || form.phone.length < 8) {
+        if (form.phone && (!phoneRegex.test(form.phone) || form.phone.length < 8)) {
             toast.error("Nomor telepon harus berupa angka dan minimal 8 digit.");
             return;
         }
@@ -95,7 +93,6 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             toast.error("Format email tidak valid.");
             return;
         }
-
         const formData = new FormData();
         formData.append("category", form.category);
         formData.append("name", form.name);
@@ -106,7 +103,6 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
         formData.append("email", form.email);
         formData.append("instagram", form.instagram);
         formData.append("location", form.location);
-
         formData.append(
             "facilities",
             JSON.stringify(
@@ -162,7 +158,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Kategori Wisata</label>
-                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required>
+                    <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Religi">Wisata Religi</option>
                         <option value="Budaya">Wisata Budaya</option>
@@ -177,7 +173,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.name}
                         onChange={handleChange}
                         placeholder="Masukkan nama wisata"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                         maxLength={50}
                     />
@@ -190,19 +186,19 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         rows={4}
                         placeholder="Tuliskan deskripsi wisata"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         required
                     />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga Tiket (per orang)</label>
-                    <input name="price" value={form.price} onChange={handleChange} placeholder="Harga" className="w-full p-2 text-sm border border-gray-600 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required />
+                    <input name="price" value={form.price} onChange={handleChange} placeholder="Harga" className="w-full p-2 text-sm border border-gray-200 rounded 20 focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
                 </div>
 
-                <div className="md:col-span-2 grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:col-span-2">
                     <div>
                         <label className="block mb-1 font-semibold">Hari Buka</label>
-                        <select name="dayStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded">
+                        <select name="dayStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded">
                             <option value="">-- Pilih Hari --</option>
                             {days.map((day) => (
                                 <option key={day} value={day}>
@@ -213,7 +209,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </div>
                     <div>
                         <label className="block mb-1 font-semibold">Hari Tutup</label>
-                        <select name="dayEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded">
+                        <select name="dayEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded">
                             <option value="">-- Pilih Hari --</option>
                             {days.map((day) => (
                                 <option key={day} value={day}>
@@ -224,15 +220,15 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </div>
                     <div>
                         <label className="block mb-1 font-semibold">Jam Buka</label>
-                        <input type="time" name="timeStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded" />
+                        <input type="time" name="timeStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded" />
                     </div>
                     <div>
                         <label className="block mb-1 font-semibold">Jam Tutup</label>
-                        <input type="time" name="timeEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border rounded" />
+                        <input type="time" name="timeEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded" />
                     </div>
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Telepon</label>
+                    <label className="block mb-1 font-semibold border-gray-200">Telepon</label>
                     <input
                         type="text"
                         name="phone"
@@ -240,32 +236,32 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         onChange={handleChange}
                         placeholder="Nomor telepon yang bisa dihubungi"
                         maxLength={15}
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Alamat email kontak" className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
+                    <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="Alamat email kontak" className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Instagram</label>
+                    <label className="block mb-1 font-semibold border-gray-200">Instagram</label>
                     <input
                         type="text"
                         name="instagram"
                         value={form.instagram}
                         onChange={handleChange}
                         placeholder="contoh @namawisata"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                     />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Fasilitas</label>
+                    <label className="block mb-1 font-semibold border-gray-200">Fasilitas</label>
                     <textarea
                         name="facilities"
                         value={form.facilities}
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Parkir, Toilet, Warung"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -276,7 +272,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.points_of_attraction}
                         onChange={handleChange}
                         placeholder="Pisahkan dengan koma, contoh: Susur Pantai, Pentas Seni"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>
@@ -287,7 +283,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         value={form.location}
                         onChange={handleChange}
                         placeholder="Koordinat, misal -6.614819, 110.651766"
-                        className="w-full p-2 text-sm border rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
+                        className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400"
                         rows={2}
                     />
                 </div>

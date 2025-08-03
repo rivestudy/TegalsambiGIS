@@ -51,19 +51,19 @@ const AttractionDetail = () => {
                 setLoading(true);
                 const response = await axios.get(`/data/attraction/${id}`);
                 const data = response.data;
-                
+
                 // Sanitize images
-                const sanitizedImages = Array.isArray(data.images) 
-                    ? data.images.map((img: any) => 
+                const sanitizedImages = Array.isArray(data.images)
+                    ? data.images.map((img: any) =>
                         typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
-                      ).filter(Boolean)
+                    ).filter(Boolean)
                     : [];
 
                 setItem({
                     ...data,
                     images: sanitizedImages.length > 0 ? sanitizedImages : [fallbackImage]
                 });
-                
+
                 setMainImage(sanitizedImages.length > 0 ? sanitizedImages[0] : fallbackImage);
                 setError(null);
             } catch (err) {
@@ -146,6 +146,7 @@ const AttractionDetail = () => {
                             <h3 className="font-semibold text-blue-900">Jam Operasional</h3>
                             <p className="text-sm text-gray-800">{item.time_open_close}</p>
                         </div>
+                        {Array.isArray(item.facilities) && item.facilities.length > 0 && (
                         <div>
                             <h3 className="mb-2 font-semibold text-blue-900">Fasilitas</h3>
                             <ul className="space-y-2">
@@ -156,15 +157,18 @@ const AttractionDetail = () => {
                                     </li>
                                 ))}
                             </ul>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-blue-900">Daya Tarik Utama</h3>
-                            <ul className="text-sm text-gray-800 list-disc list-inside">
-                                {item.points_of_attraction.map((point, index) => (
-                                    <li key={index}>{point}</li>
-                                ))}
-                            </ul>
-                        </div>
+                        </div>)}
+                        {Array.isArray(item.points_of_attraction) && item.points_of_attraction.length > 0 && (
+                            <div>
+                                <h3 className="font-semibold text-purple-900">Daya Tarik Utama</h3>
+                                <ul className="text-sm text-gray-800 list-disc list-inside">
+                                    {item.points_of_attraction.map((point, index) => (
+                                        <li key={index}>{point}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                        {(item.phone || item.email || item.instagram)  && (
                         <div>
                             <h3 className="mb-1 font-semibold text-blue-900">Kontak & Reservasi</h3>
                             <ul className="text-sm text-gray-800 list-disc list-inside gap-x-6">
@@ -172,23 +176,23 @@ const AttractionDetail = () => {
                                 {item.email && <li>Email: {item.email}</li>}
                                 {item.instagram && <li>Instagram: {item.instagram}</li>}
                             </ul>
-                        </div>
+                        </div>)}
                     </div>
                 </div>
             </motion.div>
-            
+
             <div className="max-w-screen-xl mx-auto mt-10">
                 <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
                     <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Wisata</h3>
                     <p className="mb-4 text-sm text-gray-700">{item.location}</p>
                     <div className="overflow-hidden rounded-xl">
-                        <iframe 
-                            title="map" 
-                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} 
-                            width="100%" 
-                            height="300" 
-                            style={{ border: 0 }} 
-                            allowFullScreen 
+                        <iframe
+                            title="map"
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`}
+                            width="100%"
+                            height="300"
+                            style={{ border: 0 }}
+                            allowFullScreen
                             loading="lazy"
                         ></iframe>
                     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const isAuthenticated = (): boolean => sessionStorage.getItem("token") !== null;
@@ -84,7 +84,7 @@ const Footer = () => {
             {/* Copyright */}
             <div className="px-4 pb-6 mt-8 text-sm text-center text-gray-500">
                 <p>
-                    &copy; {new Date().getFullYear()} Pemerintah Desa {villageName}. All Rights Reserved.
+                    &copy; {new Date().getFullYear()} Pemerintah Desa {villageName} - Pengabdian IDBU UNDIP 2025 | All Rights Reserved.
                 </p>
                 <p>Kabupaten Jepara, Jawa Tengah, Indonesia</p>
             </div>

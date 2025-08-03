@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
-import { FaParking, FaToilet, FaTicketAlt,  FaUtensils, FaWifi, FaChild } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -22,16 +22,9 @@ interface Accommodation {
 }
 
 const formatPrice = (price: number) => (price === 0 ? "Harga Bervariasi" : `Mulai Rp ${price.toLocaleString("id-ID")} /malam`);
-const facilityIcons: { [key: string]: React.ReactNode } = {
-    "Kolam Renang": <FaChild className="mr-2 text-black-600" />,
-    "WiFi Gratis": <FaWifi className="mr-2 text-black-600" />,
-    Restoran: <FaUtensils className="mr-2 text-black-600" />,
-    "Pusat Kebugaran": <FaChild className="mr-2 text-black-600" />,
-    "Parkir Luas": <FaParking className="mr-2 text-black-600" />,
-    Toilet: <FaToilet className="mr-2 text-black-600" />,
-};
 
 const AccommodationDetail = () => {
+    const array = ("[\"\"]");
     const [item, setItem] = useState<Accommodation | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -47,19 +40,19 @@ const AccommodationDetail = () => {
                 setLoading(true);
                 const response = await axios.get(`/data/accommodation/${id}`);
                 const data = response.data;
-                
+
                 // Sanitize images
-                const sanitizedImages = Array.isArray(data.images) 
-                    ? data.images.map((img: any) => 
+                const sanitizedImages = Array.isArray(data.images)
+                    ? data.images.map((img: any) =>
                         typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
-                      ).filter(Boolean)
+                    ).filter(Boolean)
                     : [];
 
                 setItem({
                     ...data,
                     images: sanitizedImages.length > 0 ? sanitizedImages : [fallbackImage]
                 });
-                
+
                 setMainImage(sanitizedImages.length > 0 ? sanitizedImages[0] : fallbackImage);
                 setError(null);
             } catch (err) {
@@ -96,7 +89,7 @@ const AccommodationDetail = () => {
                                 </li>
                                 <li className="text-gray-300">/</li>
                                 <li>
-                                    <Link to="/accommodations" className="transition duration-300 hover:text-orange-400">
+                                    <Link to="/facilities" className="transition duration-300 hover:text-orange-400">
                                         Akomodasi
                                     </Link>
                                 </li>
@@ -127,12 +120,15 @@ const AccommodationDetail = () => {
                         ))}
                     </div>
                 </div>
-                <div className="p-6 space-y-6 text-gray-800 border border-gray-200 shadow-xl md:w-1/2 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
+                <div className="w-full p-6 space-y-6 overflow-y-auto text-gray-800 border border-gray-200 shadow-xl bg-gradient-to-r from-purple-100 to-indigo-100 rounded-xl md:w-1/2">
+                    {/* Tentang Penginapan */}
                     <div>
                         <h2 className="mb-2 font-semibold text-purple-900">Tentang Penginapan</h2>
                         <p className="text-sm leading-relaxed text-gray-800">{item.description}</p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-6">
+
+                    {/* Harga & Check-in/out */}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div>
                             <h3 className="font-semibold text-purple-900">Harga per Malam</h3>
                             <p className="text-sm text-gray-800">{formatPrice(item.price)}</p>
@@ -141,50 +137,62 @@ const AccommodationDetail = () => {
                             <h3 className="font-semibold text-purple-900">Waktu Check-in/out</h3>
                             <p className="text-sm text-gray-800">{item.time_open_close}</p>
                         </div>
-                        <div>
-                            <h3 className="mb-2 font-semibold text-purple-900">Fasilitas Unggulan</h3>
-                            <ul className="space-y-2">
-                                {item.facilities.map((facility, index) => (
-                                    <li key={index} className="flex items-center text-sm text-gray-800">
-                                        {facilityIcons[facility] || <FaTicketAlt className="mr-2 text-black-600" />}
-                                        {facility}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-purple-900">Daya Tarik Utama</h3>
-                            <ul className="text-sm text-gray-800 list-disc list-inside">
-                                {item.points_of_attraction.map((point, index) => (
-                                    <li key={index}>{point}</li>
-                                ))}
-                            </ul>
-                        </div>
                     </div>
+
+                    {/* Fasilitas */}
+                    {Array.isArray(item.facilities) && item.facilities.length > 0 && (
+
                     <div>
-                        <h3 className="mb-1 font-semibold text-purple-900">Kontak & Reservasi</h3>
-                        <ul className="text-sm text-gray-800 list-disc list-inside gap-x-6">
-                            {item.phone && <li>Telp: {item.phone}</li>}
-                            {item.email && <li>Email: {item.email}</li>}
-                            {item.instagram && <li>Instagram: {item.instagram}</li>}
+                        <h3 className="mb-2 font-semibold text-purple-900">Fasilitas Unggulan</h3>
+                        <ul className="grid grid-cols-2 gap-2">
+                            {item.facilities.map((facility, index) => (
+                                <li key={index} className="flex items-center text-sm text-gray-800">
+                                    <FaAngleRight className="mr-2 text-black-600" />
+                                    {facility}
+                                </li>
+                            ))}
                         </ul>
                     </div>
+                        )}
+
+                    {/* Daya Tarik & Kontak */}
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        {item.points_of_attraction === array  &&
+                            <div>
+                                <h3 className="font-semibold text-purple-900">Daya Tarik Utama</h3>
+                                <ul className="text-sm text-gray-800 list-disc list-inside">
+                                    {item.points_of_attraction.map((point, index) => (
+                                        <li key={index}>{point}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        }
+                        <div>
+                            <h3 className="mb-1 font-semibold text-purple-900">Kontak & Reservasi</h3>
+                            <ul className="text-sm text-gray-800 list-disc list-inside">
+                                {item.phone && <li>Telp: {item.phone}</li>}
+                                {item.email && <li>Email: {item.email}</li>}
+                                {item.instagram && <li>Instagram: {item.instagram}</li>}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+
             </motion.div>
-            
+
             {/* Lokasi */}
             <div className="max-w-screen-xl mx-auto mt-10">
                 <div className="p-6 border border-gray-200 shadow-xl bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl">
                     <h3 className="mb-4 text-lg font-semibold text-blue-900">Lokasi Penginapan</h3>
                     <p className="mb-4 text-sm text-gray-700">{item.location}</p>
                     <div className="overflow-hidden rounded-xl">
-                        <iframe 
-                            title="map" 
-                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`} 
-                            width="100%" 
-                            height="300" 
-                            style={{ border: 0 }} 
-                            allowFullScreen 
+                        <iframe
+                            title="map"
+                            src={`https://maps.google.com/maps?q=${encodeURIComponent(item.location)}&output=embed`}
+                            width="100%"
+                            height="300"
+                            style={{ border: 0 }}
+                            allowFullScreen
                             loading="lazy"
                         ></iframe>
                     </div>

@@ -103,42 +103,42 @@ const EditAccommodation: React.FC = () => {
     return (
         <div className="max-w-4xl px-6 py-6 mx-auto">
             <h1 className="mb-4 text-2xl font-bold text-center">Edit Data Penginapan</h1>
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border rounded-md shadow-md md:grid-cols-2">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border border-gray-200 rounded-md shadow-md md:grid-cols-2">
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Nama Penginapan</label>
-                    <input name="name" value={form.name} onChange={handleChange} className="w-full p-2 border rounded" required />
+                    <input name="name" value={form.name} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Deskripsi</label>
-                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 border rounded" required />
+                    <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Harga Per Malam</label>
-                    <input name="price" value={form.price} onChange={handleChange} className="w-full p-2 border rounded" />
+                    <input name="price" value={form.price} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Jam Check-in / Check-out</label>
-                    <input name="time_open_close" value={form.time_open_close} onChange={handleChange} className="w-full p-2 border rounded" />
+                    <input name="time_open_close" value={form.time_open_close} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Fasilitas</label>
-                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
+                    <textarea name="facilities" value={form.facilities} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Daya Tarik Sekitar</label>
-                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border rounded" rows={2} placeholder="Pisahkan dengan koma..." />
+                    <textarea name="points_of_attraction" value={form.points_of_attraction} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" rows={2} placeholder="Pisahkan dengan koma..." />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Telepon</label>
-                    <input name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 border rounded" />
+                    <input name="phone" value={form.phone} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Email</label>
-                    <input name="email" type="email" value={form.email} onChange={handleChange} className="w-full p-2 border rounded" />
+                    <input name="email" type="email" value={form.email} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Instagram</label>
-                    <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border rounded" />
+                    <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div className="col-span-2">
                     <label className="block mb-1 font-semibold">Upload Gambar</label>
