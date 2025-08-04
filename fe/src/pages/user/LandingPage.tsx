@@ -142,7 +142,7 @@ const LandingPage: React.FC = () => {
 
                 {accommodations.length > 3 && (
                     <motion.div className="flex justify-center pt-8" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: 0.3 }} viewport={{ once: true, amount: 0.8 }}>
-                        <Link to="/accommodations" className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
+                        <Link to="/facilities" className="flex items-center gap-2 px-6 py-2 text-gray-700 transition bg-gray-200 rounded-full hover:bg-gray-300">
                             Lihat Selengkapnya
                         </Link>
                     </motion.div>

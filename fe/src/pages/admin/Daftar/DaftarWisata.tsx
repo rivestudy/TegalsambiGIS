@@ -25,9 +25,12 @@ const AddAttractionPage: React.FC = () => {
         try {
             const response = await axiosInstance.get("/data/attraction");
             setTimeout(() => {
-                setAttractions(response.data);
+                const filteredData = response.data.filter(
+                (item: any) => item.category == "Budaya" || "Religi" || "Pesisir"
+        );
+                setAttractions(filteredData);
                 setLoading(false);
-            }, 800); // ⏳ Tambahan 800ms delay untuk smooth loading
+            }, 800); 
         } catch (error) {
             console.error("Failed to fetch attractions:", error);
             alert("Gagal memuat data wisata.");

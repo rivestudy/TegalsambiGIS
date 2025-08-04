@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaHotel, FaSignOutAlt, FaTree, FaTachometerAlt } from "react-icons/fa";
 import { FaSuitcaseRolling } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
 import { FaBuilding } from "react-icons/fa";
 
 const AdminSidebar: React.FC = () => {
@@ -50,6 +51,10 @@ const AdminSidebar: React.FC = () => {
                 <Link to="/admin/daftar/penginapan" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/penginapan")}`}>
                     <FaHotel />
                     <span>Penginapan</span>
+                </Link>
+                <Link to="/admin/daftar/umkm" className={`flex items-center gap-3 px-4 py-2 rounded ${isActive("/admin/daftar/umkm")}`}>
+                    <FaShop />
+                    <span>UMKM</span>
                 </Link>
 
                

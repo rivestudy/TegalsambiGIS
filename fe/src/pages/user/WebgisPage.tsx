@@ -181,9 +181,9 @@ const MapPage = () => {
       </motion.div>
 
       {/* Main Grid */}
-      <div className="grid max-w-screen-xl grid-cols-1 gap-8 mx-auto md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-8 mx-auto ">
         {/* Map Section */}
-        <motion.div className="grid w-full gap-8 grid-rows-10 md:col-span-3" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").whileInView} transition={animationConfig}>
+        <motion.div className="grid w-full col-span-4 gap-8 lg:col-span-3 grid-rows-10" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").whileInView} transition={animationConfig}>
           <div className="row-span-2 p-4 bg-white border border-gray-300 shadow-lg rounded-2xl">
             <label className="block mb-2 font-semibold text-gray-700">Tampilkan Kategori:</label>
             <select value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)} className="w-full p-2 text-sm transition border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
@@ -226,7 +226,7 @@ const MapPage = () => {
         </motion.div>
 
         {/* Sidebar */}
-        <motion.div className="w-full col-span-4 p-6 bg-white border border-gray-200 shadow-xl md:col-span-1 rounded-2xl" initial={bounceVariant("right").initial} whileInView={bounceVariant("right").whileInView} transition={{ ...animationConfig, delay: 0.3 }}>
+        <motion.div className="w-full col-span-4 p-6 bg-white border border-gray-200 shadow-xl lg:col-span-1 rounded-2xl" initial={bounceVariant("right").initial} whileInView={bounceVariant("right").whileInView} transition={{ ...animationConfig, delay: 0.3 }}>
           <h2 className="mb-4 text-2xl font-bold text-gray-700">Lokasi Ditampilkan</h2>
           <ul className="pr-2 space-y-3 overflow-y-auto text-sm text-gray-600 min-h-96">
             <AnimatePresence>

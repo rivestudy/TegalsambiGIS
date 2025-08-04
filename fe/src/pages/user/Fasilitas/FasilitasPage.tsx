@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // ✨ 1. Import useLocation
 import { motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
@@ -30,8 +30,8 @@ const sanitizeItems = (items: any[]): Item[] => {
         ...item,
         images: Array.isArray(item.images)
             ? item.images.map((img: any) =>
-                typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
-            ).filter(Boolean)
+                  typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
+              ).filter(Boolean)
             : [],
     }));
 };
@@ -68,7 +68,8 @@ const SectionContainer = ({
     priceColor,
     direction,
     searchTerm,
-    type
+    type,
+    id, // ✨ 2. Add id to props
 }: {
     title: string;
     description: string;
@@ -78,6 +79,7 @@ const SectionContainer = ({
     direction: "top" | "right" | "left" | "bottom";
     searchTerm: string;
     type: "facility" | "accommodation";
+    id?: string; // ✨ Make it optional
 }) => {
     if (!data.length) return null;
 
@@ -85,7 +87,8 @@ const SectionContainer = ({
 
     return (
         <motion.div
-            className="max-w-screen-xl px-4 pt-10 pb-10 mx-auto"
+            id={id} // ✨ Apply the id here
+            className="max-w-screen-xl px-4 pt-10 pb-10 mx-auto scroll-mt-24" // Added scroll-mt for better scroll position
             initial={anim.initial}
             whileInView={anim.whileInView}
             transition={animationConfig}
@@ -153,6 +156,7 @@ const PublicServicePage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const location = useLocation(); // ✨ 3. Get the location object
 
     useEffect(() => {
         const fetchData = async () => {
@@ -171,6 +175,17 @@ const PublicServicePage = () => {
         };
         fetchData();
     }, []);
+
+    // ✨ 4. Add useEffect to handle scrolling on page load/hash change
+    useEffect(() => {
+        if (location.hash && !loading) {
+            const id = location.hash.replace("#", "");
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    }, [location.hash, loading]); // This effect runs when the hash or loading state changes
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
@@ -198,7 +213,9 @@ const PublicServicePage = () => {
                 onClearSearch={clearSearch}
             />
 
+            {/* ✨ 5. Add the 'id' prop to each SectionContainer */}
             <SectionContainer
+                id="fasilitas" // Corresponds to the link /facilities#fasilitas
                 title="Fasilitas Umum"
                 description="Temukan berbagai fasilitas publik yang tersedia untuk menunjang aktivitas Anda di Tegalsambi."
                 data={filteredFacilities}
@@ -210,8 +227,9 @@ const PublicServicePage = () => {
             />
 
             <SectionContainer
+                id="penginapan" // Corresponds to the link /facilities#penginapan
                 title="Penginapan"
-                description="Dari hotel mewah hingga guesthouse nyaman, temukan akomodasi terbaik di Tegalsambi."
+                description="Temukan akomodasi dan tempat menginap terbaik untuk liburan Anda di Desa Tegalsambi."
                 data={filteredAccommodations}
                 color="bg-orange-100"
                 priceColor="text-orange-600"
