@@ -157,7 +157,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
             <h1 className="pb-2 mb-2 text-2xl font-bold text-center text-gray-800">Tambah Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg md:grid-cols-2 rounded-xl">
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Kategori Wisata</label>
+                    <label className="block mb-1 font-semibold">Kategori Wisata *</label>
                     <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" required>
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Religi">Wisata Religi</option>
@@ -166,7 +166,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     </select>
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Nama Wisata</label>
+                    <label className="block mb-1 font-semibold">Nama Wisata *</label>
                     <input
                         type="text"
                         name="name"
@@ -179,7 +179,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Deskripsi</label>
+                    <label className="block mb-1 font-semibold">Deskripsi *</label>
                     <textarea
                         name="description"
                         value={form.description}
@@ -191,13 +191,13 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Harga Tiket (per orang)</label>
+                    <label className="block mb-1 font-semibold">Harga Tiket (per orang) *</label>
                     <input name="price" value={form.price} onChange={handleChange} placeholder="Harga" className="w-full p-2 text-sm border border-gray-200 rounded 20 focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 md:col-span-2">
                     <div>
-                        <label className="block mb-1 font-semibold">Hari Buka</label>
+                        <label className="block mb-1 font-semibold">Hari Buka *</label>
                         <select name="dayStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded">
                             <option value="">-- Pilih Hari --</option>
                             {days.map((day) => (
@@ -208,7 +208,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         </select>
                     </div>
                     <div>
-                        <label className="block mb-1 font-semibold">Hari Tutup</label>
+                        <label className="block mb-1 font-semibold">Hari Tutup *</label>
                         <select name="dayEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded">
                             <option value="">-- Pilih Hari --</option>
                             {days.map((day) => (
@@ -219,11 +219,11 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         </select>
                     </div>
                     <div>
-                        <label className="block mb-1 font-semibold">Jam Buka</label>
+                        <label className="block mb-1 font-semibold">Jam Buka *</label>
                         <input type="time" name="timeStart" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded" />
                     </div>
                     <div>
-                        <label className="block mb-1 font-semibold">Jam Tutup</label>
+                        <label className="block mb-1 font-semibold">Jam Tutup *</label>
                         <input type="time" name="timeEnd" onChange={handleOperationalChange} className="w-full p-2 text-sm border border-gray-200 rounded" />
                     </div>
                 </div>
@@ -277,7 +277,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Lokasi</label>
+                    <label className="block mb-1 font-semibold">Lokasi *</label>
                     <textarea
                         name="location"
                         value={form.location}
@@ -297,6 +297,7 @@ const AddAttraction: React.FC<AddAttractionProps> = ({ onFormSubmit }) => {
                         className="w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />
                 </div>
+                <text className="text-sm">*) Wajib diisi</text>
                 <div className="flex justify-end col-span-2">
                     <button type="submit" className="px-6 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
                         Simpan Wisata

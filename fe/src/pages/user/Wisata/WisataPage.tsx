@@ -130,7 +130,7 @@ const SectionContainer = ({
                                             item.category == null
                                                 ? `/paket/${item.id}`
                                                 : item.category === 'UMKM'
-                                                    ? `/umkm/${item.id}`
+                                                    ? `/attraction/${item.id}`
                                                     : `/attraction/${item.id}`
                                         }
                                     >
@@ -155,10 +155,8 @@ const SectionContainer = ({
                                                         {item.description}
                                                     </p>
                                                 </div>
-                                                <p
-                                                    className={`text-sm font-medium ${priceColor}`}
-                                                >
-                                                    {formatPrice(item.price)}
+                                                <p className={`text-sm font-medium ${priceColor}`}>
+                                                    {item.category !== "UMKM" && formatPrice(item.price)}
                                                 </p>
                                             </div>
                                         </div>

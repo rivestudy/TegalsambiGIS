@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
-import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild } from "react-icons/fa";
+import { FaParking, FaToilet, FaTicketAlt, FaMosque, FaUtensils, FaWifi, FaChild, FaAngleRight } from "react-icons/fa";
 import { GiCampingTent } from "react-icons/gi";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
@@ -25,16 +25,6 @@ interface Attraction {
 
 const formatPrice = (price: number) => (price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /pax`);
 const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
-
-const facilityIcons: { [key: string]: React.ReactNode } = {
-    "Parkir Luas": <FaParking className="mr-2 text-black-600" />,
-    Toilet: <FaToilet className="mr-2 text-black-600" />,
-    Mushola: <FaMosque className="mr-2 text-black-600" />,
-    "Warung Makan": <FaUtensils className="mr-2 text-black-600" />,
-    Gazebo: <GiCampingTent className="mr-2 text-black-600" />,
-    "WiFi Gratis": <FaWifi className="mr-2 text-black-600" />,
-    "Area Bermain": <FaChild className="mr-2 text-black-600" />,
-};
 
 const AttractionDetail = () => {
     const [item, setItem] = useState<Attraction | null>(null);
@@ -152,7 +142,7 @@ const AttractionDetail = () => {
                             <ul className="space-y-2">
                                 {item.facilities.map((facility, index) => (
                                     <li key={index} className="flex items-center text-sm text-gray-800">
-                                        {facilityIcons[facility] || <FaTicketAlt className="mr-2 text-black-600" />}
+                                        <FaAngleRight className="mr-2 text-black-600" />
                                         {facility}
                                     </li>
                                 ))}

@@ -105,11 +105,11 @@ const EditAccommodation: React.FC = () => {
             <h1 className="mb-4 text-2xl font-bold text-center">Edit Data Penginapan</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border border-gray-200 rounded-md shadow-md md:grid-cols-2">
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Nama Penginapan</label>
+                    <label className="block mb-1 font-semibold">Nama Penginapan *</label>
                     <input name="name" value={form.name} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Deskripsi</label>
+                    <label className="block mb-1 font-semibold">Deskripsi *</label>
                     <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div>
@@ -144,6 +144,7 @@ const EditAccommodation: React.FC = () => {
                     <label className="block mb-1 font-semibold">Upload Gambar</label>
                     <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full" />
                 </div>
+                <text className="text-sm">*) Wajib diisi</text>
                 <div className="flex justify-end col-span-2 space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/penginapan")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal

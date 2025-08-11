@@ -176,7 +176,7 @@ const Navbar = () => {
                             </div>
 
                             <Link to="/peta-desa" className={navItemClass("/peta-desa")}>
-                                WebGIS
+                                Peta Desa
                                 <span className={underlineClass("/peta-desa")}></span>
                             </Link>
 

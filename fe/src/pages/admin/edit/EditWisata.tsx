@@ -88,7 +88,7 @@ const EditWisata: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!form.category || !form.name || !form.description || !form.price || !form.time_open_close || !form.location) {
+        if (!form.category || !form.name || !form.description || !form.location) {
             toast.error("Mohon lengkapi semua kolom wajib.");
             return;
         }
@@ -156,7 +156,7 @@ const EditWisata: React.FC = () => {
             <h1 className="mb-4 text-2xl font-bold text-center">Edit Data Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-6 bg-white border rounded-md shadow-md md:grid-cols-2">
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Kategori</label>
+                    <label className="block mb-1 font-semibold">Kategori *</label>
                     <select name="category" value={form.category} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded">
                         <option value="">-- Pilih Kategori --</option>
                         <option value="Religi">Wisata Religi</option>
@@ -165,11 +165,11 @@ const EditWisata: React.FC = () => {
                     </select>
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Nama</label>
+                    <label className="block mb-1 font-semibold">Nama *</label>
                     <input name="name" value={form.name} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Deskripsi</label>
+                    <label className="block mb-1 font-semibold">Deskripsi *</label>
                     <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 border border-gray-200 rounded" required />
                 </div>
                 <div>
@@ -177,7 +177,7 @@ const EditWisata: React.FC = () => {
                     <input name="price" value={form.price} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Jam Operasional</label>
+                    <label className="block mb-1 font-semibold">Jam Operasional *</label>
                     <input name="time_open_close" value={form.time_open_close} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div>
@@ -193,7 +193,7 @@ const EditWisata: React.FC = () => {
                     <input name="instagram" value={form.instagram} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div className="col-span-2">
-                    <label className="block mb-1 font-semibold">Lokasi</label>
+                    <label className="block mb-1 font-semibold">Lokasi *</label>
                     <input name="location" value={form.location} onChange={handleChange} className="w-full p-2 border border-gray-200 rounded" />
                 </div>
                 <div className="col-span-2">
@@ -208,6 +208,7 @@ const EditWisata: React.FC = () => {
                     <label className="block mb-1 font-semibold">Upload Gambar</label>
                     <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full" />
                 </div>
+                <text className="text-sm">*) Wajib diisi</text>
                 <div className="flex justify-end col-span-2 space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/wisata")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal

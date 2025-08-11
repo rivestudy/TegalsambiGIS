@@ -35,9 +35,8 @@ const SectionGrid = ({ title, description, data, itemUrlPrefix, cardColor, price
                             <div className="flex flex-col justify-between flex-grow p-5">
                                 <div>
                                     <h3 className="mb-1 text-lg font-bold">{item.name}</h3>
-                                    {/* <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p> */}
                                 </div>
-                                {formatPrice && (
+                                {formatPrice && item.price != null && (
                                     <div className="mt-2">
                                         <p className={`text-sm font-medium ${priceColor}`}>{formatPrice(item.price)}</p>
                                     </div>

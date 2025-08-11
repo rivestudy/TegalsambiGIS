@@ -94,7 +94,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
             <h1 className="pb-2 mb-4 text-2xl font-bold text-center text-gray-800">Tambah Paket Wisata</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <div>
-                    <label className="block mb-1 font-semibold">Nama Paket</label>
+                    <label className="block mb-1 font-semibold">Nama Paket *</label>
                     <input
                         name="name"
                         value={form.name}
@@ -106,7 +106,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Deskripsi</label>
+                    <label className="block mb-1 font-semibold">Deskripsi *</label>
                     <textarea
                         name="description"
                         value={form.description}
@@ -118,7 +118,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Harga</label>
+                    <label className="block mb-1 font-semibold">Harga *</label>
                     <input
                         name="price"
                         value={(form.price)}
@@ -128,7 +128,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                     />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Telepon</label>
+                    <label className="block mb-1 font-semibold">Telepon *</label>
                     <input
                         name="phone"
                         value={form.phone}
@@ -160,6 +160,7 @@ const AddPaket: React.FC<AddPaketProps> = ({ onFormSubmit }) => {
                         className="w-full text-sm text-gray-700 border-gray-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />
                 </div>
+                <text className="text-sm">*) Wajib diisi</text>
                 <div className="flex justify-end">
                     <button type="submit" className="px-6 py-2 text-white transition bg-blue-600 rounded-md hover:bg-blue-700">
                         Simpan Paket

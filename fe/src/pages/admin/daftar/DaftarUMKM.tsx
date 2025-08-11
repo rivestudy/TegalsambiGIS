@@ -53,7 +53,7 @@ const DaftarUmkm: React.FC = () => {
     const handleDelete = async (id: number) => {
         if (window.confirm("Yakin ingin menghapus data UMKM ini?")) {
             try {
-                await axiosInstance.delete(`/data/umkm/${id}`);
+                await axiosInstance.delete(`/data/attraction/${id}`);
                 alert("Data UMKM berhasil dihapus!");
                 setUmkmList(umkmList.filter((item) => item.id !== id));
             } catch (error) {

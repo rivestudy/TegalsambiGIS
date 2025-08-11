@@ -40,6 +40,59 @@ const animationConfig: Transition = {
   duration: 2.0,
 };
 
+const categoryIcons: Record<string, L.Icon> = {
+  "Wisata Religi": new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
+  "Wisata Budaya": new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
+  "Wisata Pesisir": new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
+  "Penginapan": new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
+  "Fasilitas": new L.Icon({
+    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  }),
+};
+
+// FIX 1: Add a color map for the sidebar UI
+const categoryColors: Record<string, string> = {
+  "Wisata Religi": "bg-red-500",
+  "Wisata Budaya": "bg-green-500",
+  "Wisata Pesisir": "bg-orange-500",
+  "Penginapan": "bg-violet-500",
+  "Fasilitas": "bg-blue-500",
+};
+
+
 const MapPage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState("semua");
@@ -124,7 +177,7 @@ const MapPage = () => {
     if (selectedFilter === "semua") return geoData;
     return {
       ...geoData,
-      features: geoData.features.filter(
+      features: (geoData as any).features.filter(
         (f: any) => f.properties?.Category === selectedFilter
       ),
     };
@@ -149,10 +202,10 @@ const MapPage = () => {
   };
 
   const mapCenter: [number, number] = useMemo(() => {
-    const features = filteredData.features;
-    if (features.length === 0) return [-6.9, 110.4]; // default fallback
-    const latSum = features.reduce((sum, f: any) => sum + f.geometry.coordinates[1], 0);
-    const lngSum = features.reduce((sum, f: any) => sum + f.geometry.coordinates[0], 0);
+    const features = (filteredData as any).features;
+    if (features.length === 0) return [-6.5562, 110.7412]; // Centered on Tegalsambi
+    const latSum = features.reduce((sum: number, f: any) => sum + f.geometry.coordinates[1], 0);
+    const lngSum = features.reduce((sum: number, f: any) => sum + f.geometry.coordinates[0], 0);
     return [latSum / features.length, lngSum / features.length];
   }, [filteredData]);
 
@@ -173,31 +226,31 @@ const MapPage = () => {
               </Link>
             </li>
             <li className="font-semibold text-gray-400">/</li>
-            <li className="font-bold text-orange-300">WebGIS</li>
+            <li className="font-bold text-orange-300">Peta Desa</li>
           </ol>
         </nav>
-        <h1 className="mb-3 text-4xl font-extrabold text-white">WebGIS Desa Tegalsambi</h1>
+        <h1 className="mb-3 text-4xl font-extrabold text-white">Peta Interaktif Desa Tegalsambi</h1>
         <span className="block w-24 h-1 mx-auto mt-2 bg-blue-500 rounded-full"></span>
       </motion.div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-4 gap-8 mx-auto ">
+      <div className="container grid grid-cols-4 gap-8 mx-auto ">
         {/* Map Section */}
-        <motion.div className="grid w-full col-span-4 gap-8 lg:col-span-3 grid-rows-10" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").whileInView} transition={animationConfig}>
-          <div className="row-span-2 p-4 bg-white border border-gray-300 shadow-lg rounded-2xl">
+        <motion.div className="grid w-full col-span-4 grid-rows-5 gap-8 lg:col-span-3" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").whileInView} transition={animationConfig}>
+          <div className="row-span-1 p-4 bg-white border border-gray-300 shadow-lg rounded-2xl">
             <label className="block mb-2 font-semibold text-gray-700">Tampilkan Kategori:</label>
             <select value={selectedFilter} onChange={(e) => setSelectedFilter(e.target.value)} className="w-full p-2 text-sm transition border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
               <option value="semua">Semua Titik</option>
               <option value="Wisata Religi">Wisata Religi</option>
               <option value="Wisata Budaya">Wisata Budaya</option>
               <option value="Wisata Pesisir">Wisata Pesisir</option>
-              <option value="Kantor">Kantor</option>
+              {/* FIX 3 (Optional but recommended): Removed "Kantor" as it has no data */}
               <option value="Fasilitas">Fasilitas</option>
               <option value="Penginapan">Penginapan</option>
             </select>
           </div>
 
-          <div className="relative p-2 overflow-hidden bg-white border border-gray-300 shadow-lg row-span-8 rounded-2xl">
+          <div className="relative row-span-6 p-2 overflow-hidden bg-white border border-gray-300 shadow-lg rounded-2xl">
             <style>{`
               .leaflet-container {
                 position: relative !important;
@@ -209,7 +262,7 @@ const MapPage = () => {
                 z-index: 1 !important;
               }
             `}</style>
-            <MapContainer 
+            <MapContainer
               key={mapKey}
               center={mapCenter}
               zoom={17}
@@ -220,7 +273,15 @@ const MapPage = () => {
                 attribution='&copy; OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <GeoJSON data={filteredData as GeoJsonObject} onEachFeature={onEachFeature} />
+              <GeoJSON
+                data={filteredData as GeoJsonObject}
+                onEachFeature={onEachFeature}
+                pointToLayer={(feature, latlng) => {
+                  const category = feature.properties?.Category;
+                  const icon = categoryIcons[category] || new L.Icon.Default();
+                  return L.marker(latlng, { icon });
+                }}
+              />
             </MapContainer>
           </div>
         </motion.div>
@@ -228,10 +289,11 @@ const MapPage = () => {
         {/* Sidebar */}
         <motion.div className="w-full col-span-4 p-6 bg-white border border-gray-200 shadow-xl lg:col-span-1 rounded-2xl" initial={bounceVariant("right").initial} whileInView={bounceVariant("right").whileInView} transition={{ ...animationConfig, delay: 0.3 }}>
           <h2 className="mb-4 text-2xl font-bold text-gray-700">Lokasi Ditampilkan</h2>
-          <ul className="pr-2 space-y-3 overflow-y-auto text-sm text-gray-600 min-h-96">
+          {/* FIX 4 (Optional but recommended): Changed min-h-96 to max-h-96 for better UI */}
+          <ul className="h-[80vh] pr-2 space-y-3 overflow-y-auto text-sm text-gray-600">
             <AnimatePresence>
-              {filteredData.features.length > 0 ? (
-                filteredData.features.map((f: any, idx: number) => (
+              {(filteredData as any).features.length > 0 ? (
+                (filteredData as any).features.map((f: any, idx: number) => (
                   <motion.li
                     key={f.properties.Name + idx}
                     initial={{ opacity: 0, x: 20 }}
@@ -240,7 +302,10 @@ const MapPage = () => {
                     transition={{ duration: 0.3, delay: idx * 0.05 }}
                     className="flex items-center p-2 rounded-md hover:bg-gray-100"
                   >
-                    <span className="flex-shrink-0 w-3 h-3 mr-3 bg-blue-600 rounded-full shadow"></span>
+                    {/* FIX 2: Dynamic color dot based on category */}
+                    <span className={`flex-shrink-0 w-3 h-3 mr-3 rounded-full shadow ${
+                      categoryColors[f.properties.Category] || 'bg-gray-400'
+                    }`}></span>
                     {f.properties.Name}
                   </motion.li>
                 ))

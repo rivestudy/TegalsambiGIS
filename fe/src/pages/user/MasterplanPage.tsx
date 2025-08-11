@@ -37,34 +37,34 @@ const Masterplan: React.FC = () => {
     return (
         <div className="min-h-screen px-4 py-12 pt-20 bg-gradient-to-r from-emerald-700 to-cyan-500">
             {/* Breadcrumb dan Judul */}
-            <motion.div className="text-center py-6" initial={bounceVariant("top").initial} animate={bounceVariant("top").animate} transition={animationConfig}>
+            <motion.div className="py-6 text-center" initial={bounceVariant("top").initial} animate={bounceVariant("top").animate} transition={animationConfig}>
                 <nav className="mb-2">
-                    <ol className="flex justify-center items-center space-x-2 text-sm font-semibold text-white">
+                    <ol className="flex items-center justify-center space-x-2 text-sm font-semibold text-white">
                         <li>
-                            <Link to="/" className="flex items-center hover:text-orange-500 transition duration-300">
+                            <Link to="/" className="flex items-center transition duration-300 hover:text-orange-500">
                                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
                                 </svg>
                                 Landing Page
                             </Link>
                         </li>
-                        <li className="text-gray-400 font-semibold">/</li>
-                        <li className="text-orange-300 font-bold">Masterplan Desa Wisata</li>
+                        <li className="font-semibold text-gray-400">/</li>
+                        <li className="font-bold text-orange-300">Masterplan Desa Wisata</li>
                     </ol>
                 </nav>
 
-                <h1 className="text-4xl font-extrabold text-white mb-3">Masterplan Desa Wisata Tegalsambi</h1>
-                <span className="block w-24 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></span>
+                <h1 className="mb-3 text-4xl font-extrabold text-white">Masterplan Desa Wisata Tegalsambi</h1>
+                <span className="block w-24 h-1 mx-auto mt-2 bg-orange-500 rounded-full"></span>
 
-                <motion.p className="max-w-7xl mx-auto text-white text-base font-medium leading-relaxed mt-4 px-2" initial={bounceVariant("left").initial} animate={bounceVariant("left").animate} transition={animationConfig}>
+                <motion.p className="px-2 mx-auto mt-4 text-base font-medium leading-relaxed text-white max-w-7xl" initial={bounceVariant("left").initial} animate={bounceVariant("left").animate} transition={animationConfig}>
                     Desa Tegalsambi dikembangkan sebagai desa wisata yang mencakup tiga kategori utama: wisata budaya, wisata religi, dan wisata pesisir. Masterplan ini menjadi panduan pembangunan kawasan wisata yang berkelanjutan dengan
                     mempertimbangkan potensi lokal, kenyamanan pengunjung, serta pelestarian lingkungan dan budaya.
                 </motion.p>
             </motion.div>
 
             {/* Gambar / Peta Masterplan */}
-            <motion.div className="max-w-7xl mx-auto" initial={bounceVariant("bottom").initial} animate={bounceVariant("bottom").animate} transition={animationConfig}>
-                <motion.h3 className="text-center text-xl font-semibold text-white mb-4" initial={bounceVariant("right").initial} animate={bounceVariant("right").animate} transition={animationConfig}>
+            <motion.div className="mx-auto max-w-7xl" initial={bounceVariant("bottom").initial} animate={bounceVariant("bottom").animate} transition={animationConfig}>
+                <motion.h3 className="mb-4 text-xl font-semibold text-center text-white" initial={bounceVariant("right").initial} animate={bounceVariant("right").animate} transition={animationConfig}>
                     Gambaran Master Plan Desa Wisata Tegalsambi
                 </motion.h3>
 
@@ -79,6 +79,34 @@ const Masterplan: React.FC = () => {
                         referrerPolicy="no-referrer-when-downgrade"
                     ></iframe>
                 </div>
+            </motion.div>
+
+            <motion.div>
+                {/* Download Buttons */}
+                <div className="container grid grid-cols-3 gap-8 px-4 mx-auto mt-8">
+                    <a
+                        href="/files/buku-masterplan.pdf"
+                        download
+                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                    >
+                        📘 Buku Masterplan
+                    </a>
+                    <a
+                        href="/files/buku-manajemen-pembangunan.pdf"
+                        download
+                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                    >
+                        📗 Buku Manajemen Pembangunan
+                    </a>
+                    <a
+                        href="/files/buku-bisnis-bumdes.pdf"
+                        download
+                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                    >
+                        📙 Buku Pengembangan Bisnis BUMDes
+                    </a>
+                </div>
+
             </motion.div>
         </div>
     );

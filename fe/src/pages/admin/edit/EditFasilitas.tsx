@@ -80,11 +80,11 @@ const EditFasilitas: React.FC = () => {
             <h1 className="pb-2 mb-4 text-2xl font-bold text-center text-gray-800">Edit Fasilitas</h1>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6 p-8 bg-white border border-gray-200 shadow-lg rounded-xl">
                 <div>
-                    <label className="block mb-1 font-semibold">Nama Fasilitas</label>
+                    <label className="block mb-1 font-semibold">Nama Fasilitas *</label>
                     <input type="text" name="name" value={form.name} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Deskripsi Fasilitas</label>
+                    <label className="block mb-1 font-semibold">Deskripsi Fasilitas *</label>
                     <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
@@ -92,13 +92,14 @@ const EditFasilitas: React.FC = () => {
                     <textarea name="facilities" value={form.facilities} onChange={handleChange} rows={2} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" />
                 </div>
                 <div>
-                    <label className="block mb-1 font-semibold">Lokasi Fasilitas</label>
+                    <label className="block mb-1 font-semibold">Lokasi Fasilitas *</label>
                     <input type="text" name="location" value={form.location} onChange={handleChange} className="w-full p-2 text-sm border border-gray-200 rounded focus:ring-2 focus:ring-blue-400" required />
                 </div>
                 <div>
                     <label className="block mb-1 font-semibold">Ganti Gambar (opsional)</label>
                     <input type="file" multiple accept="image/*" onChange={handleFileChange} className="w-full text-sm file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                 </div>
+                <text className="text-sm">*) Wajib diisi</text>
                 <div className="flex justify-end space-x-4">
                     <button type="button" onClick={() => navigate("/admin/daftar/fasilitas")} className="px-5 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium shadow-sm">
                         Batal
