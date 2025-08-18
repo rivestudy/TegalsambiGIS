@@ -1,8 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Transition } from "framer-motion";
 import { Link } from "react-router-dom";
 import LoadingAnimation from "../../components/LoadingAnimation";
+
+// daftar foto galeri pantai
+import Pantai1 from "../../assets/Pantai/Pantai_1.webp";
+import Pantai2 from "../../assets/Pantai/Pantai_2.webp";
+import Pantai3 from "../../assets/Pantai/Pantai_3.webp";
+import Pantai4 from "../../assets/Pantai/Pantai_4.webp";
+import Pantai5 from "../../assets/Pantai/Pantai_5.webp";
+import Pantai6 from "../../assets/Pantai/Pantai_6.webp";
+import Pantai7 from "../../assets/Pantai/Pantai_7.webp";
+import Pantai8 from "../../assets/Pantai/Pantai_8.webp";
+import Pantai9 from "../../assets/Pantai/Pantai_9.webp";
+import Pantai10 from "../../assets/Pantai/Pantai_10.webp";
+// daftar foto galeri mbah surgi
+import MbahSurgi1 from "../../assets/MbahSurgi/MbahSurgi_1.webp";
+import MbahSurgi2 from "../../assets/MbahSurgi/MbahSurgi_2.webp";
+import MbahSurgi3 from "../../assets/MbahSurgi/MbahSurgi_3.webp";
+import MbahSurgi4 from "../../assets/MbahSurgi/MbahSurgi_4.webp";
+import MbahSurgi5 from "../../assets/MbahSurgi/MbahSurgi_5.webp";
+import MbahSurgi6 from "../../assets/MbahSurgi/MbahSurgi_6.webp";
+import MbahSurgi7 from "../../assets/MbahSurgi/MbahSurgi_7.webp";
+import MbahSurgi8 from "../../assets/MbahSurgi/MbahSurgi_8.webp";
+
+const GambarPantai = [Pantai1, Pantai2, Pantai3, Pantai4, Pantai5, Pantai6, Pantai7, Pantai8, Pantai9, Pantai10];
+const GambarMbahSurgi = [MbahSurgi1, MbahSurgi2, MbahSurgi3, MbahSurgi4, MbahSurgi5, MbahSurgi6, MbahSurgi7, MbahSurgi8];
 
 const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
     switch (direction) {
@@ -23,13 +47,170 @@ const animationConfig: Transition = {
     duration: 2.5,
 };
 
+const PantaiSection: React.FC = () => {
+    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
+
+    useEffect(() => {
+        // fungsi untuk ambil 3 index unik
+        const getUniqueIndexes = () => {
+            const allIndexes = Array.from({ length: GambarPantai.length }, (_, i) => i);
+            for (let i = allIndexes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
+            }
+            return allIndexes.slice(0, 3);
+        };
+        setVisibleIndexes(getUniqueIndexes());
+        const interval = setInterval(() => {
+            setVisibleIndexes(getUniqueIndexes());
+        }, 4800);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="grid grid-cols-2 grid-rows-2 gap-6 max-w-7xl mx-auto mt-6 relative">
+            {/* Foto atas penuh (col-span 2) */}
+            <div className="relative col-span-2 h-80 rounded-2xl overflow-hidden shadow-xl">
+                <AnimatePresence mode="sync">
+                    <motion.img
+                        key={visibleIndexes[0]}
+                        src={GambarPantai[visibleIndexes[0]]}
+                        alt="Pantai Atas"
+                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
+                        initial={{ scale: 1, x: "100%", opacity: 0 }}
+                        animate={{ scale: 1.1, x: 0, opacity: 1 }}
+                        exit={{ scale: 1, x: "-100%", opacity: 0 }}
+                        transition={{
+                            scale: { duration: 4, ease: "easeInOut" },
+                            x: { duration: 0.8, ease: "easeInOut" },
+                            opacity: { duration: 0.8, ease: "easeInOut" },
+                        }}
+                    />
+                </AnimatePresence>
+            </div>
+
+            {/* 2 foto kecil di bawah */}
+            {visibleIndexes.slice(1).map((index, i) => (
+                <div key={i} className="relative h-60 rounded-2xl overflow-hidden shadow-xl">
+                    <AnimatePresence mode="sync">
+                        <motion.img
+                            key={index}
+                            src={GambarPantai[index]}
+                            alt={`Pantai ${i + 1}`}
+                            className="absolute inset-0 object-cover w-full h-full rounded-2xl"
+                            initial={{ scale: 1, x: "100%", opacity: 0 }}
+                            animate={{ scale: 1.1, x: 0, opacity: 1 }}
+                            exit={{ scale: 1, x: "-100%", opacity: 0 }}
+                            transition={{
+                                scale: { duration: 4, ease: "easeInOut" },
+                                x: { duration: 0.8, ease: "easeInOut" },
+                                opacity: { duration: 0.8, ease: "easeInOut" },
+                            }}
+                        />
+                    </AnimatePresence>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const MbahSurgiSection: React.FC = () => {
+    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
+
+    useEffect(() => {
+        const getUniqueIndexes = () => {
+            const allIndexes = Array.from({ length: GambarMbahSurgi.length }, (_, i) => i);
+            for (let i = allIndexes.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
+            }
+            return allIndexes.slice(0, 4); // ambil 4 gambar unik
+        };
+
+        setVisibleIndexes(getUniqueIndexes());
+        const interval = setInterval(() => {
+            setVisibleIndexes(getUniqueIndexes());
+        }, 4800);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="grid grid-cols-3 gap-6 max-w-7xl mx-auto mt-2 h-[500px]">
+            {/* Dua gambar kecil di atas */}
+            <div className="col-span-1 flex flex-col gap-6">
+                {[visibleIndexes[0], visibleIndexes[1]].map((index, i) => (
+                    <div key={i} className="relative h-[240px] rounded-2xl overflow-hidden shadow-xl">
+                        <AnimatePresence mode="sync">
+                            <motion.img
+                                key={index}
+                                src={GambarMbahSurgi[index]}
+                                alt={`Gambar Kecil Atas ${i + 1}`}
+                                className="absolute inset-0 object-cover w-full h-full rounded-2xl"
+                                initial={{ scale: 1, y: "-100%", opacity: 0 }}
+                                animate={{ scale: 1.1, y: 0, opacity: 1 }}
+                                exit={{ scale: 1, y: "100%", opacity: 0 }}
+                                transition={{
+                                    scale: { duration: 4, ease: "easeInOut" },
+                                    y: { duration: 0.8, ease: "easeInOut" },
+                                    opacity: { duration: 0.8, ease: "easeInOut" },
+                                }}
+                            />
+                        </AnimatePresence>
+                    </div>
+                ))}
+            </div>
+
+            {/* Gambar besar di bawah (span 2 kolom) */}
+            <div className="col-span-2 row-span-1 relative rounded-2xl overflow-hidden shadow-xl">
+                <AnimatePresence mode="sync">
+                    <motion.img
+                        key={visibleIndexes[2]}
+                        src={GambarMbahSurgi[visibleIndexes[2]]}
+                        alt="Gambar Besar"
+                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
+                        initial={{ scale: 1, x: "100%", opacity: 0 }}
+                        animate={{ scale: 1.1, x: 0, opacity: 1 }}
+                        exit={{ scale: 1, x: "-100%", opacity: 0 }}
+                        transition={{
+                            scale: { duration: 4, ease: "easeInOut" },
+                            x: { duration: 0.8, ease: "easeInOut" },
+                            opacity: { duration: 0.8, ease: "easeInOut" },
+                        }}
+                    />
+                </AnimatePresence>
+            </div>
+
+            {/* Satu gambar kecil di bawah kanan */}
+            {/* <div className="col-span-1 relative rounded-2xl overflow-hidden shadow-xl">
+                <AnimatePresence mode="sync">
+                    <motion.img
+                        key={visibleIndexes[3]}
+                        src={GambarMbahSurgi[visibleIndexes[3]]}
+                        alt="Gambar Kecil Bawah"
+                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
+                        initial={{ scale: 1, y: "100%", opacity: 0 }}
+                        animate={{ scale: 1.1, y: 0, opacity: 1 }}
+                        exit={{ scale: 1, y: "-100%", opacity: 0 }}
+                        transition={{
+                            scale: { duration: 4, ease: "easeInOut" },
+                            y: { duration: 0.8, ease: "easeInOut" },
+                            opacity: { duration: 0.8, ease: "easeInOut" },
+                        }}
+                    />
+                </AnimatePresence>
+            </div> */}
+        </div>
+    );
+};
+
 const Masterplan: React.FC = () => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
         }, 800);
-
         return () => clearTimeout(timer);
     }, []);
     if (loading) return <LoadingAnimation />;
@@ -81,32 +262,71 @@ const Masterplan: React.FC = () => {
                 </div>
             </motion.div>
 
-            <motion.div>
-                {/* Download Buttons */}
-                <div className="container grid grid-cols-3 gap-8 px-4 mx-auto mt-8">
+            {/* Video Masterplan */}
+            <motion.div className="mx-auto max-w-7xl mt-12" initial={bounceVariant("left").initial} whileInView={bounceVariant("left").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
+                <motion.h3 className="mb-4 text-xl font-semibold text-center text-white" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
+                    Video Masterplan Desa Wisata Tegalsambi
+                </motion.h3>
+
+                <div className="w-full h-[600px] rounded-xl overflow-hidden border border-gray-300 shadow-lg">
+                    <iframe title="Video Masterplan Tegalsambi" src="https://www.youtube.com/embed/oGE3Ydgwr1Y" className="w-full h-full" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                </div>
+            </motion.div>
+
+            {/* Galeri Masterplan Wisata Pesisir*/}
+            <motion.div className="mx-auto max-w-7xl mt-10" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
+                <h3 className="text-xl font-semibold text-center text-white">Masterplan Wisata Pesisir</h3>
+                <PantaiSection />
+            </motion.div>
+
+            {/* Galeri Masterplan Wisata Religi*/}
+            <motion.div className="mx-auto max-w-7xl" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
+                <h3 className="text-xl font-semibold text-center text-white">Masterplan Wisata Religi - Mbah Surgimanis</h3>
+                <MbahSurgiSection />
+            </motion.div>
+
+            {/* Download Dokumen */}
+            <motion.div initial={bounceVariant("bottom").initial} whileInView={bounceVariant("bottom").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
+                <motion.h3
+                    className="mb-4 mt-16 text-xl font-semibold text-center text-white"
+                    initial={bounceVariant("right").initial}
+                    whileInView={bounceVariant("right").animate}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={animationConfig}
+                >
+                    Unduh Dokumen Masterplan & Kajian Desa Wisata Tegalsambi
+                </motion.h3>
+
+                <div className="max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6 px-4 mx-auto mt-8">
                     <a
-                        href="/files/buku-masterplan.pdf"
+                        href="https://drive.google.com/uc?export=download&id=1XquM8FOhdLktGdaqiQVCWW-HX7hKVPcY"
                         download
-                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
                     >
                         📘 Buku Masterplan
                     </a>
                     <a
-                        href="/files/buku-manajemen-pembangunan.pdf"
+                        href="https://drive.google.com/uc?export=download&id=15UxvF4syxbB_XllbGEdf00VuR3ENqnqH"
                         download
-                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                    >
+                        📒 Buku Kajian Kesiapan Masyarakat
+                    </a>
+                    <a
+                        href="https://drive.google.com/uc?export=download&id=1KMHRvZ7RLaE_IY5VXCLY691BrST9q2dx"
+                        download
+                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
                     >
                         📗 Buku Manajemen Pembangunan
                     </a>
                     <a
-                        href="/files/buku-bisnis-bumdes.pdf"
+                        href="https://drive.google.com/uc?export=download&id=1_hBAuCU-ciVYYuB_PqBJ0OtyXRYNmYGM"
                         download
-                        className="px-6 py-3 font-semibold text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
+                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
                     >
                         📙 Buku Pengembangan Bisnis BUMDes
                     </a>
                 </div>
-
             </motion.div>
         </div>
     );
