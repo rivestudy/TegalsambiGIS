@@ -26,4 +26,7 @@ app.get('/', (req, res) => {
   res.send('API is running');
 });
 
+// Frontend akan dihosting terpisah di Hostinger
+
+
 module.exports = app;
