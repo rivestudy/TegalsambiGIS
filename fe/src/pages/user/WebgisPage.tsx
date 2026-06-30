@@ -272,7 +272,7 @@ const MapPage = () => {
       {/* 80px top padding ensures it starts below the Navbar. On desktop it floats on the left, on mobile it's a bottom sheet */}
       <div className={`absolute z-10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-2xl flex flex-col transition-all duration-300 overflow-hidden border border-white/50 dark:border-slate-700/50
           left-0 right-0 w-full rounded-t-2xl bottom-0 top-auto
-          ${isSidebarOpen ? 'h-[50vh]' : 'h-[72px]'}
+          ${isSidebarOpen ? 'h-[85vh]' : 'h-[72px]'}
           md:left-4 md:right-auto md:w-[350px] lg:w-[380px] md:rounded-2xl
           ${isSidebarOpen ? 'md:top-[100px] md:bottom-6 md:h-auto' : 'md:top-[100px] md:bottom-auto md:h-[72px]'}`}>
         
@@ -326,8 +326,8 @@ const MapPage = () => {
             </div>
 
             {/* List of Locations (Scrollable) */}
-            <div className="flex-1 overflow-y-auto p-5 custom-scrollbar bg-white/80 dark:bg-slate-900/80 transition-colors duration-500">
-              <h2 className="mb-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest sticky top-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur pb-2 z-10">
+            <div className="flex-1 overflow-y-auto px-5 pb-5 custom-scrollbar bg-white/80 dark:bg-slate-900/80 transition-colors duration-500">
+              <h2 className="mb-3 pt-5 pb-3 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-10 border-b border-gray-100/50 dark:border-slate-800/50 -mx-5 px-5">
                   Daftar Lokasi <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded-full ml-1">{(filteredData as any).features.length}</span>
               </h2>
               

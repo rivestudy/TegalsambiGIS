@@ -90,7 +90,7 @@ const Navbar = () => {
             {showNavbar && (
                 <motion.nav
                     ref={navbarRef}
-                    className="fixed top-0 left-0 right-0 z-50 pt-10 -mt-10 text-white shadow-lg bg-black/30 backdrop-blur-md"
+                    className="fixed top-0 left-0 right-0 z-50 text-white shadow-lg bg-black/30 backdrop-blur-md"
                     initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: -100, opacity: 0 }}
@@ -107,7 +107,7 @@ const Navbar = () => {
                             className="flex items-center space-x-2 text-xl font-bold transition hover:opacity-80"
                             onClick={closeMenu}
                         >
-                            <img src="/logoWeb.png" alt="Logo Tegalsambi" className="w-auto h-14" />
+                            <img src="/logoWeb.png" alt="Logo Tegalsambi" className="w-auto h-10 md:h-14" />
                             <span className="hidden sm:inline">Tegalsambi</span>
                         </Link>
 
@@ -248,14 +248,14 @@ const Navbar = () => {
                                         opacity: { duration: 0.2 },
                                     },
                                 }}
-                                className="overflow-hidden md:hidden bg-black/80 backdrop-blur-md"
+                                className="overflow-hidden md:hidden bg-white/95 dark:bg-black/80 backdrop-blur-md text-gray-800 dark:text-white border-t border-gray-100 dark:border-slate-800"
                             >
                                 <div className="px-4 pt-2 pb-4 space-y-3">
                                     <Link to="/about" className="block py-2" onClick={closeMenu}>
                                         Tentang
                                     </Link>
 
-                                    <details className="text-white group" open={isDropdownOpen.wisata}>
+                                    <details className="text-gray-800 dark:text-white group" open={isDropdownOpen.wisata}>
                                         <summary
                                             className="flex items-center justify-between py-2 cursor-pointer"
                                             onClick={() => toggleDropdown("wisata")}
@@ -272,7 +272,7 @@ const Navbar = () => {
                                         </div>
                                     </details>
 
-                                    <details className="text-white group" open={isDropdownOpen.fasilitas}>
+                                    <details className="text-gray-800 dark:text-white group" open={isDropdownOpen.fasilitas}>
                                         <summary
                                             className="flex items-center justify-between py-2 cursor-pointer"
                                             onClick={() => toggleDropdown("fasilitas")}

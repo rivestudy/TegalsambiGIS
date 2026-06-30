@@ -111,7 +111,7 @@ const AppContent = () => {
                     </main>
                 </div>
             </div>
-            {!isAdminRoute && <Footer />}
+            {!isAdminRoute && location.pathname !== "/peta-desa" && <Footer />}
         </>
     );
 };
