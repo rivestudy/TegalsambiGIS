@@ -15,11 +15,13 @@ const upload = require('../middlewares/uploadMiddleware.js'); // ✅ Import uplo
 router.get('/:type', getAllItems);
 router.get('/:type/:id', getItemById);
 
+const optimizeImage = require('../middlewares/optimizeMiddleware.js');
+
 // Protected routes with image upload handling
 // The `upload.array('images', 10)` middleware will process up to 10 files
 // uploaded with the field name 'images'.
-router.post('/:type', authenticateToken, upload.array('images', 10), createItem);
-router.put('/:type/:id', authenticateToken, upload.array('images', 10), updateItem);
+router.post('/:type', authenticateToken, upload.array('images', 10), optimizeImage, createItem);
+router.put('/:type/:id', authenticateToken, upload.array('images', 10), optimizeImage, updateItem);
 router.delete('/:type/:id', authenticateToken, deleteItem);
 
 module.exports = router;
