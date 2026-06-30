@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import ScrollToTop from "./components/layout/ScrollToTop";
+import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Sidebar from "./components/layout/Sidebar";
@@ -117,10 +118,12 @@ const AppContent = () => {
 
 function App() {
     return (
-        <Router>
-            <AppContent />
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-        </Router>
+        <ThemeProvider>
+            <Router>
+                <AppContent />
+                <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
+            </Router>
+        </ThemeProvider>
     );
 }
 

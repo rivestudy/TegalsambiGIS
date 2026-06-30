@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { FaPhoneAlt, FaEnvelope, FaInstagram, FaUtensils, FaBus, FaHotel, FaMapMarkerAlt } from "react-icons/fa";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "../../../utils/axiosInstance";
+import { FaPhoneAlt, FaEnvelope, FaInstagram, FaUtensils, FaBus, FaHotel, FaMapMarkerAlt, FaChevronLeft, FaCheckCircle, FaStar, FaBoxOpen, FaTimes } from "react-icons/fa";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
@@ -20,17 +20,20 @@ interface PaketWisata {
 const formatPrice = (price: number) => (price === 0 ? "Gratis" : `Rp ${price.toLocaleString("id-ID")} /paket`);
 const fallbackImage = "https://placehold.co/800x600/e2e8f0/4a5568?text=Gambar+Tidak+Tersedia";
 
+const animationConfig = { duration: 0.8, ease: [0.16, 1, 0.3, 1] };
+
 const facilityIcons: { [key: string]: React.ReactNode } = {
-    Transportasi: <FaBus className="mr-2 text-black-600" />,
-    Makan: <FaUtensils className="mr-2 text-black-600" />,
-    Penginapan: <FaHotel className="mr-2 text-black-600" />,
-    "Pemandu Wisata": <FaMapMarkerAlt className="mr-2 text-black-600" />,
+    Transportasi: <FaBus className="text-blue-500" />,
+    Makan: <FaUtensils className="text-orange-500" />,
+    Penginapan: <FaHotel className="text-purple-500" />,
+    "Pemandu Wisata": <FaMapMarkerAlt className="text-red-500" />,
 };
 
 const PaketWisataDetail = () => {
     const { id } = useParams<{ id: string }>();
     const [paket, setPaket] = useState<PaketWisata | null>(null);
-    const [mainImage, setMainImage] = useState<string>("");
+    const [mainImage, setMainImage] = useState<string>(fallbackImage);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -42,7 +45,6 @@ const PaketWisataDetail = () => {
                 const res = await axios.get(`/data/paket/${id}`);
                 const data = res.data;
                 
-                // Sanitize images
                 const sanitizedImages = Array.isArray(data.images) 
                     ? data.images.map((img: any) => 
                         typeof img?.dir === "string" ? `${IMAGE_BASE_URL}/${img.dir}` : ""
@@ -66,83 +68,151 @@ const PaketWisataDetail = () => {
     }, [id]);
 
     if (loading) return <LoadingAnimation />;
-    if (error || !paket) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+    if (error || !paket) return <div className="flex items-center justify-center h-screen text-red-500 bg-gray-50">{error}</div>;
+
+    const imageList = paket.images.length > 0 ? paket.images : [fallbackImage];
+
+    // Safely parse facilities if it's a string
+    let parsedFacilities: string[] = [];
+    if (typeof paket.facilities === "string") {
+        try { parsedFacilities = JSON.parse(paket.facilities); } catch(e) { parsedFacilities = paket.facilities.split(',').map(f => f.trim()); }
+    } else if (Array.isArray(paket.facilities)) {
+        parsedFacilities = paket.facilities;
+    }
 
     return (
-        <div className="min-h-screen px-4 py-16 text-white bg-gradient-to-r from-blue-900 to-cyan-600">
-            <motion.div className="mb-2 text-center" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                <div className="flex justify-center pt-5">
-                    <div className="px-6 py-3 border rounded-full shadow-md bg-white/20 backdrop-blur-md border-white/30">
-                        <nav>
-                            <ol className="flex items-center space-x-2 text-sm font-semibold text-white">
-                                <li>
-                                    <Link to="/" className="flex items-center transition duration-300 hover:text-orange-400">
-                                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
-                                        </svg>
-                                        Landing Page
-                                    </Link>
-                                </li>
-                                <li className="text-gray-300">/</li>
-                                <li>
-                                    <Link to="/attractions" className="transition duration-300 hover:text-orange-400">
-                                        Wisata Tegalsambi
-                                    </Link>
-                                </li>
-                                <li className="text-gray-300">/</li>
-                                <li className="font-bold text-orange-300">{paket.name}</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-            </motion.div>
-
-            <motion.div className="mb-4 text-center" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                <h1 className="text-4xl font-bold">{paket.name}</h1>
-                <span className="block w-24 h-1 mx-auto mt-3 bg-yellow-400 rounded-full"></span>
-            </motion.div>
-
-            <motion.div className="flex flex-col max-w-screen-xl gap-10 mx-auto md:flex-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-                <div className="md:w-1/2">
-                    <img src={mainImage} alt={paket.name} className="rounded-xl shadow-xl w-full object-cover h-[300px] md:h-[420px]" />
-                    <div className="flex gap-4 p-2 mt-4 overflow-x-auto">
-                        {paket.images.map((img, index) => (
-                            <img
-                                key={index}
-                                src={img}
-                                alt={`Thumbnail ${index + 1}`}
-                                onClick={() => setMainImage(img)}
-                                className={`w-20 h-20 rounded-md border-2 object-cover cursor-pointer transition duration-300 scale-95 hover:scale-100 ${mainImage === img ? "border-purple-600" : "border-transparent"}`}
-                            />
-                        ))}
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-950 font-sans text-gray-800 dark:text-gray-200 pb-20 transition-colors duration-500">
+            {/* Hero Image Header */}
+            <div className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-fixed" style={{ backgroundImage: `url('${mainImage}')` }}>
+                {/* Darkening overlay for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent" />
+                {/* Seamless gradient transition to background */}
+                <div className="absolute bottom-0 left-0 w-full h-48 md:h-64 bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent dark:from-slate-950 dark:via-slate-950/80" />
+                
+                {/* Navigation Breadcrumb */}
+                <div className="absolute top-0 left-0 w-full p-6 z-10 pt-24 md:pt-32">
+                    <div className="max-w-6xl mx-auto flex items-center">
+                        <Link to="/attractions" className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white hover:text-gray-900 transition-all font-medium text-sm shadow-lg ring-1 ring-white/30">
+                            <FaChevronLeft /> Kembali ke Wisata
+                        </Link>
                     </div>
                 </div>
 
-                <div className="p-6 space-y-6 text-gray-800 border border-gray-200 shadow-xl md:w-1/2 bg-gradient-to-r from-sky-100 to-cyan-100 rounded-xl h-[400px] md:h-[520px] overflow-y-auto">
-                    <div>
-                        <h2 className="mb-2 font-semibold text-indigo-900">Deskripsi Paket</h2>
-                        <p className="text-sm leading-relaxed">{paket.description}</p>
-                    </div>
-                    <div>
-                        <h2 className="mb-2 font-semibold text-indigo-900">Harga Paket</h2>
-                        <p className="text-sm">{formatPrice(paket.price)}</p>
-                    </div>
-                    <div>
-                        <h2 className="mb-2 font-semibold text-indigo-900">Fasilitas</h2>
-                        {paket.facilities.split(",").map((facility, index) => (
-                            <li key={index}>{facility.trim()}</li>
-                        ))}
-                    </div>
-                    <div>
-                        <h2 className="mb-2 font-semibold text-indigo-900">Kontak & Reservasi</h2>
-                        <ul className="space-y-2 text-sm">
-                            <li className="flex items-center">
-                                <FaPhoneAlt className="mr-2 text-indigo-700" /> {paket.phone}
-                            </li>
-                        </ul>
-                    </div>
+                {/* Title overlay - moved slightly higher to avoid overlapping with bottom gradient */}
+                <div className="absolute bottom-24 md:bottom-32 left-0 w-full z-10 px-6">
+                    <motion.div className="max-w-6xl mx-auto" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={animationConfig}>
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold text-white uppercase tracking-widest bg-yellow-600/90 dark:bg-yellow-500/90 shadow-md shadow-black/20 backdrop-blur-sm rounded-full">
+                            <FaBoxOpen /> Paket Wisata
+                        </div>
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-2" style={{ textShadow: "0 4px 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.8)" }}>{paket.name}</h1>
+                        <p className="text-lg md:text-xl text-gray-100 flex items-center gap-2" style={{ textShadow: "0 2px 6px rgba(0,0,0,0.8)" }}>
+                            <FaMapMarkerAlt className="text-yellow-400 drop-shadow-md" /> Jelajahi Tegalsambi
+                        </p>
+                    </motion.div>
                 </div>
-            </motion.div>
+            </div>
+
+            {/* Main Content */}
+            <div className="max-w-6xl mx-auto px-6 -mt-4 relative z-20">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    {/* Left Column (Description & Details) */}
+                    <motion.div className="lg:col-span-2 space-y-8" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ ...animationConfig, delay: 0.1 }}>
+                        
+                        {/* About Card */}
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-800 transition-colors duration-500">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 inline-block pb-2 border-b-4 border-yellow-400">Deskripsi Paket</h2>
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">{paket.description}</p>
+                        </div>
+
+                        {/* Gallery */}
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-800 transition-colors duration-500">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 inline-block pb-2 border-b-4 border-yellow-400">Galeri Foto</h2>
+                            <div className="flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
+                                <AnimatePresence>
+                                    {imageList.map((img, index) => (
+                                        <motion.div
+                                            key={index}
+                                            className={`relative flex-shrink-0 snap-center rounded-2xl overflow-hidden cursor-pointer border-2 transition-all duration-300 w-32 h-32 md:w-48 md:h-48 border-transparent hover:shadow-md hover:scale-105`}
+                                            onClick={() => setSelectedImage(img)}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.4, delay: index * 0.1 }}
+                                        >
+                                            <img src={img} alt={`Gallery ${index}`} className="w-full h-full object-cover" />
+                                        </motion.div>
+                                    ))}
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Right Column (Info Card) */}
+                    <motion.div className="space-y-6" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ ...animationConfig, delay: 0.2 }}>
+                        
+                        {/* Sticky Info Card */}
+                        <div className="sticky top-28 bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-800 transition-colors duration-500">
+                            <h3 className="text-3xl font-extrabold text-yellow-600 mb-2">{formatPrice(paket.price)}</h3>
+                            <div className="w-full h-px bg-gray-200 dark:bg-slate-700 my-6"></div>
+
+                            <div className="space-y-5">
+                                <div className="flex items-center gap-4 text-gray-700 dark:text-gray-300">
+                                    <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-500 dark:text-blue-400"><FaPhoneAlt /></div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-semibold">Kontak Reservasi</p>
+                                        <p className="font-medium">{paket.phone || "-"}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                                {parsedFacilities && parsedFacilities.length > 0 && (
+                                <>
+                                    <div className="w-full h-px bg-gray-200 dark:bg-slate-700 my-6"></div>
+                                    <h4 className="font-bold text-gray-900 dark:text-white mb-4">Fasilitas Paket</h4>
+                                    <div className="flex flex-col gap-3">
+                                        {parsedFacilities.map((fac, index) => (
+                                            <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-slate-700">
+                                                <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center flex-shrink-0">
+                                                    {facilityIcons[fac] || <FaCheckCircle className="text-green-500" />}
+                                                </div>
+                                                <span className="text-gray-700 dark:text-gray-300 font-medium">{fac}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+            
+            {/* Fullscreen Image Modal */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4"
+                        onClick={() => setSelectedImage(null)}
+                    >
+                        <motion.img
+                            initial={{ scale: 0.9 }}
+                            animate={{ scale: 1 }}
+                            exit={{ scale: 0.9 }}
+                            src={selectedImage}
+                            className="max-w-full max-h-full rounded-lg shadow-2xl"
+                            alt="Enlarged"
+                        />
+                        <button
+                            className="absolute top-6 right-6 text-white bg-black/50 hover:bg-white/20 p-3 rounded-full transition-colors"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <FaTimes size={24} />
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

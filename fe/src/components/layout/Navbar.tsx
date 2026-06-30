@@ -2,10 +2,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiMenu, FiX } from "react-icons/fi";
+import { FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
 import { FaChevronDown } from "react-icons/fa";
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
+    const { theme, toggleTheme } = useTheme();
     const location = useLocation();
     const currentPath = location.pathname;
 
@@ -194,10 +196,26 @@ const Navbar = () => {
                                 Info Desa
                                 <span className={underlineClass("/infoDesa")}></span>
                             </a>
+                            
+                            {/* Theme Toggle Desktop */}
+                            <button 
+                                onClick={toggleTheme}
+                                className="p-2 ml-2 text-white bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                                aria-label="Toggle Theme"
+                            >
+                                {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+                            </button>
                         </div>
 
-                        {/* Mobile Hamburger */}
-                        <div className="md:hidden">
+                        {/* Mobile Hamburger & Theme Toggle */}
+                        <div className="flex items-center space-x-3 md:hidden">
+                            <button 
+                                onClick={toggleTheme}
+                                className="p-2 text-white bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+                                aria-label="Toggle Theme"
+                            >
+                                {theme === "dark" ? <FiSun size={18} /> : <FiMoon size={18} />}
+                            </button>
                             <button
                                 onClick={toggleMenu}
                                 className="p-1 text-white transition-transform duration-200 rounded-md focus:outline-none hover:bg-white/10 active:scale-95"

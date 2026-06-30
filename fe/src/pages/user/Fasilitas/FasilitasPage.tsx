@@ -8,6 +8,7 @@ import axios from "../../../utils/axiosInstance";
 import HeroSection from "../../../components/HeroSection";
 import LoadingAnimation from "../../../components/LoadingAnimation";
 import heroBg from "../../../assets/pantaitegalsambi2.webp";
+import { FaArrowRight, FaMapMarkerAlt, FaBed } from "react-icons/fa";
 
 const IMAGE_BASE_URL = process.env.REACT_APP_IMAGE_BASE_URL;
 
@@ -45,9 +46,8 @@ const useSearch = <T extends { name: string }>(items: T[], searchTerm: string): 
 };
 
 const animationConfig: Transition = {
-    type: "spring",
-    bounce: 0.7,
-    duration: 1.9,
+    duration: 0.8,
+    ease: [0.16, 1, 0.3, 1], // Custom smooth easing
 };
 
 const getBounceAnimation = (direction: "top" | "right" | "left" | "bottom") => {
@@ -94,10 +94,10 @@ const SectionContainer = ({
             transition={animationConfig}
             viewport={{ once: true, amount: 0.2 }}
         >
-            <h2 className="text-2xl font-bold text-gray-800 mb-1 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-green-300 to-green-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-1 inline-block pb-2 border-b-4 border-transparent bg-gradient-to-r from-green-300 to-green-600 bg-[length:40%_3px] bg-no-repeat bg-left-bottom">
                 {title}
             </h2>
-            <p className="mb-4 text-gray-600">
+            <p className="mb-4 text-gray-600 dark:text-gray-300">
                 {searchTerm
                     ? `Menampilkan ${data.length} hasil untuk "${searchTerm}"`
                     : description}
@@ -107,9 +107,9 @@ const SectionContainer = ({
             </p>
             <Swiper
                 spaceBetween={20}
-                slidesPerView={1}
+                slidesPerView={1.2}
                 breakpoints={{
-                    640: { slidesPerView: 1 },
+                    640: { slidesPerView: 2 },
                     768: { slidesPerView: 2 },
                     1024: { slidesPerView: 3 },
                 }}
@@ -122,25 +122,34 @@ const SectionContainer = ({
                             transition={{ ...animationConfig, delay: idx * 0.2 }}
                             viewport={{ once: true, amount: 0.4 }}
                         >
-                            <Link to={`/${type}/${item.id}`}>
-                                <div className={`${color} mt-4 mb-4 shadow-md rounded-2xl overflow-hidden flex flex-col h-[350px] transition duration-300 hover:shadow-lg hover:-translate-y-2`}>
-                                    <img
-                                        src={item.images.length > 0 ? item.images[0] : fallbackImage}
-                                        alt={item.name}
-                                        className="object-cover w-full h-48"
-                                    />
-                                    <div className="flex flex-col justify-between flex-grow p-5">
-                                        <div>
-                                            <h3 className="mb-1 text-lg font-bold">{item.name}</h3>
-                                            <p className="text-sm text-gray-600 line-clamp-3">{item.description}</p>
-                                        </div>
-                                        {type === "accommodation" && (
-                                            <p className={`text-sm font-medium ${priceColor}`}>
-                                                {formatPrice(item.price)}
-                                            </p>
-                                        )}
+                            <Link to={`/${type}/${item.id}`} className="block group h-full py-4">
+                                <article className="relative overflow-hidden h-full min-h-[350px] bg-white dark:bg-slate-900 rounded-3xl shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl border border-gray-100 dark:border-slate-800 mx-2">
+                                    <div className="absolute inset-0 overflow-hidden">
+                                        <img
+                                            src={item.images.length > 0 ? item.images[0] : fallbackImage}
+                                            alt={item.name}
+                                            className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                                        />
                                     </div>
-                                </div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                                    
+                                    <div className="absolute bottom-0 w-full p-6 transition-transform duration-300 transform translate-y-2 group-hover:translate-y-0">
+                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 mb-3 text-xs font-bold text-white uppercase tracking-wider ${color.replace('100', '500/90')} backdrop-blur-sm rounded-full`}>
+                                            {type === "accommodation" ? <FaBed /> : <FaMapMarkerAlt />} {type === "accommodation" ? "Penginapan" : "Fasilitas"}
+                                        </span>
+                                        <h3 className="text-xl font-bold text-white mb-1 drop-shadow-md">{item.name}</h3>
+                                        <p className="text-sm text-gray-200 line-clamp-2 mb-2">{item.description}</p>
+                                        
+                                        <div className="flex items-center justify-between text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 mt-2">
+                                            {type === "accommodation" ? (
+                                                <span className="font-semibold text-yellow-300">{formatPrice(item.price)}</span>
+                                            ) : (
+                                                <span></span>
+                                            )}
+                                            <span className="flex items-center">Lihat Detail <FaArrowRight className="ml-2" /></span>
+                                        </div>
+                                    </div>
+                                </article>
                             </Link>
                         </motion.div>
                     </SwiperSlide>
@@ -202,7 +211,7 @@ const PublicServicePage = () => {
     if (error) return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
 
     return (
-        <div className="bg-white">
+        <div className="bg-white dark:bg-slate-950 transition-colors duration-500 min-h-screen">
             <HeroSection
                 title="Fasilitas & Akomodasi"
                 breadcrumb="Fasilitas"
@@ -242,10 +251,10 @@ const PublicServicePage = () => {
                 filteredFacilities.length === 0 &&
                 filteredAccommodations.length === 0 && (
                     <div className="max-w-screen-xl px-4 py-20 mx-auto text-center">
-                        <p className="mb-4 text-gray-600">Tidak ada hasil yang ditemukan untuk "{searchTerm}"</p>
+                        <p className="mb-4 text-gray-600 dark:text-gray-400">Tidak ada hasil yang ditemukan untuk "{searchTerm}"</p>
                         <button
                             onClick={clearSearch}
-                            className="px-4 py-2 text-sm font-medium text-red-600 bg-red-100 rounded-lg hover:bg-red-200"
+                            className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50"
                         >
                             Hapus pencarian
                         </button>

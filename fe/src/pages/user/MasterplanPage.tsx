@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import type { Transition } from "framer-motion";
+import React, { useEffect, useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import LoadingAnimation from "../../components/LoadingAnimation";
+import { FaChevronRight, FaFilePdf, FaBook, FaMap, FaBriefcase } from "react-icons/fa";
 
 // daftar foto galeri pantai
 import Pantai1 from "../../assets/Pantai/Pantai_1.webp";
@@ -71,519 +71,231 @@ const GambarMbahSurgi = [MbahSurgi1, MbahSurgi2, MbahSurgi3, MbahSurgi4, MbahSur
 const GambarMbahBabat = [MbahBabat1, MbahBabat2, MbahBabat3, MbahBabat4, MbahBabat5, MbahBabat6, MbahBabat7];
 const GambarMbahTegal = [MbahTegal1, MbahTegal2, MbahTegal3, MbahTegal4, MbahTegal5, MbahTegal6, MbahTegal7, MbahTegal8];
 
-const bounceVariant = (direction: "top" | "bottom" | "left" | "right") => {
-    switch (direction) {
-        case "top":
-            return { initial: { opacity: 0, y: -60 }, animate: { opacity: 1, y: 0 } };
-        case "bottom":
-            return { initial: { opacity: 0, y: 60 }, animate: { opacity: 1, y: 0 } };
-        case "left":
-            return { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 } };
-        case "right":
-            return { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 } };
-    }
+// Helper to shuffle images once on mount to keep it lightweight but dynamic
+const useShuffledImages = (imageArray: string[], count: number) => {
+    return useMemo(() => {
+        const shuffled = [...imageArray].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    }, [imageArray, count]);
 };
 
-const animationConfig: Transition = {
-    type: "spring",
-    bounce: 0.6,
-    duration: 2.5,
-};
-
-const SNBSection: React.FC = () => {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
+// Bento Box Gallery Component for Modern Layout
+const BentoGallery = ({ images, title, reverse = false }: { images: string[], title: string, reverse?: boolean }) => {
+    const [idx, setIdx] = useState(0);
 
     useEffect(() => {
-        const getUniqueIndexes = () => {
-            const allIndexes = Array.from({ length: GambarSNB.length }, (_, i) => i);
-            for (let i = allIndexes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
-            }
-            return allIndexes.slice(0, 4);
-        };
+        if (images.length <= 3) return;
+        const timer = setInterval(() => {
+            setIdx((prev) => (prev + 3 >= images.length ? 0 : prev + 3));
+        }, 5000); // 5 seconds interval for lightweight rotation
+        return () => clearInterval(timer);
+    }, [images.length]);
 
-        setVisibleIndexes(getUniqueIndexes());
-        const interval = setInterval(() => {
-            setVisibleIndexes(getUniqueIndexes());
-        }, 4800);
-
-        return () => clearInterval(interval);
-    }, []);
+    const img1 = images[idx % images.length];
+    const img2 = images[(idx + 1) % images.length];
+    const img3 = images[(idx + 2) % images.length];
 
     return (
-        <div className="grid grid-cols-2 grid-rows-2 gap-6 max-w-7xl mx-auto mt-6 relative">
-            {visibleIndexes.map((index, i) => (
-                <div key={i} className="relative h-72 rounded-2xl overflow-hidden shadow-xl">
-                    <AnimatePresence mode="sync">
-                        <motion.img
-                            key={index}
-                            src={GambarSNB[index]}
-                            alt={`SNB ${i + 1}`}
-                            className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                            initial={{ scale: 1, x: "100%", opacity: 0 }}
-                            animate={{ scale: 1.1, x: 0, opacity: 1 }}
-                            exit={{ scale: 1, x: "-100%", opacity: 0 }}
-                            transition={{
-                                scale: { duration: 4, ease: "easeInOut" },
-                                x: { duration: 0.8, ease: "easeInOut" },
-                                opacity: { duration: 0.8, ease: "easeInOut" },
-                            }}
-                        />
-                    </AnimatePresence>
+        <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+            className="mb-20"
+        >
+            <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-1 bg-blue-500 rounded-full"></div>
+                <h3 className="text-2xl md:text-3xl font-extrabold text-gray-800 dark:text-gray-100">{title}</h3>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[220px] md:auto-rows-[250px]">
+                {/* Image 1 (Large) */}
+                <div className={`relative rounded-3xl overflow-hidden shadow-md group ${reverse ? 'md:col-start-2 md:col-span-2' : 'md:col-span-2'} md:row-span-2 bg-gray-200 dark:bg-slate-800`}>
+                    <motion.img key={img1} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} src={img1} alt={`${title} 1`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-            ))}
-        </div>
-    );
-};
-
-const PantaiSection: React.FC = () => {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-
-    useEffect(() => {
-        // fungsi untuk ambil 3 index unik
-        const getUniqueIndexes = () => {
-            const allIndexes = Array.from({ length: GambarPantai.length }, (_, i) => i);
-            for (let i = allIndexes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
-            }
-            return allIndexes.slice(0, 3);
-        };
-        setVisibleIndexes(getUniqueIndexes());
-        const interval = setInterval(() => {
-            setVisibleIndexes(getUniqueIndexes());
-        }, 4800);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="grid grid-cols-2 grid-rows-2 gap-6 max-w-7xl mx-auto mt-6 relative">
-            {/* Foto atas penuh (col-span 2) */}
-            <div className="relative col-span-2 h-full rounded-2xl overflow-hidden shadow-xl">
-                <AnimatePresence mode="sync">
-                    <motion.img
-                        key={visibleIndexes[0]}
-                        src={GambarPantai[visibleIndexes[0]]}
-                        alt="Pantai Atas"
-                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                        initial={{ scale: 1, x: "100%", opacity: 0 }}
-                        animate={{ scale: 1.1, x: 0, opacity: 1 }}
-                        exit={{ scale: 1, x: "-100%", opacity: 0 }}
-                        transition={{
-                            scale: { duration: 4, ease: "easeInOut" },
-                            x: { duration: 0.8, ease: "easeInOut" },
-                            opacity: { duration: 0.8, ease: "easeInOut" },
-                        }}
-                    />
-                </AnimatePresence>
-            </div>
-
-            {/* 2 foto kecil di bawah */}
-            {visibleIndexes.slice(1).map((index, i) => (
-                <div key={i} className="relative h-60 rounded-2xl overflow-hidden shadow-xl">
-                    <AnimatePresence mode="sync">
-                        <motion.img
-                            key={index}
-                            src={GambarPantai[index]}
-                            alt={`Pantai ${i + 1}`}
-                            className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                            initial={{ scale: 1, x: "100%", opacity: 0 }}
-                            animate={{ scale: 1.1, x: 0, opacity: 1 }}
-                            exit={{ scale: 1, x: "-100%", opacity: 0 }}
-                            transition={{
-                                scale: { duration: 4, ease: "easeInOut" },
-                                x: { duration: 0.8, ease: "easeInOut" },
-                                opacity: { duration: 0.8, ease: "easeInOut" },
-                            }}
-                        />
-                    </AnimatePresence>
+                {/* Image 2 (Small 1) */}
+                <div className={`relative rounded-3xl overflow-hidden shadow-md group bg-gray-200 dark:bg-slate-800 ${reverse ? 'md:col-start-1 md:row-start-1' : ''}`}>
+                    <motion.img key={img2} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} src={img2} alt={`${title} 2`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
                 </div>
-            ))}
-        </div>
-    );
-};
-
-const MbahSurgiSection: React.FC = () => {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-
-    useEffect(() => {
-        const getUniqueIndexes = () => {
-            const allIndexes = Array.from({ length: GambarMbahSurgi.length }, (_, i) => i);
-            for (let i = allIndexes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
-            }
-            return allIndexes.slice(0, 4);
-        };
-
-        setVisibleIndexes(getUniqueIndexes());
-        const interval = setInterval(() => {
-            setVisibleIndexes(getUniqueIndexes());
-        }, 4800);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="grid grid-cols-3 gap-6 max-w-7xl mx-auto mt-6 h-[500px]">
-            {/* Dua gambar kecil di atas */}
-            <div className="col-span-1 flex flex-col gap-6">
-                {[visibleIndexes[0], visibleIndexes[1]].map((index, i) => (
-                    <div key={i} className="relative h-[240px] rounded-2xl overflow-hidden shadow-xl">
-                        <AnimatePresence mode="sync">
-                            <motion.img
-                                key={index}
-                                src={GambarMbahSurgi[index]}
-                                alt={`Gambar Kecil Atas ${i + 1}`}
-                                className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                                initial={{ scale: 1, y: "-100%", opacity: 0 }}
-                                animate={{ scale: 1.1, y: 0, opacity: 1 }}
-                                exit={{ scale: 1, y: "100%", opacity: 0 }}
-                                transition={{
-                                    scale: { duration: 4, ease: "easeInOut" },
-                                    y: { duration: 0.8, ease: "easeInOut" },
-                                    opacity: { duration: 0.8, ease: "easeInOut" },
-                                }}
-                            />
-                        </AnimatePresence>
-                    </div>
-                ))}
-            </div>
-
-            {/* Gambar besar di bawah (span 2 kolom) */}
-            <div className="col-span-2 row-span-1 relative rounded-2xl overflow-hidden shadow-xl">
-                <AnimatePresence mode="sync">
-                    <motion.img
-                        key={visibleIndexes[2]}
-                        src={GambarMbahSurgi[visibleIndexes[2]]}
-                        alt="Gambar Besar"
-                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                        initial={{ scale: 1, x: "100%", opacity: 0 }}
-                        animate={{ scale: 1.1, x: 0, opacity: 1 }}
-                        exit={{ scale: 1, x: "-100%", opacity: 0 }}
-                        transition={{
-                            scale: { duration: 4, ease: "easeInOut" },
-                            x: { duration: 0.8, ease: "easeInOut" },
-                            opacity: { duration: 0.8, ease: "easeInOut" },
-                        }}
-                    />
-                </AnimatePresence>
-            </div>
-        </div>
-    );
-};
-
-const TegalSection: React.FC = () => {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-
-    useEffect(() => {
-        // fungsi untuk ambil 3 index unik
-        const getUniqueIndexes = () => {
-            const allIndexes = Array.from({ length: GambarMbahTegal.length }, (_, i) => i);
-            for (let i = allIndexes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
-            }
-            return allIndexes.slice(0, 3);
-        };
-
-        setVisibleIndexes(getUniqueIndexes());
-
-        const interval = setInterval(() => {
-            setVisibleIndexes(getUniqueIndexes());
-        }, 4800);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="grid grid-cols-2 grid-rows-2 gap-6 max-w-7xl mx-auto mt-6 relative">
-            {/* 2 foto kecil di atas */}
-            {visibleIndexes.slice(0, 2).map((index, i) => (
-                <div key={i} className="relative h-60 rounded-2xl overflow-hidden shadow-xl">
-                    <AnimatePresence mode="sync">
-                        <motion.img
-                            key={index}
-                            src={GambarMbahTegal[index]}
-                            alt={`Tegal ${i + 1}`}
-                            className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                            initial={{ scale: 1, y: "-100%", opacity: 0 }}
-                            animate={{ scale: 1.1, y: 0, opacity: 1 }}
-                            exit={{ scale: 1, y: "100%", opacity: 0 }}
-                            transition={{
-                                scale: { duration: 4, ease: "easeInOut" },
-                                y: { duration: 0.8, ease: "easeInOut" },
-                                opacity: { duration: 0.8, ease: "easeInOut" },
-                            }}
-                        />
-                    </AnimatePresence>
+                {/* Image 3 (Small 2) */}
+                <div className={`relative rounded-3xl overflow-hidden shadow-md group bg-gray-200 dark:bg-slate-800 ${reverse ? 'md:col-start-1 md:row-start-2' : ''}`}>
+                    <motion.img key={img3} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} src={img3} alt={`${title} 3`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" loading="lazy" />
                 </div>
-            ))}
-
-            {/* Foto lebar penuh di bawah */}
-            <div className="relative col-span-2 h-full rounded-2xl overflow-hidden shadow-xl">
-                <AnimatePresence mode="sync">
-                    <motion.img
-                        key={visibleIndexes[2]}
-                        src={GambarMbahTegal[visibleIndexes[2]]}
-                        alt="Tegal Bawah"
-                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                        initial={{ scale: 1, y: "100%", opacity: 0 }}
-                        animate={{ scale: 1.1, y: 0, opacity: 1 }}
-                        exit={{ scale: 1, y: "-100%", opacity: 0 }}
-                        transition={{
-                            scale: { duration: 4, ease: "easeInOut" },
-                            y: { duration: 0.8, ease: "easeInOut" },
-                            opacity: { duration: 0.8, ease: "easeInOut" },
-                        }}
-                    />
-                </AnimatePresence>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
-const BabatSection: React.FC = () => {
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-
-    useEffect(() => {
-        const getUniqueIndexes = () => {
-            const allIndexes = Array.from({ length: GambarMbahBabat.length }, (_, i) => i);
-            for (let i = allIndexes.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
-            }
-            return allIndexes.slice(0, 3); // ambil 3 gambar
-        };
-
-        setVisibleIndexes(getUniqueIndexes());
-        const interval = setInterval(() => {
-            setVisibleIndexes(getUniqueIndexes());
-        }, 4800);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="grid grid-cols-3 gap-6 max-w-7xl mx-auto mt-6 h-[500px]">
-            {/* Gambar lebar penuh di kiri (span 2 kolom) */}
-            <div className="col-span-2 relative rounded-2xl overflow-hidden shadow-xl">
-                <AnimatePresence mode="sync">
-                    <motion.img
-                        key={visibleIndexes[0]}
-                        src={GambarMbahBabat[visibleIndexes[0]]}
-                        alt="Gambar Besar Kiri"
-                        className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                        initial={{ scale: 1, x: "-100%", opacity: 0 }}
-                        animate={{ scale: 1.1, x: 0, opacity: 1 }}
-                        exit={{ scale: 1, x: "100%", opacity: 0 }}
-                        transition={{
-                            scale: { duration: 4, ease: "easeInOut" },
-                            x: { duration: 0.8, ease: "easeInOut" },
-                            opacity: { duration: 0.8, ease: "easeInOut" },
-                        }}
-                    />
-                </AnimatePresence>
-            </div>
-
-            {/* Dua gambar kecil di kanan */}
-            <div className="col-span-1 flex flex-col gap-6">
-                {[visibleIndexes[1], visibleIndexes[2]].map((index, i) => (
-                    <div key={i} className="relative h-[240px] rounded-2xl overflow-hidden shadow-xl">
-                        <AnimatePresence mode="sync">
-                            <motion.img
-                                key={index}
-                                src={GambarMbahBabat[index]}
-                                alt={`Gambar Kecil Kanan ${i + 1}`}
-                                className="absolute inset-0 object-cover w-full h-full rounded-2xl"
-                                initial={{ scale: 1, y: "-100%", opacity: 0 }}
-                                animate={{ scale: 1.1, y: 0, opacity: 1 }}
-                                exit={{ scale: 1, y: "100%", opacity: 0 }}
-                                transition={{
-                                    scale: { duration: 4, ease: "easeInOut" },
-                                    y: { duration: 0.8, ease: "easeInOut" },
-                                    opacity: { duration: 0.8, ease: "easeInOut" },
-                                }}
-                            />
-                        </AnimatePresence>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
 
 const Masterplan: React.FC = () => {
     const [loading, setLoading] = useState(true);
+    
+    // Select images once
+    // Use full images array, don't slice it so they can rotate
+    const snbImages = useShuffledImages(GambarSNB, GambarSNB.length);
+    const pantaiImages = useShuffledImages(GambarPantai, GambarPantai.length);
+    const surgiImages = useShuffledImages(GambarMbahSurgi, GambarMbahSurgi.length);
+    const tegalImages = useShuffledImages(GambarMbahTegal, GambarMbahTegal.length);
+    const babatImages = useShuffledImages(GambarMbahBabat, GambarMbahBabat.length);
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
         }, 800);
         return () => clearTimeout(timer);
     }, []);
+
     if (loading) return <LoadingAnimation />;
 
     return (
-        <div className="min-h-screen px-4 py-12 pt-20 bg-gradient-to-r from-emerald-700 to-cyan-500">
-            {/* Breadcrumb dan Judul */}
-            <motion.div className="py-6 text-center" initial={bounceVariant("top").initial} animate={bounceVariant("top").animate} transition={animationConfig}>
-                <nav className="mb-2">
-                    <ol className="flex items-center justify-center space-x-2 text-sm font-semibold text-white">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-500 pt-24 pb-20 font-sans relative overflow-hidden">
+            
+            {/* --- BACKGROUND MESH DECORATION --- */}
+            <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-[100px]"></div>
+                <div className="absolute top-[20%] right-[-10%] w-[30%] h-[50%] rounded-full bg-emerald-400/10 dark:bg-emerald-600/10 blur-[100px]"></div>
+                <div className="absolute bottom-[-10%] left-[20%] w-[50%] h-[40%] rounded-full bg-orange-400/10 dark:bg-orange-600/10 blur-[120px]"></div>
+            </div>
+
+            {/* --- HEADER SECTION --- */}
+            <div className="max-w-7xl mx-auto px-6 mb-16 relative z-10">
+                <nav className="mb-6">
+                    <ol className="flex items-center space-x-2 text-sm font-medium text-gray-500 dark:text-gray-400">
                         <li>
-                            <Link to="/" className="flex items-center transition duration-300 hover:text-orange-500">
-                                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9.75L12 4l9 5.75V20a1 1 0 01-1 1h-5a1 1 0 01-1-1v-5H9v5a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
-                                </svg>
+                            <Link to="/" className="flex items-center hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                 Landing Page
                             </Link>
                         </li>
-                        <li className="font-semibold text-gray-400">/</li>
-                        <li className="font-bold text-orange-300">Masterplan Desa Wisata</li>
+                        <li className="text-gray-400 dark:text-gray-500"><FaChevronRight className="text-[10px]" /></li>
+                        <li className="text-blue-600 dark:text-blue-400 font-bold">Masterplan</li>
                     </ol>
                 </nav>
 
-                <h1 className="mb-3 text-4xl font-extrabold text-white">Masterplan Desa Wisata Tegalsambi</h1>
-                <span className="block w-24 h-1 mx-auto mt-2 bg-orange-500 rounded-full"></span>
-
-                <motion.p className="px-2 mx-auto mt-2 text-base font-medium leading-relaxed text-white max-w-7xl" initial={bounceVariant("left").initial} animate={bounceVariant("left").animate} transition={animationConfig}>
-                    Desa Tegalsambi dikembangkan sebagai desa wisata yang mencakup tiga kategori utama: wisata budaya, wisata religi, dan wisata pesisir. Masterplan ini menjadi panduan pembangunan kawasan wisata yang berkelanjutan dengan
-                    mempertimbangkan potensi lokal, kenyamanan pengunjung, serta pelestarian lingkungan dan budaya.
-                </motion.p>
-            </motion.div>
-
-            {/* Gambaran Masterplan */}
-            <motion.div className="mx-auto max-w-7xl mt-4" initial={bounceVariant("bottom").initial} whileInView={bounceVariant("bottom").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                {/* Judul Tengah */}
-                <motion.h3 className="mb-6 text-2xl font-semibold text-center text-white" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                    Gambaran Masterplan Desa Wisata Tegalsambi
-                </motion.h3>
-
-                {/* Grid 2 Kolom */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    {/* Kolom Kiri - Teks */}
-                    <div className="text-white text-justify leading-relaxed">
-                        <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">Poster Masterplan</h3>
-                        <p>
-                            Masterplan Desa Wisata Pesisir Tangguh Tegalsambi yang dirancang untuk mengembangkan potensi alam, budaya, dan ekonomi masyarakat melalui konsep
-                            <span className="italic"> Sustainable Coastal Tourism</span>. Kawasan wisata ini dibagi menjadi tiga zona utama, yaitu
-                            <strong> Zona Religi</strong>, <strong>Zona Pantai</strong>, dan <strong>Zona Seni Budaya</strong>, yang terintegrasi dengan infrastruktur ramah lingkungan, konservasi pesisir, dan digitalisasi.
-                        </p>
-                        <p className="mt-4">
-                            Dalam poster ditampilkan berbagai fasilitas dan rencana pengembangan, mulai dari kawasan budaya, galeri seni, pujasera, cottage, pusat kuliner, landmark sepeda santai, hingga kawasan sejarah dan religi, lengkap
-                            dengan makam-makam tokoh desa.
-                        </p>
-                        <p className="mt-4">Tujuan utama pengembangan ini adalah menciptakan desa wisata tangguh yang berdaya saing, berkelanjutan, serta tetap menjaga kelestarian lingkungan dan budaya lokal.</p>
-                    </div>
-
-                    {/* Kolom Kanan - Poster */}
-                    <div className="rounded-xl overflow-hidden border border-gray-300 shadow-lg">
-                        <img src={poster} alt="Poster Masterplan Tegalsambi" className="w-full h-full object-contain" />
-                    </div>
-                </div>
-            </motion.div>
-
-            <motion.div
-                className="mx-auto max-w-7xl mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
-                initial={bounceVariant("left").initial}
-                whileInView={bounceVariant("left").animate}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={animationConfig}
-            >
-                {/* Kolom Video */}
-                <div>
-                    <div className="w-full aspect-video rounded-xl overflow-hidden border border-gray-300 shadow-lg">
-                        <iframe title="Video Masterplan Tegalsambi" src="https://www.youtube.com/embed/oGE3Ydgwr1Y" className="w-full h-full" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
-                    </div>
-                </div>
-
-                {/* Kolom Teks */}
-                <motion.div
-                    className="flex flex-col justify-center text-white space-y-4"
-                    initial={bounceVariant("right").initial}
-                    whileInView={bounceVariant("right").animate}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={animationConfig}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="max-w-4xl"
                 >
-                    <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-yellow-300 to-orange-400 bg-clip-text text-transparent">Video Masterplan</h3>
-                    <p className="text-lg leading-relaxed">
-                        Visualisasi rencana pengembangan Desa Wisata Tegalsambi. Memadukan potensi alam, sejarah, budaya dan seni, Desa Wisata Tegalsambi diharapkan mampu menjadi desa wisata yang semakin maju dan terus berkembang.
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight mb-6 tracking-tight">
+                        Masterplan Desa Wisata <span className="text-blue-600 dark:text-blue-400">Tegalsambi</span>
+                    </h1>
+                    <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-medium">
+                        Desa Tegalsambi dikembangkan sebagai desa wisata yang mencakup tiga kategori utama: wisata budaya, wisata religi, dan wisata pesisir. Masterplan ini menjadi panduan pembangunan kawasan wisata yang berkelanjutan dengan mempertimbangkan potensi lokal, kenyamanan pengunjung, serta pelestarian lingkungan dan budaya.
                     </p>
-                    <p className="text-lg leading-relaxed">Dengan Masterplan Desa Wisata, semoga dapat memacu pengembangan Desa Tegalsambi sehingga turut meningkatkan kesejahteraan masyarakat.</p>
                 </motion.div>
-            </motion.div>
+            </div>
 
-            {/* Galeri Masterplan Wisata Pesisir*/}
-            <motion.div className="mx-auto max-w-7xl mt-10" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <h3 className="text-xl font-semibold text-center text-white">Masterplan Wisata Seni dan Budaya</h3>
-                <SNBSection />
-            </motion.div>
+            {/* --- GAMBARAN POSTER & VIDEO SECTION --- */}
+            <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md py-20 border-y border-white/50 dark:border-slate-800/50 shadow-sm mb-20 relative z-10 transition-colors duration-500">
+                <div className="max-w-7xl mx-auto px-6">
+                    
+                    {/* Poster Layout */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+                        <motion.div 
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="order-2 lg:order-1"
+                        >
+                            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Sustainable Coastal Tourism</h3>
+                            <div className="space-y-4 text-gray-600 dark:text-gray-300 leading-relaxed text-[15px]">
+                                <p>
+                                    Masterplan Desa Wisata Pesisir Tangguh Tegalsambi dirancang untuk mengembangkan potensi alam, budaya, dan ekonomi masyarakat melalui konsep pariwisata pesisir yang berkelanjutan.
+                                </p>
+                                <p>
+                                    Kawasan wisata ini dibagi menjadi tiga zona utama:
+                                    <strong className="text-blue-600 dark:text-blue-400"> Zona Religi</strong>, <strong className="text-orange-500 dark:text-orange-400">Zona Pantai</strong>, dan <strong className="text-emerald-600 dark:text-emerald-400">Zona Seni Budaya</strong>, 
+                                    yang terintegrasi dengan infrastruktur ramah lingkungan, konservasi pesisir, dan digitalisasi.
+                                </p>
+                                <p>
+                                    Tujuan utama pengembangan ini adalah menciptakan desa wisata tangguh yang berdaya saing, berkelanjutan, serta tetap menjaga kelestarian lingkungan dan kearifan lokal setempat.
+                                </p>
+                            </div>
+                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="order-1 lg:order-2 rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800 p-2"
+                        >
+                            <img src={poster} alt="Poster Masterplan Tegalsambi" className="w-full h-auto rounded-2xl object-cover" />
+                        </motion.div>
+                    </div>
 
-            <motion.div className="mx-auto max-w-7xl mt-10" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <h3 className="text-xl font-semibold text-center text-white">Masterplan Wisata Pesisir</h3>
-                <PantaiSection />
-            </motion.div>
+                    {/* Video Layout */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            className="rounded-3xl overflow-hidden shadow-2xl border border-gray-100 dark:border-slate-800 bg-gray-900 aspect-video relative"
+                        >
+                            <iframe title="Video Masterplan Tegalsambi" src="https://www.youtube.com/embed/oGE3Ydgwr1Y" className="absolute inset-0 w-full h-full" style={{ border: 0 }} allowFullScreen loading="lazy"></iframe>
+                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                        >
+                            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Visualisasi Masterplan</h3>
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-[15px] mb-4">
+                                Saksikan visualisasi 3D rencana pengembangan Desa Wisata Tegalsambi. Memadukan potensi alam, sejarah, budaya dan seni, Desa Wisata Tegalsambi diharapkan mampu menjadi desa wisata yang semakin maju dan terus berkembang.
+                            </p>
+                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-[15px]">
+                                Melalui penataan ruang yang tertata, perbaikan infrastruktur, serta penambahan amenitas pariwisata kelas menengah, kami bersiap menyambut wisatawan dengan pengalaman yang tak terlupakan.
+                            </p>
+                        </motion.div>
+                    </div>
 
-            {/* Galeri Masterplan Wisata Religi*/}
-            <motion.div className="mx-auto max-w-7xl" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <h3 className="text-xl font-semibold mt-12 text-center text-white">Masterplan Wisata Religi - Makam Mbah Surgimanis</h3>
-                <MbahSurgiSection />
-            </motion.div>
+                </div>
+            </div>
 
-            <motion.div className="mx-auto max-w-7xl" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <h3 className="text-xl font-semibold mt-12 text-center text-white">Masterplan Wisata Religi - Makam Mbah Tegal</h3>
-                <TegalSection />
-            </motion.div>
+            {/* --- GALERI BENTO BOX --- */}
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <BentoGallery title="Zona Seni & Budaya" images={snbImages} />
+                <BentoGallery title="Zona Pesisir Pantai" images={pantaiImages} reverse={true} />
+                <BentoGallery title="Makam Mbah Surgimanis" images={surgiImages} />
+                <BentoGallery title="Makam Mbah Tegal" images={tegalImages} reverse={true} />
+                <BentoGallery title="Makam Mbah Babatan" images={babatImages} />
+            </div>
 
-            <motion.div className="mx-auto max-w-7xl" initial={bounceVariant("top").initial} whileInView={bounceVariant("top").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <h3 className="text-xl font-semibold mt-12 text-center text-white">Masterplan Wisata Religi - Makam Mbah Babatan</h3>
-                <BabatSection />
-            </motion.div>
+            {/* --- DOWNLOAD SECTION --- */}
+            <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="max-w-7xl mx-auto px-6 mt-10 mb-10"
+            >
+                <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-3xl p-10 md:p-14 text-center shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+                    
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 relative z-10">Unduh Dokumen Masterplan</h3>
+                    <p className="text-blue-200 mb-10 max-w-2xl mx-auto relative z-10">Pelajari lebih lanjut mengenai kajian teknis, kesiapan masyarakat, dan kerangka manajemen pembangunan Desa Wisata Tegalsambi.</p>
 
-            {/* Download Dokumen */}
-            <motion.div initial={bounceVariant("bottom").initial} whileInView={bounceVariant("bottom").animate} viewport={{ once: true, amount: 0.2 }} transition={animationConfig}>
-                <motion.h3
-                    className="mb-4 mt-16 text-xl font-semibold text-center text-white"
-                    initial={bounceVariant("right").initial}
-                    whileInView={bounceVariant("right").animate}
-                    viewport={{ once: true, amount: 0.2 }}
-                    transition={animationConfig}
-                >
-                    Unduh Dokumen Masterplan & Kajian Desa Wisata Tegalsambi
-                </motion.h3>
-
-                <div className="max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-6 px-4 mx-auto mt-8">
-                    <a
-                        href="https://drive.google.com/uc?export=download&id=1XquM8FOhdLktGdaqiQVCWW-HX7hKVPcY"
-                        download
-                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
-                    >
-                        📘 Buku Masterplan
-                    </a>
-                    <a
-                        href="https://drive.google.com/uc?export=download&id=15UxvF4syxbB_XllbGEdf00VuR3ENqnqH"
-                        download
-                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
-                    >
-                        📒 Buku Kajian Kesiapan Masyarakat
-                    </a>
-                    <a
-                        href="https://drive.google.com/uc?export=download&id=1KMHRvZ7RLaE_IY5VXCLY691BrST9q2dx"
-                        download
-                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
-                    >
-                        📗 Buku Manajemen Pembangunan
-                    </a>
-                    <a
-                        href="https://drive.google.com/uc?export=download&id=1_hBAuCU-ciVYYuB_PqBJ0OtyXRYNmYGM"
-                        download
-                        className="px-4 py-2 text-sm font-medium text-center text-white transition duration-300 bg-white rounded-lg shadow bg-opacity-5 hover:bg-white hover:bg-opacity-30"
-                    >
-                        📙 Buku Pengembangan Bisnis BUMDes
-                    </a>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
+                        <a href="https://drive.google.com/uc?export=download&id=1XquM8FOhdLktGdaqiQVCWW-HX7hKVPcY" target="_blank" rel="noreferrer" className="group flex flex-col items-center p-6 bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md rounded-2xl transition-all duration-300 hover:-translate-y-1">
+                            <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform"><FaMap /></div>
+                            <span className="font-semibold text-white text-sm">Buku Masterplan</span>
+                        </a>
+                        <a href="https://drive.google.com/uc?export=download&id=15UxvF4syxbB_XllbGEdf00VuR3ENqnqH" target="_blank" rel="noreferrer" className="group flex flex-col items-center p-6 bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md rounded-2xl transition-all duration-300 hover:-translate-y-1">
+                            <div className="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform"><FaBook /></div>
+                            <span className="font-semibold text-white text-sm">Kajian Masyarakat</span>
+                        </a>
+                        <a href="https://drive.google.com/uc?export=download&id=1KMHRvZ7RLaE_IY5VXCLY691BrST9q2dx" target="_blank" rel="noreferrer" className="group flex flex-col items-center p-6 bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md rounded-2xl transition-all duration-300 hover:-translate-y-1">
+                            <div className="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform"><FaFilePdf /></div>
+                            <span className="font-semibold text-white text-sm">Manajemen Pembangunan</span>
+                        </a>
+                        <a href="https://drive.google.com/uc?export=download&id=1_hBAuCU-ciVYYuB_PqBJ0OtyXRYNmYGM" target="_blank" rel="noreferrer" className="group flex flex-col items-center p-6 bg-white/10 hover:bg-white/20 border border-white/10 backdrop-blur-md rounded-2xl transition-all duration-300 hover:-translate-y-1">
+                            <div className="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform"><FaBriefcase /></div>
+                            <span className="font-semibold text-white text-sm">Pengembangan BUMDes</span>
+                        </a>
+                    </div>
                 </div>
             </motion.div>
+
         </div>
     );
 };
