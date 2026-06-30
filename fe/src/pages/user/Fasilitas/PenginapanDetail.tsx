@@ -90,7 +90,7 @@ const AccommodationDetail = () => {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-slate-950 font-sans text-gray-800 dark:text-gray-200 pb-20 transition-colors duration-500">
             {/* Hero Image Header */}
-            <div className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-fixed" style={{ backgroundImage: `url('${mainImage}')` }}>
+            <div className="relative h-[60vh] md:h-[70vh] bg-cover bg-center bg-scroll md:bg-fixed" style={{ backgroundImage: `url('${mainImage}')` }}>
                 {/* Darkening overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-transparent" />
                 {/* Seamless gradient transition to background */}

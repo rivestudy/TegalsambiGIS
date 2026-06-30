@@ -70,7 +70,7 @@ const LandingPage: React.FC = () => {
             <section className="relative flex flex-col items-center justify-center min-h-screen text-center text-white">
                 {/* Masked Background Image Layer */}
                 <div 
-                    className="absolute inset-0 bg-fixed bg-center bg-no-repeat bg-cover z-0" 
+                    className="absolute inset-0 bg-scroll md:bg-fixed bg-center bg-no-repeat bg-cover z-0" 
                     style={{ 
                         backgroundImage: "url('/pantaitegalsambi2.webp')",
                         maskImage: "linear-gradient(to bottom, black 60%, transparent 100%)",
