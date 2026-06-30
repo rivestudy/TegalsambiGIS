@@ -116,12 +116,7 @@ const SectionContainer = ({
             >
                 {data.map((item, idx) => (
                     <SwiperSlide key={item.id}>
-                        <motion.div
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ ...animationConfig, delay: idx * 0.2 }}
-                            viewport={{ once: true, amount: 0.4 }}
-                        >
+                        <motion.div>
                             <Link to={`/${type}/${item.id}`} className="block group h-full py-4">
                                 <article className="relative overflow-hidden h-full min-h-[350px] bg-white dark:bg-slate-900 rounded-3xl shadow-lg transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-2xl border border-gray-100 dark:border-slate-800 mx-2">
                                     <div className="absolute inset-0 overflow-hidden">

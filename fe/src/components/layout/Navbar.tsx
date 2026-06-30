@@ -248,14 +248,14 @@ const Navbar = () => {
                                         opacity: { duration: 0.2 },
                                     },
                                 }}
-                                className="overflow-hidden md:hidden bg-white/95 dark:bg-black/80 backdrop-blur-md text-gray-800 dark:text-white border-t border-gray-100 dark:border-slate-800"
+                                className="overflow-hidden md:hidden text-white border-t border-white/20"
                             >
                                 <div className="px-4 pt-2 pb-4 space-y-3">
                                     <Link to="/about" className="block py-2" onClick={closeMenu}>
                                         Tentang
                                     </Link>
 
-                                    <details className="text-gray-800 dark:text-white group" open={isDropdownOpen.wisata}>
+                                    <details className="text-white group" open={isDropdownOpen.wisata}>
                                         <summary
                                             className="flex items-center justify-between py-2 cursor-pointer"
                                             onClick={() => toggleDropdown("wisata")}
@@ -272,7 +272,7 @@ const Navbar = () => {
                                         </div>
                                     </details>
 
-                                    <details className="text-gray-800 dark:text-white group" open={isDropdownOpen.fasilitas}>
+                                    <details className="text-white group" open={isDropdownOpen.fasilitas}>
                                         <summary
                                             className="flex items-center justify-between py-2 cursor-pointer"
                                             onClick={() => toggleDropdown("fasilitas")}
